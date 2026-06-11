@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { Tables } from "@/integrations/supabase/types";
-import { DoorOpen, Car, BadgeCheck, Shield, Wrench, Infinity as InfinityIcon } from "lucide-react";
+import { DoorOpen, Car, BadgeCheck, Users, Shield, Wrench, Infinity as InfinityIcon } from "lucide-react";
 
 type Vehicle = Tables<"vehicles">;
 
@@ -44,6 +44,12 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           <div className="flex items-center gap-2">
             <DoorOpen className="w-4 h-4" strokeWidth={1.75} />
             <span>Doors: {vehicle.doors}</span>
+          </div>
+        )}
+        {vehicle.seats != null && (
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4" strokeWidth={1.75} />
+            <span>Seats: {vehicle.seats}</span>
           </div>
         )}
         {uber.length > 0 && (
