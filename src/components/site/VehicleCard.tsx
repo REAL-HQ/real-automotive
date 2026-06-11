@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { Tables } from "@/integrations/supabase/types";
-import { DoorOpen, Car, BadgeCheck, Users, Shield, Wrench, Infinity as InfinityIcon, TrendingUp, ArrowRight } from "lucide-react";
+import { DoorOpen, Car, BadgeCheck, Users, Shield, Wrench, Infinity as InfinityIcon, TrendingUp, ArrowRight, Check } from "lucide-react";
 
 type Vehicle = Tables<"vehicles">;
 
@@ -14,7 +14,6 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
       : status === "reserved"
         ? { label: "Reserved", color: "text-real-red", dot: "bg-real-red" }
         : { label: "Limited Availability", color: "text-amber-600", dot: "bg-amber-500" };
-  const deposit = vehicle.deposit != null ? Number(vehicle.deposit) : 500;
   return (
     <Link
       to="/fleet/$id"
@@ -52,8 +51,9 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           <div className="car-price text-lg font-semibold transition-colors whitespace-nowrap">
             ${Number(vehicle.weekly_rate)}/week
           </div>
-          <div className="text-[11px] text-muted-foreground mt-0.5 whitespace-nowrap">
-            +${deposit} Refundable Deposit
+          <div className="text-[11px] text-muted-foreground mt-0.5 whitespace-nowrap inline-flex items-center gap-1 justify-end">
+            <Check className="w-3 h-3 text-emerald-600" strokeWidth={2.5} />
+            Refundable Deposit Required
           </div>
         </div>
       </div>
