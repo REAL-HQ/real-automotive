@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as FleetRouteImport } from './routes/fleet'
+import { Route as FaqRouteImport } from './routes/faq'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FleetIdRouteImport } from './routes/fleet.$id'
 
@@ -30,6 +31,11 @@ const FleetRoute = FleetRouteImport.update({
   path: '/fleet',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -43,6 +49,7 @@ const FleetIdRoute = FleetIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
   '/fleet': typeof FleetRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
   '/fleet': typeof FleetRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/faq': typeof FaqRoute
   '/fleet': typeof FleetRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
   '/pricing': typeof PricingRoute
@@ -65,14 +74,28 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/fleet' | '/how-it-works' | '/pricing' | '/fleet/$id'
+  fullPaths:
+    | '/'
+    | '/faq'
+    | '/fleet'
+    | '/how-it-works'
+    | '/pricing'
+    | '/fleet/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/fleet' | '/how-it-works' | '/pricing' | '/fleet/$id'
-  id: '__root__' | '/' | '/fleet' | '/how-it-works' | '/pricing' | '/fleet/$id'
+  to: '/' | '/faq' | '/fleet' | '/how-it-works' | '/pricing' | '/fleet/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/faq'
+    | '/fleet'
+    | '/how-it-works'
+    | '/pricing'
+    | '/fleet/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  FaqRoute: typeof FaqRoute
   FleetRoute: typeof FleetRouteWithChildren
   HowItWorksRoute: typeof HowItWorksRoute
   PricingRoute: typeof PricingRoute
@@ -99,6 +122,13 @@ declare module '@tanstack/react-router' {
       path: '/fleet'
       fullPath: '/fleet'
       preLoaderRoute: typeof FleetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -130,6 +160,7 @@ const FleetRouteWithChildren = FleetRoute._addFileChildren(FleetRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  FaqRoute: FaqRoute,
   FleetRoute: FleetRouteWithChildren,
   HowItWorksRoute: HowItWorksRoute,
   PricingRoute: PricingRoute,
