@@ -9,10 +9,16 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as FleetRouteImport } from './routes/fleet'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FleetIdRouteImport } from './routes/fleet.$id'
 
+const HowItWorksRoute = HowItWorksRouteImport.update({
+  id: '/how-it-works',
+  path: '/how-it-works',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FleetRoute = FleetRouteImport.update({
   id: '/fleet',
   path: '/fleet',
@@ -32,34 +38,45 @@ const FleetIdRoute = FleetIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/fleet': typeof FleetRouteWithChildren
+  '/how-it-works': typeof HowItWorksRoute
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/fleet': typeof FleetRouteWithChildren
+  '/how-it-works': typeof HowItWorksRoute
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/fleet': typeof FleetRouteWithChildren
+  '/how-it-works': typeof HowItWorksRoute
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/fleet' | '/fleet/$id'
+  fullPaths: '/' | '/fleet' | '/how-it-works' | '/fleet/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/fleet' | '/fleet/$id'
-  id: '__root__' | '/' | '/fleet' | '/fleet/$id'
+  to: '/' | '/fleet' | '/how-it-works' | '/fleet/$id'
+  id: '__root__' | '/' | '/fleet' | '/how-it-works' | '/fleet/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FleetRoute: typeof FleetRouteWithChildren
+  HowItWorksRoute: typeof HowItWorksRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/how-it-works': {
+      id: '/how-it-works'
+      path: '/how-it-works'
+      fullPath: '/how-it-works'
+      preLoaderRoute: typeof HowItWorksRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/fleet': {
       id: '/fleet'
       path: '/fleet'
@@ -97,6 +114,7 @@ const FleetRouteWithChildren = FleetRoute._addFileChildren(FleetRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FleetRoute: FleetRouteWithChildren,
+  HowItWorksRoute: HowItWorksRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
