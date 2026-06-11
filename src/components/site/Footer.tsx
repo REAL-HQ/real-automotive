@@ -60,7 +60,7 @@ export function Footer() {
               to="/investors"
               className="inline-flex items-center justify-center rounded-lg border border-white/40 text-white px-7 py-3 text-sm font-medium hover:bg-white/10 transition active:scale-95"
             >
-              Become A Fleet Partner
+              Become A Partner
             </Link>
           </div>
         </div>
