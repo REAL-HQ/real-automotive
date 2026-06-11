@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { Tables } from "@/integrations/supabase/types";
-import { DoorOpen, Car, BadgeCheck, Users, Shield, Wrench, Infinity as InfinityIcon, TrendingUp, ArrowRight, Circle } from "lucide-react";
+import { DoorOpen, Car, BadgeCheck, Users, Shield, Wrench, Infinity as InfinityIcon, TrendingUp, ArrowRight } from "lucide-react";
 
 type Vehicle = Tables<"vehicles">;
 
