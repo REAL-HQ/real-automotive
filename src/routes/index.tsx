@@ -44,13 +44,13 @@ function Index() {
 
   return (
     <SiteLayout>
-      <section className="relative w-full px-6 md:px-12 pt-20 md:pt-28 pb-16 md:pb-24 text-center overflow-hidden">
+      <section className="relative isolate w-full px-6 md:px-12 pt-20 md:pt-28 pb-16 md:pb-24 text-center overflow-hidden">
         <div
           aria-hidden
-          className="absolute inset-0 -z-10 bg-cover bg-center"
+          className="absolute inset-0 -z-20 bg-cover bg-center"
           style={{ backgroundImage: `url(${heroBg})` }}
         />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/70 to-black/90" />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-black/70 via-black/55 to-black/80" />
         <FadeUp>
           <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">
             Rent. Drive. Earn.
