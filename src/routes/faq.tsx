@@ -16,7 +16,7 @@ export const Route = createFileRoute("/faq")({
 
 const faqs = [
   { q: "What is required to get approved?", a: "You must be 21+, hold a valid US driver's license for at least one year, have a reasonably clean driving record, and a payment method for weekly rent. No credit check required." },
-  { q: "Is a refundable security deposit required?", a: "Yes. Refundable deposits run $249 to $500 depending on vehicle, and are returned 14 to 30 days after rental ends, less any tolls, tickets, or damage." },
+  { q: "Is a refundable security deposit required?", a: "Yes. A $250 refundable deposit is required, and is returned 14 to 30 days after rental ends, less any tolls, tickets, or damage." },
   { q: "What is included in the weekly payment?", a: "Commercial rideshare insurance, routine maintenance, unlimited miles, and 24/7 driver support are all included. You handle fuel and cleanliness." },
   { q: "Can I drive for Uber and Lyft?", a: "Yes. Every vehicle is eligible for Uber and Lyft, and you can run both platforms on the same car." },
   { q: "Are maintenance and repairs included?", a: "Yes. Routine maintenance and most mechanical repairs are on us — oil changes, brakes, tires, and scheduled service." },
