@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Logo } from "./Logo";
 
 const groups = [
   {
@@ -38,10 +39,7 @@ export function Footer() {
       </div>
       <div className="container-real py-14 grid grid-cols-2 md:grid-cols-4 gap-10 text-sm">
         <div className="col-span-2 md:col-span-2">
-          <div className="flex items-center gap-1 tracking-[0.18em]">
-            <span className="font-semibold">REAL</span>
-            <span className="font-normal">AUTOMOTIVE</span>
-          </div>
+          <Logo />
           <p className="mt-3 text-muted-foreground max-w-sm">
             Rideshare-ready vehicles for Uber, Lyft, and delivery drivers. Apply in
             minutes — drive this week.
