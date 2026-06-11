@@ -186,21 +186,6 @@ function Index() {
         </div>
       </section>
 
-      <section className="bg-real-red text-white">
-        <div className="container-real py-20 md:py-28 text-center">
-          <FadeUp>
-            <h2 className="text-3xl md:text-5xl font-semibold">Your Next Paycheck Is Parked Here.</h2>
-            <p className="mt-5 text-base md:text-lg text-white/85">
-              Apply in minutes. Drive this week.
-            </p>
-            <div className="mt-8">
-              <Link to="/apply" className="inline-flex items-center rounded-lg bg-white text-foreground px-8 py-3.5 text-sm font-medium hover:bg-soft transition active:scale-95">
-                Apply Now
-              </Link>
-            </div>
-          </FadeUp>
-        </div>
-      </section>
     </SiteLayout>
   );
 }
