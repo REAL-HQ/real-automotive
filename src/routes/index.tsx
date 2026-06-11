@@ -64,7 +64,7 @@ function Index() {
               <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">Featured Fleet</div>
               <h2 className="mt-3 text-3xl md:text-5xl">Available This Week.</h2>
             </div>
-            <Link to="/fleet" className="text-sm underline-offset-4 hover:underline">View all vehicles →</Link>
+            <Link to="/fleet" className="text-sm underline-offset-4 hover:underline">View All →</Link>
           </FadeUp>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
             {vehicles.map((v, i) => (
