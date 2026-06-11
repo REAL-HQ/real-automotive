@@ -21,7 +21,7 @@ const groups = [
 
 export function Footer() {
   return (
-    <footer className="border-t border-border mt-24">
+    <footer className="mt-24">
       <div className="bg-real-red text-white">
         <div className="container-real py-12 md:py-16 flex flex-col md:flex-row items-center justify-between gap-6 text-center md:text-left">
           <div>
