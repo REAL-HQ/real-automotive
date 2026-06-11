@@ -112,26 +112,42 @@ function Index() {
         </div>
       </section>
 
-      <section className="container-real py-10 md:py-16">
-        <FadeUp className="text-center mb-8">
+      <section className="container-real py-14 md:py-24">
+        <FadeUp className="text-center mb-14 max-w-2xl mx-auto">
           <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">How It Works</div>
           <h2 className="mt-3 text-3xl md:text-5xl">From Application To Paycheck.</h2>
+          <p className="mt-4 text-muted-foreground leading-relaxed">Four simple steps. No credit check. No long wait. Get behind the wheel and start earning this week.</p>
         </FadeUp>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {[
-            { n: "01", I: FileText, t: "Apply", d: "Complete a 5-minute application." },
-            { n: "02", I: ClipboardCheck, t: "Get Approved", d: "Most applications reviewed within 24 hours." },
-            { n: "03", I: KeyRound, t: "Pick Up Vehicle", d: "Schedule pickup and complete onboarding." },
-            { n: "04", I: Zap, t: "Start Earning", d: "Drive Uber, Lyft, DoorDash or Instacart immediately." },
-          ].map((s, i) => (
-            <FadeUp key={s.n} delay={i * 80}>
-              <s.I className="w-7 h-7 text-real-red" strokeWidth={1.75} />
-              <div className="mt-4 text-real-red text-sm font-semibold tracking-wider">{s.n}</div>
-              <div className="mt-1 text-lg font-semibold">{s.t}</div>
-              <div className="mt-2 text-muted-foreground text-sm leading-relaxed">{s.d}</div>
-            </FadeUp>
-          ))}
+        <div className="relative">
+          <div aria-hidden className="hidden md:block absolute top-8 left-[12%] right-[12%] h-px bg-gradient-to-r from-transparent via-real-red/30 to-transparent" />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8 relative">
+            {[
+              { n: "01", I: FileText, t: "Apply", d: "Complete a 5-minute application online from your phone." },
+              { n: "02", I: ClipboardCheck, t: "Get Approved", d: "Most applications reviewed within 24 hours. No credit check." },
+              { n: "03", I: KeyRound, t: "Pick Up Vehicle", d: "Schedule pickup, complete onboarding, and grab your keys." },
+              { n: "04", I: Zap, t: "Start Earning", d: "Drive Uber, Lyft, DoorDash or Instacart immediately." },
+            ].map((s, i) => (
+              <FadeUp key={s.n} delay={i * 80}>
+                <div className="group relative rounded-2xl bg-white p-7 h-full border border-border hover:border-real-red/40 hover:shadow-lg transition-all duration-300">
+                  <div className="flex items-center justify-between">
+                    <div className="relative inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-real-red/10 text-real-red group-hover:bg-real-red group-hover:text-white transition-colors">
+                      <s.I className="w-7 h-7" strokeWidth={1.75} />
+                    </div>
+                    <div className="text-5xl font-bold text-foreground/5 group-hover:text-real-red/20 transition-colors leading-none">{s.n}</div>
+                  </div>
+                  <div className="mt-6 text-real-red text-[11px] font-semibold tracking-[0.2em]">STEP {s.n}</div>
+                  <div className="mt-2 text-xl font-semibold">{s.t}</div>
+                  <div className="mt-2 text-muted-foreground text-sm leading-relaxed">{s.d}</div>
+                </div>
+              </FadeUp>
+            ))}
+          </div>
         </div>
+        <FadeUp className="mt-12 text-center">
+          <Link to="/apply" className="inline-flex items-center gap-2 rounded-lg bg-real-red text-white px-8 py-4 text-sm font-semibold hover:opacity-90 transition active:scale-95">
+            Start Your Application <ArrowRight className="w-4 h-4" />
+          </Link>
+        </FadeUp>
       </section>
 
       <section className="bg-soft py-10 md:py-16">
