@@ -270,7 +270,6 @@ function Apply() {
           {step === 4 && (
             <div className="space-y-4">
               {[
-                ["consent_gps", "I consent to a GPS tracking device on the vehicle."],
                 ["consent_background", "I authorize a background and driving-record (MVR) check."],
                 ["consent_prepay", "I understand weekly rent is paid in advance."],
                 ["consent_terms", "I agree to the terms and conditions."],
