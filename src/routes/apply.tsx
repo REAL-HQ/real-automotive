@@ -215,7 +215,7 @@ function Apply() {
                 <select value={f.rental_term} onChange={(e) => update("rental_term", e.target.value)} className="mt-1 w-full bg-soft rounded-full px-5 py-3 text-sm">
                   <option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="long_term">Long-term</option>
                 </select>
-                {f.rental_term === "weekly" && selectedVehicle && (
+                {f.rental_term === "weekly" && selectedVehicle && weeklyToMonthlySavings > 0 && (
                   <div className="mt-3 rounded-xl bg-real-red/5 border border-real-red/20 p-3 text-sm">
                     <div className="flex items-center justify-between gap-3">
                       <div>
