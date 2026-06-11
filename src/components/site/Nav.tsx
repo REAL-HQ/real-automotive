@@ -31,7 +31,7 @@ export function Nav() {
           : "bg-white border-b border-transparent"
       }`}
     >
-      <div className="container-real flex h-12 items-center justify-between">
+      <div className="flex h-12 items-center justify-between px-[3%]">
         <Logo />
         <div className="flex items-center gap-3">
           <Link
