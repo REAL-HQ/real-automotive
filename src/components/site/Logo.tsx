@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 
-export function Logo({ width = 110 }: { width?: number }) {
+export function Logo({ width = 140 }: { width?: number }) {
   return (
     <Link
       to="/"
@@ -10,7 +10,7 @@ export function Logo({ width = 110 }: { width?: number }) {
         display: "block",
         textDecoration: "none",
         background: "#E61919",
-        padding: 6,
+        padding: 7,
         width,
       }}
     >

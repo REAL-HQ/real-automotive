@@ -43,7 +43,7 @@ function Index() {
 
   return (
     <SiteLayout>
-      <section className="container-real pt-20 md:pt-28 pb-16 md:pb-24 text-center">
+      <section className="w-full px-6 md:px-12 pt-20 md:pt-28 pb-16 md:pb-24 text-center">
         <FadeUp>
           <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">
             Rent. Drive. Earn.
