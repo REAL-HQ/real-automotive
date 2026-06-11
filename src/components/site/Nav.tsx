@@ -25,7 +25,7 @@ export function Nav() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
+      className={`sticky top-0 z-50 w-full relative transition-all duration-300 ${
         scrolled
           ? "bg-white/80 backdrop-blur-md border-b border-border"
           : "bg-white border-b border-transparent"
@@ -50,27 +50,36 @@ export function Nav() {
         </div>
       </div>
       {open && (
-        <div className="border-t border-border bg-white">
-          <div className="container-real py-4 flex flex-col gap-4">
-            {menuLinks.map((l) => (
-              <Link
-                key={l.to}
-                to={l.to}
-                className="text-sm py-2"
-                onClick={() => setOpen(false)}
-              >
-                {l.label}
-              </Link>
-            ))}
-            <Link
-              to="/apply"
-              onClick={() => setOpen(false)}
-              className="inline-flex justify-center rounded-lg bg-real-red px-5 py-3 text-sm font-medium text-white"
-            >
-              Apply Now
-            </Link>
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-transparent"
+            onClick={() => setOpen(false)}
+            aria-hidden
+          />
+          <div className="absolute right-3 top-[calc(100%+6px)] z-50 w-56 rounded-xl border border-border bg-white shadow-xl overflow-hidden">
+            <nav className="flex flex-col py-2">
+              {menuLinks.map((l) => (
+                <Link
+                  key={l.to}
+                  to={l.to}
+                  className="px-4 py-2.5 text-sm text-foreground hover:bg-soft transition-colors"
+                  onClick={() => setOpen(false)}
+                >
+                  {l.label}
+                </Link>
+              ))}
+              <div className="px-3 pt-2 pb-3">
+                <Link
+                  to="/apply"
+                  onClick={() => setOpen(false)}
+                  className="inline-flex w-full justify-center rounded-lg bg-real-red px-4 py-2.5 text-sm font-medium text-white hover:bg-red-700 transition active:scale-95"
+                >
+                  Apply Now
+                </Link>
+              </div>
+            </nav>
           </div>
-        </div>
+        </>
       )}
     </header>
   );
