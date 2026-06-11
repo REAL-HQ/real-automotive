@@ -69,7 +69,7 @@ function VehicleDetail() {
               <span className="text-5xl font-semibold">${Number(price)}</span>
               <span className="text-muted-foreground text-sm">/{term === "weekly" ? "week" : "month"}</span>
             </div>
-            <div className="text-sm text-muted-foreground mt-1">Deposit ${Number(v.deposit)} · refundable</div>
+            <div className="text-sm text-muted-foreground mt-1">Refundable security deposit required at pickup.</div>
 
             <div className="mt-8 grid grid-cols-2 gap-4 text-sm">
               {[
