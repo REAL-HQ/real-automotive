@@ -63,7 +63,7 @@ function Index() {
             Insurance included. Maintenance included. Fast approval. Drive this week.
           </p>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <Link to="/fleet" className="inline-flex items-center gap-2 rounded-lg bg-white px-7 py-3 text-sm font-medium text-black hover:bg-real-red hover:text-white transition active:scale-95">
+            <Link to="/fleet" className="inline-flex items-center gap-2 rounded-lg bg-white px-7 py-3 text-sm font-medium text-black hover:bg-black hover:text-white transition active:scale-95">
               View Available Cars <ArrowRight className="w-4 h-4" />
             </Link>
             <Link to="/apply" className="inline-flex items-center rounded-lg border border-white/40 px-7 py-3 text-sm font-medium text-white hover:bg-white hover:text-black transition active:scale-95">
