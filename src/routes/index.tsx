@@ -79,7 +79,7 @@ function Index() {
               "Insurance Included",
               "Maintenance Included",
               "Unlimited Miles",
-              "Fast Approval",
+              "Same Day Approval",
             ].map((t) => (
               <span key={t} className="inline-flex items-center gap-1.5">
                 <Check className="w-3.5 h-3.5 text-real-red" strokeWidth={2.25} />
