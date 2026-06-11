@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Check, Phone, Mail, MapPin, Clock, Shield, Wrench, BadgeCheck, Infinity as InfinityIcon, Zap } from "lucide-react";
+import { Logo } from "./Logo";
 
 const trustBar = [
   { label: "Uber/Lyft Eligible", Icon: BadgeCheck },
@@ -69,8 +70,8 @@ export function Footer() {
       </div>
       <div className="container-real py-14 grid grid-cols-1 md:grid-cols-12 gap-10 text-sm">
         <div className="md:col-span-4">
-          <div className="text-foreground font-semibold tracking-tight text-lg">REAL AUTOMOTIVE</div>
-          <p className="mt-3 text-muted-foreground max-w-sm">
+          <Logo width={110} offset={false} />
+          <p className="mt-5 text-muted-foreground max-w-sm">
             Rideshare-ready vehicles for Uber, Lyft, DoorDash and Instacart drivers.
           </p>
           <ul className="mt-5 space-y-2">

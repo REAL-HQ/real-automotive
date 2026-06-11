@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router";
 
-export function Logo({ width = 120 }: { width?: number }) {
+export function Logo({ width = 120, offset = true }: { width?: number; offset?: boolean }) {
   return (
     <Link
       to="/"
       aria-label="REAL AUTOMOTIVE home"
-      className="relative top-[28px] flex-shrink-0"
+      className={`${offset ? "relative top-[28px]" : ""} flex-shrink-0`}
       style={{
         display: "block",
         textDecoration: "none",
