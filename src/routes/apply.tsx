@@ -126,6 +126,32 @@ function Apply() {
           <h1 className="mt-3 text-3xl md:text-5xl font-semibold">Tell Us About You.</h1>
         </FadeUp>
 
+        {selectedVehicle && (
+          <FadeUp>
+            <div className="mt-8 rounded-2xl border border-border bg-soft p-5">
+              <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-3">Pricing Summary</div>
+              <div className="grid grid-cols-2 gap-y-2 text-sm">
+                <div className="text-muted-foreground">Vehicle</div>
+                <div className="text-right font-medium">{selectedVehicle.year} {selectedVehicle.make} {selectedVehicle.model}</div>
+                <div className="text-muted-foreground">Weekly Rental</div>
+                <div className="text-right font-medium">${Number(selectedVehicle.weekly_rate)}/week</div>
+                <div className="text-muted-foreground">Refundable Security Deposit</div>
+                <div className="text-right font-medium">${Number(selectedVehicle.deposit ?? 0)}</div>
+                <div className="col-span-2 border-t border-border my-1" />
+                <div className="font-semibold">Due At Pickup</div>
+                <div className="text-right font-semibold text-real-red">
+                  ${Number(selectedVehicle.weekly_rate) + Number(selectedVehicle.deposit ?? 0)}
+                </div>
+              </div>
+              <p className="mt-4 text-[11px] leading-relaxed text-muted-foreground">
+                Your security deposit is fully refundable upon vehicle return, less any
+                outstanding tolls, tickets, damages, unpaid balances, cleaning fees, or
+                other charges outlined in the rental agreement.
+              </p>
+            </div>
+          </FadeUp>
+        )}
+
         <div className="mt-10">
           <div className="flex items-center justify-between mb-3 text-xs text-muted-foreground">
             <div>Step {step + 1} of {STEPS.length} — {STEPS[step]}</div>
