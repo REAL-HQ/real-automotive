@@ -5,7 +5,7 @@ export function Logo({ width = 120 }: { width?: number }) {
     <Link
       to="/"
       aria-label="REAL AUTOMOTIVE home"
-      className="relative top-[14px] flex-shrink-0"
+      className="relative top-[28px] flex-shrink-0"
       style={{
         display: "block",
         textDecoration: "none",
