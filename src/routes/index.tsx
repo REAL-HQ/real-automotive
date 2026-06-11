@@ -160,8 +160,14 @@ function Index() {
         </div>
       </section>
 
-      <section className="container-real py-14 md:py-20">
-        <div className="rounded-3xl bg-foreground text-white p-8 md:p-14 grid grid-cols-1 lg:grid-cols-5 gap-10 items-center">
+      <section className="relative isolate text-white overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 -z-20 bg-cover bg-center"
+          style={{ backgroundImage: `url(${fleetPartnerBg})` }}
+        />
+        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-r from-black via-black/90 to-black/60" />
+        <div className="container-real py-16 md:py-24 grid grid-cols-1 lg:grid-cols-5 gap-10 items-center">
           <div className="lg:col-span-3">
             <FadeUp>
               <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">Fleet Partner Program</div>
@@ -181,7 +187,7 @@ function Index() {
           </div>
           <div className="lg:col-span-2">
             <FadeUp delay={80}>
-              <div className="rounded-2xl bg-white/5 border border-white/10 p-6">
+              <div className="rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 p-6">
                 <div className="text-[11px] uppercase tracking-wider text-white/60 font-semibold">We Handle Everything</div>
                 <ul className="mt-4 grid grid-cols-1 gap-3 text-sm">
                   {[
