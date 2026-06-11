@@ -109,7 +109,7 @@ function FleetPage() {
             </div>
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" checked={onlyAvail} onChange={(e) => setOnlyAvail(e.target.checked)} className="accent-[#CC0000]" />
-              Available only
+              Available Only
             </label>
           </div>
         </FadeUp>
