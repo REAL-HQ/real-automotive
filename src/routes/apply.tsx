@@ -46,7 +46,7 @@ function Apply() {
     license_photo_url: "",
     platforms: [], weekly_hours: 30, platform_active: true,
     vehicle_id: preVehicle, start_date: "", rental_term: "weekly", payment_method: "debit",
-    consent_gps: false, consent_background: false, consent_prepay: false, consent_terms: false,
+    consent_gps: true, consent_background: false, consent_prepay: false, consent_terms: false,
   });
   const update = <K extends keyof Form>(k: K, v: Form[K]) => setF((p) => ({ ...p, [k]: v }));
 
