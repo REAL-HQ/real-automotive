@@ -22,13 +22,23 @@ export const Route = createFileRoute("/")({
 function Index() {
   const [vehicles, setVehicles] = useState<Tables<"vehicles">[]>([]);
   useEffect(() => {
-    supabase
-      .from("vehicles")
-      .select("*")
-      .eq("status", "available")
-      .order("weekly_rate", { ascending: true })
-      .limit(6)
-      .then(({ data }) => setVehicles(data || []));
+    (async () => {
+      const fetchType = (type: string) =>
+        supabase
+          .from("vehicles")
+          .select("*")
+          .eq("status", "available")
+          .eq("body_type", type)
+          .order("weekly_rate", { ascending: true })
+          .limit(2)
+          .then(({ data }) => data || []);
+      const [sedans, suvs, xl] = await Promise.all([
+        fetchType("sedan"),
+        fetchType("suv"),
+        fetchType("xl"),
+      ]);
+      setVehicles([...sedans, ...suvs, ...xl]);
+    })();
   }, []);
 
   return (

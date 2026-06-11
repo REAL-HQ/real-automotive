@@ -211,6 +211,7 @@ export type Database = {
           monthly_rate: number | null
           mpg: number | null
           photos: string[] | null
+          seats: number | null
           status: string
           trim: string | null
           uber_eligibility: string[] | null
@@ -231,6 +232,7 @@ export type Database = {
           monthly_rate?: number | null
           mpg?: number | null
           photos?: string[] | null
+          seats?: number | null
           status?: string
           trim?: string | null
           uber_eligibility?: string[] | null
@@ -251,6 +253,7 @@ export type Database = {
           monthly_rate?: number | null
           mpg?: number | null
           photos?: string[] | null
+          seats?: number | null
           status?: string
           trim?: string | null
           uber_eligibility?: string[] | null
