@@ -9,11 +9,17 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
 import { Route as FleetRouteImport } from './routes/fleet'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FleetIdRouteImport } from './routes/fleet.$id'
 
+const PricingRoute = PricingRouteImport.update({
+  id: '/pricing',
+  path: '/pricing',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const HowItWorksRoute = HowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/fleet': typeof FleetRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
+  '/pricing': typeof PricingRoute
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/fleet': typeof FleetRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
+  '/pricing': typeof PricingRoute
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRoutesById {
@@ -52,24 +60,33 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/fleet': typeof FleetRouteWithChildren
   '/how-it-works': typeof HowItWorksRoute
+  '/pricing': typeof PricingRoute
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/fleet' | '/how-it-works' | '/fleet/$id'
+  fullPaths: '/' | '/fleet' | '/how-it-works' | '/pricing' | '/fleet/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/fleet' | '/how-it-works' | '/fleet/$id'
-  id: '__root__' | '/' | '/fleet' | '/how-it-works' | '/fleet/$id'
+  to: '/' | '/fleet' | '/how-it-works' | '/pricing' | '/fleet/$id'
+  id: '__root__' | '/' | '/fleet' | '/how-it-works' | '/pricing' | '/fleet/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   FleetRoute: typeof FleetRouteWithChildren
   HowItWorksRoute: typeof HowItWorksRoute
+  PricingRoute: typeof PricingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/pricing': {
+      id: '/pricing'
+      path: '/pricing'
+      fullPath: '/pricing'
+      preLoaderRoute: typeof PricingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/how-it-works': {
       id: '/how-it-works'
       path: '/how-it-works'
@@ -115,6 +132,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   FleetRoute: FleetRouteWithChildren,
   HowItWorksRoute: HowItWorksRoute,
+  PricingRoute: PricingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
