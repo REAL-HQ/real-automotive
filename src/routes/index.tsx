@@ -48,7 +48,7 @@ function Index() {
           <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">
             Rent. Drive. Earn.
           </div>
-          <h1 className="mt-5 text-[40px] md:text-[64px] leading-[1.05] font-semibold max-w-4xl mx-auto">
+          <h1 className="mt-5 text-[40px] md:text-[64px] leading-[1.05] font-semibold mx-auto whitespace-nowrap">
             Start Driving. Start Earning. This Week.
           </h1>
           <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
