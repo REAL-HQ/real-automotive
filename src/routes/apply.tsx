@@ -157,7 +157,7 @@ function Apply() {
             <div>Step {step + 1} of {STEPS.length} — {STEPS[step]}</div>
             <div>{Math.round(((step + 1) / STEPS.length) * 100)}%</div>
           </div>
-          <div className="h-1 bg-soft rounded-lg overflow-hidden">
+          <div className="h-1 bg-soft rounded-full overflow-hidden">
             <div className="h-full bg-real-red transition-all duration-500" style={{ width: `${((step + 1) / STEPS.length) * 100}%` }} />
           </div>
         </div>
