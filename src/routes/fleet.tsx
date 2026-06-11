@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
+import { Shield, Wrench, BadgeCheck, Navigation } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { SiteLayout } from "@/components/site/SiteLayout";
@@ -21,8 +22,11 @@ export const Route = createFileRoute("/fleet")({
 function FleetPage() {
   const [vehicles, setVehicles] = useState<Tables<"vehicles">[]>([]);
   const [make, setMake] = useState("all");
-  const [body, setBody] = useState("all");
-  const [priceMax, setPriceMax] = useState(500);
+  const [categories, setCategories] = useState<Record<string, boolean>>({
+    economy: true,
+    comfort: true,
+    xl: true,
+  });
   const [onlyAvail, setOnlyAvail] = useState(true);
 
   useEffect(() => {
@@ -37,30 +41,36 @@ function FleetPage() {
     () => Array.from(new Set(vehicles.map((v) => v.make))).sort(),
     [vehicles]
   );
-  const bodies = useMemo(
-    () =>
-      Array.from(new Set(vehicles.map((v) => v.body_type).filter(Boolean) as string[])).sort(),
-    [vehicles]
-  );
 
-  const filtered = vehicles.filter(
-    (v) =>
+  const bodyToCategory: Record<string, string> = {
+    sedan: "economy",
+    suv: "comfort",
+    xl: "xl",
+  };
+
+  const filtered = vehicles.filter((v) => {
+    const cat = bodyToCategory[v.body_type ?? ""] ?? "economy";
+    return (
       (make === "all" || v.make === make) &&
-      (body === "all" || v.body_type === body) &&
-      Number(v.weekly_rate) <= priceMax &&
+      categories[cat] &&
       (!onlyAvail || v.status === "available")
-  );
+    );
+  });
+
+  const toggleCat = (k: string) =>
+    setCategories((c) => ({ ...c, [k]: !c[k] }));
 
   return (
     <SiteLayout>
-      <section className="container-real pt-16 md:pt-24 pb-12">
+      <section className="container-real pt-8 md:pt-10 pb-4">
         <FadeUp>
-          <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">The Fleet</div>
-          <h1 className="mt-4 text-4xl md:text-6xl font-semibold">Every Car. Rideshare-Ready.</h1>
-          <p className="mt-4 text-lg text-muted-foreground max-w-2xl">
-            Inspected, insured, GPS-equipped. Pick the one you want — apply, drive,
-            earn.
-          </p>
+          <h1 className="text-2xl md:text-3xl font-semibold">Available Vehicles</h1>
+          <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs md:text-sm text-muted-foreground">
+            <span className="inline-flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-real-red" strokeWidth={2.25} />Insured</span>
+            <span className="inline-flex items-center gap-1.5"><Navigation className="w-3.5 h-3.5 text-real-red" strokeWidth={2.25} />GPS Equipped</span>
+            <span className="inline-flex items-center gap-1.5"><BadgeCheck className="w-3.5 h-3.5 text-real-red" strokeWidth={2.25} />Uber/Lyft Eligible</span>
+            <span className="inline-flex items-center gap-1.5"><Wrench className="w-3.5 h-3.5 text-real-red" strokeWidth={2.25} />Maintenance Included</span>
+          </div>
         </FadeUp>
       </section>
 
@@ -74,16 +84,28 @@ function FleetPage() {
                 {makes.map((m) => <option key={m} value={m}>{m}</option>)}
               </select>
             </div>
-            <div className="flex flex-col">
-              <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Body</label>
-              <select value={body} onChange={(e) => setBody(e.target.value)} className="bg-white border border-border rounded-full px-4 py-2 text-sm capitalize">
-                <option value="all">All</option>
-                {bodies.map((b) => <option key={b} value={b}>{b}</option>)}
-              </select>
-            </div>
-            <div className="flex flex-col flex-1 min-w-[200px]">
-              <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Max ${priceMax}/wk</label>
-              <input type="range" min={300} max={500} step={5} value={priceMax} onChange={(e) => setPriceMax(Number(e.target.value))} className="accent-[#CC0000]" />
+            <div className="flex flex-col flex-1 min-w-[260px]">
+              <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Category</label>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { k: "economy", label: "Economy" },
+                  { k: "comfort", label: "Comfort" },
+                  { k: "xl", label: "XL" },
+                ].map((c) => (
+                  <button
+                    key={c.k}
+                    type="button"
+                    onClick={() => toggleCat(c.k)}
+                    className={`px-4 py-2 rounded-full text-sm border transition ${
+                      categories[c.k]
+                        ? "bg-real-red text-white border-real-red"
+                        : "bg-white text-foreground border-border hover:border-foreground/40"
+                    }`}
+                  >
+                    {c.label}
+                  </button>
+                ))}
+              </div>
             </div>
             <label className="flex items-center gap-2 text-sm">
               <input type="checkbox" checked={onlyAvail} onChange={(e) => setOnlyAvail(e.target.checked)} className="accent-[#CC0000]" />
@@ -93,7 +115,12 @@ function FleetPage() {
         </FadeUp>
       </section>
 
-      <section className="container-real py-12 md:py-16">
+      <section className="container-real py-8 md:py-10">
+        <FadeUp className="mb-6 flex items-end justify-between gap-4">
+          <div className="text-sm md:text-base font-medium">
+            Showing <span className="font-semibold">{filtered.length}</span> Available {filtered.length === 1 ? "Vehicle" : "Vehicles"}
+          </div>
+        </FadeUp>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
           {filtered.map((v, i) => (
             <FadeUp key={v.id} delay={i * 40}>
