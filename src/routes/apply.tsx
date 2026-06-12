@@ -71,6 +71,7 @@ function Apply() {
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [stepErrors, setStepErrors] = useState<Record<string, string>>({});
+  const [termsOpen, setTermsOpen] = useState(false);
   const [f, setF] = useState<Form>(draft?.f ?? {
     full_name: "", email: "", phone: "", dob: "",
     address: "", city: "", state: "", zip: "",
