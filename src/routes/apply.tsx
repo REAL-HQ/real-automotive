@@ -456,9 +456,9 @@ function Apply() {
           )}
           </div>
 
-          {/* RIGHT panel — Terms (step 3) + Pricing summary on all steps */}
+          {/* RIGHT panel — context changes per step */}
           <aside className="space-y-4 min-w-0">
-            {step === 3 && (
+            {step === 3 ? (
               <>
                 <In label="Desired start date" type="date" v={f.start_date} e={stepErrors.start_date} on={(v) => update("start_date", v)} />
                 <div>
@@ -469,12 +469,12 @@ function Apply() {
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Payment method</label>
                   <SoftSelect value={f.payment_method} onChange={(v) => update("payment_method", v)} options={[{ value: "debit", label: "Debit" }, { value: "credit", label: "Credit" }, { value: "cashapp", label: "Cash App" }]} />
                 </div>
+                {pricingSummary}
               </>
-            )}
-            {pricingSummary ?? (
-              <div className="rounded-2xl border border-dashed border-border bg-soft/50 p-5 text-xs text-muted-foreground">
-                Select a vehicle in the Vehicle step to see your pricing summary.
-              </div>
+            ) : step > 3 && pricingSummary ? (
+              pricingSummary
+            ) : (
+              <StepHelper step={step} />
             )}
           </aside>
         </div>
