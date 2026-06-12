@@ -214,7 +214,7 @@ function Apply() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">State</label>
-                  <select value={f.state} onChange={(e) => update("state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
+                  <select value={f.state} onChange={(e) => update("state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
                     <option value="">Select…</option>
                     {US_STATES.map((s) => <option key={s.code} value={s.code}>{s.name}</option>)}
                   </select>
@@ -228,7 +228,7 @@ function Apply() {
               <In label="License number" v={f.license_number} e={stepErrors.license_number} on={(v) => update("license_number", v)} />
               <div>
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">License State</label>
-                <select value={f.license_state} onChange={(e) => update("license_state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
+                <select value={f.license_state} onChange={(e) => update("license_state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
                   <option value="">Select…</option>
                   {US_STATES.map((s) => <option key={s.code} value={s.code}>{s.name}</option>)}
                 </select>
@@ -310,7 +310,7 @@ function Apply() {
                 <In label="Weekly hours" type="number" v={String(f.weekly_hours)} on={(v) => update("weekly_hours", Number(v))} />
                 <div>
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Active account?</label>
-                  <select value={String(f.platform_active)} onChange={(e) => update("platform_active", e.target.value === "true")} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm">
+                  <select value={String(f.platform_active)} onChange={(e) => update("platform_active", e.target.value === "true")} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm">
                     <option value="true">Yes</option><option value="false">No, I'll sign up</option>
                   </select>
                 </div>
@@ -321,7 +321,7 @@ function Apply() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Preferred vehicle</label>
-                <select value={f.vehicle_id} onChange={(e) => update("vehicle_id", e.target.value)} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm">
+                <select value={f.vehicle_id} onChange={(e) => update("vehicle_id", e.target.value)} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm">
                   <option value="">Select…</option>
                   {vehicles.map((v) => <option key={v.id} value={v.id}>{v.year} {v.make} {v.model} — ${Number(v.weekly_rate)}/wk</option>)}
                 </select>
@@ -330,7 +330,7 @@ function Apply() {
               <In label="Desired start date" type="date" v={f.start_date} e={stepErrors.start_date} on={(v) => update("start_date", v)} />
               <div>
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Rental term</label>
-                <select value={f.rental_term} onChange={(e) => update("rental_term", e.target.value)} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm">
+                <select value={f.rental_term} onChange={(e) => update("rental_term", e.target.value)} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm">
                   <option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="long_term">Long-term</option>
                 </select>
                 {f.rental_term === "weekly" && selectedVehicle && weeklyToMonthlySavings > 0 && (
@@ -353,7 +353,7 @@ function Apply() {
               </div>
               <div className="md:col-span-2">
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Payment method</label>
-                <select value={f.payment_method} onChange={(e) => update("payment_method", e.target.value)} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm">
+                <select value={f.payment_method} onChange={(e) => update("payment_method", e.target.value)} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm">
                   <option value="debit">Debit</option><option value="credit">Credit</option><option value="cashapp">Cash App</option>
                 </select>
               </div>
