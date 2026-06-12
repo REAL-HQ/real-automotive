@@ -236,11 +236,7 @@ function Apply() {
       <Nav />
       <main className="flex-1">
       <section className="pt-12 md:pt-20 pb-24 mx-auto px-6 max-w-3xl">
-        <FadeUp>
-          <h1 className="text-3xl md:text-5xl font-semibold">Application</h1>
-        </FadeUp>
-
-        <div className="mt-10">
+        <div className="max-w-md mr-auto">
           <div className="flex items-center justify-between mb-3 text-xs text-muted-foreground">
             <div>Step {step + 1} of {STEPS.length} — {STEPS[step]}</div>
             <div>{Math.round(((step + 1) / STEPS.length) * 100)}%</div>
