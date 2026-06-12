@@ -694,7 +694,15 @@ function Summary({ title, items }: { title: string; items: [string, string][] })
   );
 }
 
-type EditableItem = { label: string; field: string; value: string; type?: string; readOnly?: boolean };
+type EditableItem = {
+  label: string;
+  field: string;
+  value: string;
+  type?: string;
+  readOnly?: boolean;
+  options?: { value: string; label: string }[];
+  multi?: { all: string[]; selected: string[] };
+};
 
 function EditableSummary({
   title,
