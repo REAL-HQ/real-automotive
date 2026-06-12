@@ -561,11 +561,17 @@ const paymentLabel = ({ debit: "Debit", credit: "Credit", cashapp: "Cash App", c
               <EditableSummary
                 title="Platforms"
                 items={[
-                  { label: "Platforms", field: "platforms", value: f.platforms.join(", "), readOnly: true },
+                  {
+                    label: "Platforms",
+                    field: "platforms",
+                    value: f.platforms.join(", "),
+                    multi: { all: Array.from(new Set([...PLATFORMS, ...f.platforms])), selected: f.platforms },
+                  },
                   { label: "Hours/wk", field: "weekly_hours", value: String(f.weekly_hours), type: "number" },
                 ]}
                 onSave={(field, value) => {
                   if (field === "weekly_hours") update("weekly_hours", Number(value) as any);
+                  if (field === "platforms") update("platforms", (value ? value.split(",").filter(Boolean) : []) as any);
                 }}
               />
               <EditableSummary
@@ -577,10 +583,19 @@ const paymentLabel = ({ debit: "Debit", credit: "Credit", cashapp: "Cash App", c
                     value: vehicles.find((v) => v.id === f.vehicle_id)
                       ? `${vehicles.find((v) => v.id === f.vehicle_id)?.year} ${vehicles.find((v) => v.id === f.vehicle_id)?.make} ${vehicles.find((v) => v.id === f.vehicle_id)?.model}`
                       : "—",
-                    readOnly: true,
+                    options: vehicles.map((v) => ({ value: v.id, label: `${v.year} ${v.make} ${v.model}${v.trim ? " " + v.trim : ""}` })),
                   },
                   { label: "Start", field: "start_date", value: f.start_date, type: "date" },
-                  { label: "Term", field: "rental_term", value: f.rental_term, readOnly: true },
+                  {
+                    label: "Term",
+                    field: "rental_term",
+                    value: f.rental_term,
+                    options: [
+                      { value: "weekly", label: "weekly" },
+                      { value: "monthly", label: "monthly" },
+                      { value: "annual", label: "annual" },
+                    ],
+                  },
                 ]}
                 onSave={(field, value) => update(field as keyof Form, value as any)}
               />
