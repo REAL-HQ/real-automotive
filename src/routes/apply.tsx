@@ -365,7 +365,7 @@ function Apply() {
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Preferred vehicle</label>
                   <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{vehicles.length} Available</span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:max-h-[70vh] lg:overflow-y-auto lg:pr-2 -mr-2 p-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:max-h-[70vh] lg:overflow-y-auto lg:pr-2 -mr-2 p-1">
                   {vehicles.map((v) => {
                     const active = v.id === f.vehicle_id;
                     const photo = v.photos?.[0];
