@@ -31,6 +31,25 @@ type Form = {
 
 const STEPS = ["Personal", "License", "Platforms", "Vehicle", "Consents", "Review"];
 const PLATFORMS = ["Uber", "Lyft", "DoorDash", "Instacart", "Amazon Flex", "Uber Eats"];
+const US_STATES: { code: string; name: string }[] = [
+  { code: "AL", name: "Alabama" }, { code: "AK", name: "Alaska" }, { code: "AZ", name: "Arizona" },
+  { code: "AR", name: "Arkansas" }, { code: "CA", name: "California" }, { code: "CO", name: "Colorado" },
+  { code: "CT", name: "Connecticut" }, { code: "DE", name: "Delaware" }, { code: "DC", name: "District Of Columbia" },
+  { code: "FL", name: "Florida" }, { code: "GA", name: "Georgia" }, { code: "HI", name: "Hawaii" },
+  { code: "ID", name: "Idaho" }, { code: "IL", name: "Illinois" }, { code: "IN", name: "Indiana" },
+  { code: "IA", name: "Iowa" }, { code: "KS", name: "Kansas" }, { code: "KY", name: "Kentucky" },
+  { code: "LA", name: "Louisiana" }, { code: "ME", name: "Maine" }, { code: "MD", name: "Maryland" },
+  { code: "MA", name: "Massachusetts" }, { code: "MI", name: "Michigan" }, { code: "MN", name: "Minnesota" },
+  { code: "MS", name: "Mississippi" }, { code: "MO", name: "Missouri" }, { code: "MT", name: "Montana" },
+  { code: "NE", name: "Nebraska" }, { code: "NV", name: "Nevada" }, { code: "NH", name: "New Hampshire" },
+  { code: "NJ", name: "New Jersey" }, { code: "NM", name: "New Mexico" }, { code: "NY", name: "New York" },
+  { code: "NC", name: "North Carolina" }, { code: "ND", name: "North Dakota" }, { code: "OH", name: "Ohio" },
+  { code: "OK", name: "Oklahoma" }, { code: "OR", name: "Oregon" }, { code: "PA", name: "Pennsylvania" },
+  { code: "RI", name: "Rhode Island" }, { code: "SC", name: "South Carolina" }, { code: "SD", name: "South Dakota" },
+  { code: "TN", name: "Tennessee" }, { code: "TX", name: "Texas" }, { code: "UT", name: "Utah" },
+  { code: "VT", name: "Vermont" }, { code: "VA", name: "Virginia" }, { code: "WA", name: "Washington" },
+  { code: "WV", name: "West Virginia" }, { code: "WI", name: "Wisconsin" }, { code: "WY", name: "Wyoming" },
+];
 
 function Apply() {
   const { vehicle: preVehicle } = Route.useSearch();
@@ -175,7 +194,13 @@ function Apply() {
               <In label="Address" v={f.address} on={(v) => update("address", v)} className="md:col-span-2" />
               <In label="City" v={f.city} on={(v) => update("city", v)} />
               <div className="grid grid-cols-2 gap-4">
-                <In label="State" v={f.state} on={(v) => update("state", v)} />
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-muted-foreground">State</label>
+                  <select value={f.state} onChange={(e) => update("state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
+                    <option value="">Select…</option>
+                    {US_STATES.map((s) => <option key={s.code} value={s.code}>{s.name}</option>)}
+                  </select>
+                </div>
                 <In label="ZIP" v={f.zip} on={(v) => update("zip", v)} />
               </div>
             </div>
@@ -183,7 +208,14 @@ function Apply() {
           {step === 1 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <In label="License number" v={f.license_number} e={stepErrors.license_number} on={(v) => update("license_number", v)} />
-              <In label="License state" v={f.license_state} e={stepErrors.license_state} on={(v) => update("license_state", v)} />
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-muted-foreground">License State</label>
+                <select value={f.license_state} onChange={(e) => update("license_state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
+                  <option value="">Select…</option>
+                  {US_STATES.map((s) => <option key={s.code} value={s.code}>{s.name}</option>)}
+                </select>
+                {stepErrors.license_state && <div className="mt-1 text-xs text-real-red">{stepErrors.license_state}</div>}
+              </div>
               <In label="Expiration" type="date" v={f.license_expiration} e={stepErrors.license_expiration} on={(v) => update("license_expiration", v)} />
               <In label="Years licensed" type="number" v={String(f.years_licensed)} on={(v) => update("years_licensed", Number(v))} />
               <div className="md:col-span-2">
