@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { FadeUp } from "@/components/site/FadeUp";
-import { Check, X, FileText, ClipboardCheck, KeyRound, Zap, ArrowRight, Shield, Wrench, LifeBuoy, FileCheck, Headphones, Fuel, Sparkles, Receipt, RotateCcw, CalendarClock, IdCard, CarFront, UserCheck, Wallet, CreditCard } from "lucide-react";
+import { Check, X, FileText, ClipboardCheck, KeyRound, Zap, ArrowRight, Shield, Wrench, LifeBuoy, FileCheck, Headphones, Fuel, Sparkles, Receipt, RotateCcw, CalendarClock, IdCard, CarFront, UserCheck, Wallet, CreditCard, Briefcase } from "lucide-react";
 
 export const Route = createFileRoute("/how-it-works")({
   head: () => ({
