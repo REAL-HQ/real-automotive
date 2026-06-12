@@ -521,7 +521,7 @@ function SoftSelect({ value, onChange, placeholder = "Select…", options }: { v
       <SelectTrigger className="mt-1 w-full bg-soft border-0 rounded-lg pl-5 pr-4 py-3 h-auto text-sm shadow-none focus:ring-2 focus:ring-black/10">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
-      <SelectContent className="bg-white">
+      <SelectContent className="bg-white" position="popper" side="bottom" sideOffset={4} avoidCollisions={false}>
         {options.map((o) => (
           <SelectItem key={o.value} value={o.value} className="bg-white focus:bg-soft">{o.label}</SelectItem>
         ))}
