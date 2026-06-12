@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { z } from "zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Check, Users, DoorOpen, Fuel, Car } from "lucide-react";
 import { toast } from "sonner";
 
@@ -435,13 +436,31 @@ const paymentLabel = ({ debit: "Debit", credit: "Credit", cashapp: "Cash App", c
               {[
                 ["consent_background", "I authorize a background and driving-record (MVR) check."],
                 ["consent_prepay", "I understand weekly rent is paid in advance."],
-                ["consent_terms", "I agree to the terms and conditions."],
               ].map(([k, lbl]) => (
                 <label key={k} className="flex items-start gap-3 rounded-2xl bg-soft p-5 cursor-pointer">
                   <input type="checkbox" checked={(f as any)[k]} onChange={(e) => update(k as keyof Form, e.target.checked as any)} className="mt-1 accent-[#CC0000]" />
                   <span className="text-sm">{lbl}</span>
                 </label>
               ))}
+              <label className="flex items-start gap-3 rounded-2xl bg-soft p-5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={f.consent_terms}
+                  onChange={(e) => update("consent_terms", e.target.checked)}
+                  className="mt-1 accent-[#CC0000]"
+                />
+                <span className="text-sm">
+                  I agree to the{" "}
+                  <button
+                    type="button"
+                    onClick={(e) => { e.preventDefault(); setTermsOpen(true); }}
+                    className="underline underline-offset-2 text-real-red hover:opacity-80"
+                  >
+                    terms and conditions
+                  </button>
+                  .
+                </span>
+              </label>
               {stepErrors.consents && <div className="text-sm text-real-red">{stepErrors.consents}</div>}
             </div>
           )}
