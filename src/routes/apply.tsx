@@ -247,8 +247,9 @@ function Apply() {
     <div className="min-h-screen flex flex-col bg-background">
       <Nav />
       <main className="flex-1">
-      <section className="pt-12 md:pt-20 pb-24 mx-auto px-6 max-w-3xl">
-        <div className={step === 3 ? "lg:relative lg:left-1/2 lg:-translate-x-1/2 lg:[width:min(1600px,calc(100vw-3rem))]" : "max-w-md mr-auto"}>
+      <section className="pt-12 md:pt-20 pb-24 mx-auto px-6 w-full max-w-[1600px]">
+        {/* Uniform progress bar — always full width */}
+        <div className="w-full">
           <div className="flex items-center justify-between mb-3 text-xs text-muted-foreground">
             <div>Step {step + 1} of {STEPS.length} — {STEPS[step]}</div>
             <div>{Math.round(((step + 1) / STEPS.length) * 100)}%</div>
@@ -258,7 +259,9 @@ function Apply() {
           </div>
         </div>
 
-        <div className="mt-10">
+        {/* Two-panel layout for all steps */}
+        <div className="mt-10 grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-8">
+          <div className="min-w-0">
           {step === 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <In label="Full name" v={f.full_name} e={stepErrors.full_name} on={(v) => update("full_name", v)} />
@@ -366,8 +369,8 @@ function Apply() {
             </div>
           )}
           {step === 3 && (
-            <div className="lg:relative lg:left-1/2 lg:-translate-x-1/2 lg:[width:min(1600px,calc(100vw-3rem))] grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-8">
-              {/* LEFT — Inventory */}
+            <div>
+              {/* Inventory */}
               <div className="lg:h-full lg:flex lg:flex-col lg:min-h-0">
                 <div className="flex items-baseline justify-between mb-3">
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Preferred vehicle</label>
@@ -425,20 +428,6 @@ function Apply() {
                 </div>
                 {stepErrors.vehicle_id && <div className="mt-2 text-sm text-real-red">{stepErrors.vehicle_id}</div>}
               </div>
-
-              {/* RIGHT — Terms */}
-              <div className="space-y-4">
-                <In label="Desired start date" type="date" v={f.start_date} e={stepErrors.start_date} on={(v) => update("start_date", v)} />
-                <div>
-                  <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Rental term</label>
-                  <SoftSelect value={f.rental_term} onChange={(v) => update("rental_term", v)} options={[{ value: "weekly", label: "Weekly" }, { value: "monthly", label: "Monthly" }, { value: "annual", label: "Annual" }]} />
-                </div>
-                <div>
-                  <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Payment method</label>
-                  <SoftSelect value={f.payment_method} onChange={(v) => update("payment_method", v)} options={[{ value: "debit", label: "Debit" }, { value: "credit", label: "Credit" }, { value: "cashapp", label: "Cash App" }]} />
-                </div>
-                {pricingSummary}
-              </div>
             </div>
           )}
           {step === 4 && (
@@ -465,9 +454,33 @@ function Apply() {
               {error && <div className="text-real-red">{error}</div>}
             </div>
           )}
+          </div>
+
+          {/* RIGHT panel — Terms (step 3) + Pricing summary on all steps */}
+          <aside className="space-y-4 min-w-0">
+            {step === 3 && (
+              <>
+                <In label="Desired start date" type="date" v={f.start_date} e={stepErrors.start_date} on={(v) => update("start_date", v)} />
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Rental term</label>
+                  <SoftSelect value={f.rental_term} onChange={(v) => update("rental_term", v)} options={[{ value: "weekly", label: "Weekly" }, { value: "monthly", label: "Monthly" }, { value: "annual", label: "Annual" }]} />
+                </div>
+                <div>
+                  <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Payment method</label>
+                  <SoftSelect value={f.payment_method} onChange={(v) => update("payment_method", v)} options={[{ value: "debit", label: "Debit" }, { value: "credit", label: "Credit" }, { value: "cashapp", label: "Cash App" }]} />
+                </div>
+              </>
+            )}
+            {pricingSummary ?? (
+              <div className="rounded-2xl border border-dashed border-border bg-soft/50 p-5 text-xs text-muted-foreground">
+                Select a vehicle in the Vehicle step to see your pricing summary.
+              </div>
+            )}
+          </aside>
         </div>
 
-        <div className="mt-10 flex items-center justify-between">
+        {/* Buttons aligned to the far edges of the full-width section */}
+        <div className="mt-10 flex items-center justify-between w-full">
           <button onClick={back} className="rounded-lg border border-border px-6 py-3 text-sm">Back</button>
           {step < STEPS.length - 1 ? (
             <button onClick={next} className="rounded-lg bg-black text-white px-7 py-3 text-sm hover:bg-real-red transition active:scale-95">Continue</button>
@@ -475,12 +488,6 @@ function Apply() {
             <button onClick={submit} className="rounded-lg bg-real-red text-white px-8 py-3 text-sm hover:opacity-90 transition active:scale-95">Submit Application</button>
           )}
         </div>
-
-        {step !== 3 && pricingSummary && (
-          <FadeUp>
-            <div className="mt-10">{pricingSummary}</div>
-          </FadeUp>
-        )}
       </section>
       </main>
     </div>
