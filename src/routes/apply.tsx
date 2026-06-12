@@ -181,8 +181,7 @@ function Apply() {
       <main className="flex-1">
       <section className={`container-real pt-12 md:pt-20 pb-24 mx-auto ${step === 3 ? "max-w-6xl" : "max-w-3xl"}`}>
         <FadeUp>
-          <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">Apply</div>
-          <h1 className="mt-3 text-3xl md:text-5xl font-semibold">Tell Us About You.</h1>
+          <h1 className="text-3xl md:text-5xl font-semibold">Application</h1>
         </FadeUp>
 
         <div className="mt-10">
