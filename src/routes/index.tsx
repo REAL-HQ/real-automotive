@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Shield, Wrench, Infinity as InfinityIcon, Briefcase, ArrowRight, Check, CalendarDays, FileText, Zap, ClipboardCheck, KeyRound, DollarSign, Users, MapPin, BadgeCheck, LifeBuoy, ScanSearch } from "lucide-react";
+import { Shield, Wrench, Infinity as InfinityIcon, Briefcase, ArrowRight, Check, CalendarDays, FileText, Zap, ClipboardCheck, KeyRound, DollarSign, Users, MapPin, BadgeCheck, LifeBuoy, ScanSearch, Headphones, Car } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
@@ -161,8 +161,10 @@ function Index() {
               { I: Wrench, t: "Maintenance Handled", d: "Routine maintenance is on us. You drive, we keep it running." },
               { I: InfinityIcon, t: "Unlimited Miles", d: "Drive as much as you want. No mileage caps, no overage fees." },
               { I: Briefcase, t: "Built For Gig Work", d: "Uber, Lyft, DoorDash, Instacart, Amazon Flex. Pick your platforms." },
-              { I: CalendarDays, t: "Flexible Weekly Payments", d: "Pay weekly and stay on the road." },
+              { I: CalendarDays, t: "Flexible Weekly & Monthly Payments", d: "Pay weekly or monthly and stay on the road." },
               { I: BadgeCheck, t: "No Long-Term Contracts", d: "Keep your options open with flexible rental terms." },
+              { I: Headphones, t: "24/7 Driver Support", d: "Real humans on call whenever you need help on the road." },
+              { I: Car, t: "Late-Model Vehicles", d: "Clean, reliable cars that riders and delivery customers love." },
             ].map((b, i) => (
               <FadeUp key={b.t} delay={i * 60}>
                 <div className="rounded-2xl bg-white p-7 h-full border border-border">
