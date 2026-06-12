@@ -7,6 +7,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { z } from "zod";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Check, Users, DoorOpen, Fuel, Car } from "lucide-react";
+import { toast } from "sonner";
 
 export const Route = createFileRoute("/apply")({
   validateSearch: (s: Record<string, unknown>) => ({ vehicle: (s.vehicle as string) || "" }),
@@ -118,7 +119,18 @@ function Apply() {
     return Object.keys(errs).length === 0;
   };
 
-  const next = () => { if (validateStep()) setStep((s) => Math.min(s + 1, STEPS.length - 1)); };
+  const next = () => {
+    if (validateStep()) {
+      setStep((s) => Math.min(s + 1, STEPS.length - 1));
+      if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      toast.error("Please fix the highlighted fields before continuing.");
+      if (typeof document !== "undefined") {
+        const firstErr = document.querySelector(".field-error");
+        if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  };
   const back = () => window.history.back();
 
   async function submit() {
@@ -480,7 +492,7 @@ function In({ label, v, on, type = "text", e, className = "" }: { label: string;
     <div className={className}>
       <label className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</label>
       <input type={type} value={v} onChange={(ev) => on(ev.target.value)} className="mt-1 w-full bg-soft rounded-lg px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10" />
-      {e && <div className="mt-1 text-xs text-real-red">{e}</div>}
+      {e && <div className="field-error mt-1 text-xs text-real-red">{e}</div>}
     </div>
   );
 }
