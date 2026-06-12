@@ -96,6 +96,10 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
       </button>
       <div className="mt-4 pt-4 border-t border-border/60 grid grid-cols-2 gap-x-3 gap-y-2 text-[11px] text-foreground/80">
         <span className="inline-flex items-center gap-1.5">
+          <BadgeCheck className="w-3.5 h-3.5 text-real-red" strokeWidth={2} />
+          No Credit Check
+        </span>
+        <span className="inline-flex items-center gap-1.5">
           <Shield className="w-3.5 h-3.5 text-real-red" strokeWidth={2} />
           Insurance Included
         </span>
@@ -106,10 +110,6 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
         <span className="inline-flex items-center gap-1.5">
           <InfinityIcon className="w-3.5 h-3.5 text-real-red" strokeWidth={2} />
           Unlimited Miles
-        </span>
-        <span className="inline-flex items-center gap-1.5">
-          <BadgeCheck className="w-3.5 h-3.5 text-real-red" strokeWidth={2} />
-          Uber/Lyft Eligible
         </span>
       </div>
     </Link>
