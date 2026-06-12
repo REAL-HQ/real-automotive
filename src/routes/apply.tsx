@@ -622,6 +622,77 @@ function Summary({ title, items }: { title: string; items: [string, string][] })
   );
 }
 
+type EditableItem = { label: string; field: string; value: string; type?: string; readOnly?: boolean };
+
+function EditableSummary({
+  title,
+  items,
+  onSave,
+}: {
+  title: string;
+  items: EditableItem[];
+  onSave: (field: string, value: string) => void;
+}) {
+  const [editing, setEditing] = useState<string | null>(null);
+  const [draft, setDraft] = useState("");
+
+  const start = (it: EditableItem) => {
+    if (it.readOnly) return;
+    setDraft(it.value);
+    setEditing(it.field);
+  };
+  const commit = (field: string) => {
+    onSave(field, draft);
+    setEditing(null);
+  };
+
+  return (
+    <div className="rounded-2xl bg-soft p-5">
+      <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-3">{title}</div>
+      <div className="divide-y divide-border/40">
+        {items.map((it) => {
+          const isEditing = editing === it.field;
+          return (
+            <div key={it.field} className="grid grid-cols-[140px_1fr_auto] items-center gap-3 py-2">
+              <div className="text-muted-foreground">{it.label}</div>
+              <div className="min-w-0 text-right">
+                {isEditing ? (
+                  <input
+                    autoFocus
+                    type={it.type ?? "text"}
+                    value={draft}
+                    onChange={(e) => setDraft(e.target.value)}
+                    onBlur={() => commit(it.field)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") commit(it.field);
+                      if (e.key === "Escape") setEditing(null);
+                    }}
+                    className="w-full bg-white rounded-md px-3 py-1.5 text-sm text-right focus:outline-none focus:ring-2 focus:ring-black/10"
+                  />
+                ) : (
+                  <span className="truncate inline-block max-w-full align-middle">{it.value || "—"}</span>
+                )}
+              </div>
+              <div className="w-6 flex justify-end">
+                {!it.readOnly && !isEditing && (
+                  <button
+                    type="button"
+                    onClick={() => start(it)}
+                    className="text-muted-foreground hover:text-foreground transition"
+                    aria-label={`Edit ${it.label}`}
+                  >
+                    <Pencil size={14} />
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function StepHelper({ step }: { step: number }) {
   const content: Record<number, { eyebrow: string; title: string; bullets: string[] }> = {
     0: {
