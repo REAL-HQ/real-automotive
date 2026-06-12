@@ -119,7 +119,18 @@ function Apply() {
     return Object.keys(errs).length === 0;
   };
 
-  const next = () => { if (validateStep()) setStep((s) => Math.min(s + 1, STEPS.length - 1)); };
+  const next = () => {
+    if (validateStep()) {
+      setStep((s) => Math.min(s + 1, STEPS.length - 1));
+      if (typeof window !== "undefined") window.scrollTo({ top: 0, behavior: "smooth" });
+    } else {
+      toast.error("Please fix the highlighted fields before continuing.");
+      if (typeof document !== "undefined") {
+        const firstErr = document.querySelector(".field-error");
+        if (firstErr) firstErr.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
+    }
+  };
   const back = () => window.history.back();
 
   async function submit() {
