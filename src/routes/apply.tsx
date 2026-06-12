@@ -312,10 +312,38 @@ function Apply() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Preferred vehicle</label>
-                <select value={f.vehicle_id} onChange={(e) => update("vehicle_id", e.target.value)} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm">
-                  <option value="">Select…</option>
-                  {vehicles.map((v) => <option key={v.id} value={v.id}>{v.year} {v.make} {v.model} — ${Number(v.weekly_rate)}/wk</option>)}
-                </select>
+                <div className="mt-2 grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {vehicles.map((v) => {
+                    const active = v.id === f.vehicle_id;
+                    const photo = v.photos?.[0];
+                    return (
+                      <button
+                        key={v.id}
+                        type="button"
+                        onClick={() => update("vehicle_id", v.id)}
+                        className={`text-left rounded-xl overflow-hidden border bg-white transition ${active ? "border-real-red ring-2 ring-real-red/20" : "border-border hover:border-foreground/30"}`}
+                      >
+                        <div className="aspect-[4/3] bg-soft overflow-hidden">
+                          {photo ? (
+                            <img src={photo} alt={`${v.year} ${v.make} ${v.model}`} className="w-full h-full object-cover" loading="lazy" />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">No photo</div>
+                          )}
+                        </div>
+                        <div className="p-3">
+                          <div className="text-[11px] uppercase tracking-wider text-muted-foreground">{v.year} {v.make}</div>
+                          <div className="text-sm font-semibold leading-tight">{v.model}</div>
+                          <div className="mt-1 text-sm font-semibold text-real-red">${Number(v.weekly_rate)}<span className="text-[11px] font-normal text-muted-foreground">/wk</span></div>
+                          {(v.body_type || v.seats) && (
+                            <div className="mt-1 text-[11px] text-muted-foreground">
+                              {[v.body_type, v.seats ? `${v.seats} seats` : null].filter(Boolean).join(" · ")}
+                            </div>
+                          )}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
                 {stepErrors.vehicle_id && <div className="mt-1 text-sm text-real-red">{stepErrors.vehicle_id}</div>}
               </div>
               <In label="Desired start date" type="date" v={f.start_date} e={stepErrors.start_date} on={(v) => update("start_date", v)} />
