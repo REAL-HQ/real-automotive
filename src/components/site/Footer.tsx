@@ -115,7 +115,7 @@ export function Footer() {
       </div>
       <div className="border-t border-border">
         <div className="container-real py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
-          <div>© {new Date().getFullYear()} REAL AUTOMOTIVE. All rights reserved.</div>
+          <div>© 2026 REAL AUTOMOTIVE. All Rights Reserved.</div>
           <div className="flex gap-5">
             <Link to="/contact" className="hover:text-foreground">Contact</Link>
             <Link to="/faq" className="hover:text-foreground">FAQ</Link>
