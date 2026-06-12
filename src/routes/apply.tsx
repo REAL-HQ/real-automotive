@@ -356,12 +356,12 @@ function Apply() {
           {step === 3 && (
             <div className="lg:relative lg:left-1/2 lg:-translate-x-1/2 lg:[width:min(1600px,calc(100vw-3rem))] grid grid-cols-1 lg:grid-cols-[1.5fr_1fr] gap-8">
               {/* LEFT — Inventory */}
-              <div>
+              <div className="lg:h-full lg:flex lg:flex-col lg:min-h-0">
                 <div className="flex items-baseline justify-between mb-3">
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Preferred vehicle</label>
                   <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{vehicles.length} Available</span>
                 </div>
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:max-h-[70vh] lg:overflow-y-auto lg:pr-2 -mr-2 p-1">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 lg:flex-1 lg:min-h-0 lg:overflow-y-auto lg:pr-2 -mr-2 p-1">
                   {vehicles.map((v) => {
                     const active = v.id === f.vehicle_id;
                     const photo = v.photos?.[0];
@@ -415,7 +415,7 @@ function Apply() {
               </div>
 
               {/* RIGHT — Terms */}
-              <div className="lg:sticky lg:top-6 lg:self-start space-y-4">
+              <div className="space-y-4">
                 <In label="Desired start date" type="date" v={f.start_date} e={stepErrors.start_date} on={(v) => update("start_date", v)} />
                 <div>
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Rental term</label>
