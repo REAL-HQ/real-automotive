@@ -173,6 +173,16 @@ const paymentLabel = ({ debit: "Debit", credit: "Credit", cashapp: "Cash App", c
     <div className="rounded-2xl border border-border bg-soft p-5">
       <div className="text-[10px] uppercase tracking-wider text-muted-foreground mb-3">Pricing Summary</div>
 
+      {selectedVehicle.photos?.[0] && (
+        <div className="mb-4 rounded-xl overflow-hidden bg-white aspect-[16/9]">
+          <img
+            src={selectedVehicle.photos[0]}
+            alt={`${selectedVehicle.year} ${selectedVehicle.make} ${selectedVehicle.model}`}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
+
       <div className="grid grid-cols-3 gap-2 mb-4">
         {tierOptions.map((t) => {
           const active = t.key === f.rental_term;
