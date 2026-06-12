@@ -235,7 +235,7 @@ function Apply() {
     <div className="min-h-screen flex flex-col bg-background">
       <Nav />
       <main className="flex-1">
-      <section className={`container-real pt-12 md:pt-20 pb-24 mx-auto ${step === 3 ? "max-w-6xl" : "max-w-3xl"}`}>
+      <section className={`pt-12 md:pt-20 pb-24 mx-auto px-6 ${step === 3 ? "max-w-[1600px]" : "max-w-3xl"}`}>
         <FadeUp>
           <h1 className="text-3xl md:text-5xl font-semibold">Application</h1>
         </FadeUp>
