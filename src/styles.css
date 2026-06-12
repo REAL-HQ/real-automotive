@@ -162,6 +162,16 @@
   .border-real-red { border-color: #CC0000; }
   .bg-soft { background-color: #F5F5F7; }
 
+  .select-soft {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'><path d='M1 1L6 6L11 1' stroke='%23111' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+  }
+
   .container-real {
     max-width: 1200px;
     margin-inline: auto;
