@@ -521,6 +521,26 @@ const paymentLabel = ({ debit: "Debit", credit: "Credit", cashapp: "Cash App", c
         </div>
       </section>
       </main>
+      <Dialog open={termsOpen} onOpenChange={setTermsOpen}>
+        <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto bg-white">
+          <DialogHeader>
+            <DialogTitle>Terms and Conditions</DialogTitle>
+            <DialogDescription>Please read carefully before agreeing.</DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4 text-sm text-foreground/80 leading-relaxed">
+            <p><strong>1. Rental Agreement.</strong> By renting a vehicle from REAL AUTOMOTIVE, you agree to operate the vehicle in accordance with all applicable laws and the terms outlined in your signed rental agreement.</p>
+            <p><strong>2. Payment.</strong> Weekly rent is paid in advance. A refundable security deposit is collected at pickup and returned upon vehicle return, less any outstanding tolls, tickets, damages, unpaid balances, cleaning fees, or other charges.</p>
+            <p><strong>3. Insurance.</strong> Driver must maintain rideshare-endorsed insurance coverage at all times during the rental period.</p>
+            <p><strong>4. Vehicle Use.</strong> Vehicles may only be used for the purposes disclosed in this application, including rideshare and delivery driving. Subleasing is strictly prohibited.</p>
+            <p><strong>5. Maintenance.</strong> Routine maintenance is included. Driver is responsible for reporting any mechanical issues immediately.</p>
+            <p><strong>6. Tolls & Tickets.</strong> Driver is responsible for all tolls, parking citations, and moving violations incurred during the rental.</p>
+            <p><strong>7. Termination.</strong> Either party may terminate the rental with written notice. Vehicle must be returned in the same condition as received, less normal wear and tear.</p>
+            <p><strong>8. Background Check.</strong> By agreeing, you consent to a background check and motor vehicle record (MVR) review.</p>
+            <p><strong>9. Privacy.</strong> Your information is used solely to process your application and manage your rental. GPS tracking may be active on rental vehicles for security and recovery purposes.</p>
+            <p><strong>10. Acceptance.</strong> Checking the box indicates you have read, understood, and agreed to these terms.</p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
