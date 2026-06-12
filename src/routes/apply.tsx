@@ -5,6 +5,7 @@ import { FadeUp } from "@/components/site/FadeUp";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 import { z } from "zod";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/apply")({
   validateSearch: (s: Record<string, unknown>) => ({ vehicle: (s.vehicle as string) || "" }),
@@ -205,10 +206,7 @@ function Apply() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">State</label>
-                  <select value={f.state} onChange={(e) => update("state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
-                    <option value="">Select…</option>
-                    {US_STATES.map((s) => <option key={s.code} value={s.code}>{s.name}</option>)}
-                  </select>
+                  <SoftSelect value={f.state} onChange={(v) => update("state", v)} options={US_STATES.map((s) => ({ value: s.code, label: s.name }))} />
                 </div>
                 <In label="ZIP" v={f.zip} on={(v) => update("zip", v)} />
               </div>
@@ -219,10 +217,7 @@ function Apply() {
               <In label="License number" v={f.license_number} e={stepErrors.license_number} on={(v) => update("license_number", v)} />
               <div>
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">License State</label>
-                <select value={f.license_state} onChange={(e) => update("license_state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
-                  <option value="">Select…</option>
-                  {US_STATES.map((s) => <option key={s.code} value={s.code}>{s.name}</option>)}
-                </select>
+                <SoftSelect value={f.license_state} onChange={(v) => update("license_state", v)} options={US_STATES.map((s) => ({ value: s.code, label: s.name }))} />
                 {stepErrors.license_state && <div className="mt-1 text-xs text-real-red">{stepErrors.license_state}</div>}
               </div>
               <In label="Expiration" type="date" v={f.license_expiration} e={stepErrors.license_expiration} on={(v) => update("license_expiration", v)} />
@@ -301,9 +296,7 @@ function Apply() {
                 <In label="Weekly hours" type="number" v={String(f.weekly_hours)} on={(v) => update("weekly_hours", Number(v))} />
                 <div>
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Active account?</label>
-                  <select value={String(f.platform_active)} onChange={(e) => update("platform_active", e.target.value === "true")} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm">
-                    <option value="true">Yes</option><option value="false">No, I'll sign up</option>
-                  </select>
+                  <SoftSelect value={String(f.platform_active)} onChange={(v) => update("platform_active", v === "true")} options={[{ value: "true", label: "Yes" }, { value: "false", label: "No, I'll sign up" }]} />
                 </div>
               </div>
             </div>
@@ -349,9 +342,7 @@ function Apply() {
               <In label="Desired start date" type="date" v={f.start_date} e={stepErrors.start_date} on={(v) => update("start_date", v)} />
               <div>
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Rental term</label>
-                <select value={f.rental_term} onChange={(e) => update("rental_term", e.target.value)} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm">
-                  <option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="annual">Annual</option>
-                </select>
+                <SoftSelect value={f.rental_term} onChange={(v) => update("rental_term", v)} options={[{ value: "weekly", label: "Weekly" }, { value: "monthly", label: "Monthly" }, { value: "annual", label: "Annual" }]} />
                 {f.rental_term === "weekly" && selectedVehicle && weeklyToMonthlySavings > 0 && (
                   <div className="mt-3 rounded-xl bg-real-red/5 border border-real-red/20 p-3 text-sm">
                     <div className="flex items-center justify-between gap-3">
@@ -372,9 +363,7 @@ function Apply() {
               </div>
               <div className="md:col-span-2">
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Payment method</label>
-                <select value={f.payment_method} onChange={(e) => update("payment_method", e.target.value)} className="mt-1 w-full bg-soft rounded-lg select-soft pl-5 py-3 text-sm">
-                  <option value="debit">Debit</option><option value="credit">Credit</option><option value="cashapp">Cash App</option>
-                </select>
+                <SoftSelect value={f.payment_method} onChange={(v) => update("payment_method", v)} options={[{ value: "debit", label: "Debit" }, { value: "credit", label: "Credit" }, { value: "cashapp", label: "Cash App" }]} />
               </div>
             </div>
           )}
@@ -483,6 +472,21 @@ function In({ label, v, on, type = "text", e, className = "" }: { label: string;
       <input type={type} value={v} onChange={(ev) => on(ev.target.value)} className="mt-1 w-full bg-soft rounded-lg px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10" />
       {e && <div className="mt-1 text-xs text-real-red">{e}</div>}
     </div>
+  );
+}
+
+function SoftSelect({ value, onChange, placeholder = "Select…", options }: { value: string; onChange: (v: string) => void; placeholder?: string; options: { value: string; label: string }[] }) {
+  return (
+    <Select value={value || undefined} onValueChange={onChange}>
+      <SelectTrigger className="mt-1 w-full bg-soft border-0 rounded-lg pl-5 pr-4 py-3 h-auto text-sm shadow-none focus:ring-2 focus:ring-black/10">
+        <SelectValue placeholder={placeholder} />
+      </SelectTrigger>
+      <SelectContent className="bg-white">
+        {options.map((o) => (
+          <SelectItem key={o.value} value={o.value} className="bg-white focus:bg-soft">{o.label}</SelectItem>
+        ))}
+      </SelectContent>
+    </Select>
   );
 }
 
