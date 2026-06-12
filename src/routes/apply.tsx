@@ -214,7 +214,7 @@ function Apply() {
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">State</label>
-                  <select value={f.state} onChange={(e) => update("state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
+                  <select value={f.state} onChange={(e) => update("state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
                     <option value="">Select…</option>
                     {US_STATES.map((s) => <option key={s.code} value={s.code}>{s.name}</option>)}
                   </select>
@@ -228,7 +228,7 @@ function Apply() {
               <In label="License number" v={f.license_number} e={stepErrors.license_number} on={(v) => update("license_number", v)} />
               <div>
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">License State</label>
-                <select value={f.license_state} onChange={(e) => update("license_state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg px-5 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
+                <select value={f.license_state} onChange={(e) => update("license_state", e.target.value)} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/10">
                   <option value="">Select…</option>
                   {US_STATES.map((s) => <option key={s.code} value={s.code}>{s.name}</option>)}
                 </select>
@@ -237,18 +237,28 @@ function Apply() {
               <In label="Expiration" type="date" v={f.license_expiration} e={stepErrors.license_expiration} on={(v) => update("license_expiration", v)} />
               <In label="Years licensed" type="number" v={String(f.years_licensed)} on={(v) => update("years_licensed", Number(v))} />
               <div className="md:col-span-2">
-                <label className="text-[10px] uppercase tracking-wider text-muted-foreground">License photo (front)</label>
-                <input
-                  type="file" accept="image/*"
-                  onChange={async (e) => {
-                    const file = e.target.files?.[0]; if (!file) return;
-                    const path = `${Date.now()}-${file.name}`;
-                    const { error } = await supabase.storage.from("license-uploads").upload(path, file);
-                    if (!error) update("license_photo_url", path);
-                  }}
-                  className="mt-2 block w-full text-sm"
-                />
-                {f.license_photo_url && <div className="mt-2 text-xs text-muted-foreground">Uploaded.</div>}
+                <label className="text-[10px] uppercase tracking-wider text-muted-foreground">License Photo (Front)</label>
+                <label className="mt-2 flex items-center justify-between gap-4 rounded-lg border-2 border-dashed border-border bg-soft hover:bg-soft/70 hover:border-real-red/40 transition cursor-pointer px-5 py-4">
+                  <div className="flex items-center gap-3">
+                    <span className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-real-red/10 text-real-red">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    </span>
+                    <div>
+                      <div className="text-sm font-medium">{f.license_photo_url ? "Photo Uploaded" : "Upload License Photo"}</div>
+                      <div className="text-xs text-muted-foreground">{f.license_photo_url ? "Tap to replace" : "PNG or JPG, front side only"}</div>
+                    </div>
+                  </div>
+                  <span className="shrink-0 rounded-lg bg-black text-white px-4 py-2 text-xs font-semibold">Choose File</span>
+                  <input
+                    type="file" accept="image/*" className="sr-only"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0]; if (!file) return;
+                      const path = `${Date.now()}-${file.name}`;
+                      const { error } = await supabase.storage.from("license-uploads").upload(path, file);
+                      if (!error) update("license_photo_url", path);
+                    }}
+                  />
+                </label>
               </div>
             </div>
           )}
@@ -271,7 +281,7 @@ function Apply() {
                 <In label="Weekly hours" type="number" v={String(f.weekly_hours)} on={(v) => update("weekly_hours", Number(v))} />
                 <div>
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Active account?</label>
-                  <select value={String(f.platform_active)} onChange={(e) => update("platform_active", e.target.value === "true")} className="mt-1 w-full bg-soft rounded-lg px-5 py-3 text-sm">
+                  <select value={String(f.platform_active)} onChange={(e) => update("platform_active", e.target.value === "true")} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm">
                     <option value="true">Yes</option><option value="false">No, I'll sign up</option>
                   </select>
                 </div>
@@ -282,7 +292,7 @@ function Apply() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="md:col-span-2">
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Preferred vehicle</label>
-                <select value={f.vehicle_id} onChange={(e) => update("vehicle_id", e.target.value)} className="mt-1 w-full bg-soft rounded-lg px-5 py-3 text-sm">
+                <select value={f.vehicle_id} onChange={(e) => update("vehicle_id", e.target.value)} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm">
                   <option value="">Select…</option>
                   {vehicles.map((v) => <option key={v.id} value={v.id}>{v.year} {v.make} {v.model} — ${Number(v.weekly_rate)}/wk</option>)}
                 </select>
@@ -291,7 +301,7 @@ function Apply() {
               <In label="Desired start date" type="date" v={f.start_date} e={stepErrors.start_date} on={(v) => update("start_date", v)} />
               <div>
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Rental term</label>
-                <select value={f.rental_term} onChange={(e) => update("rental_term", e.target.value)} className="mt-1 w-full bg-soft rounded-lg px-5 py-3 text-sm">
+                <select value={f.rental_term} onChange={(e) => update("rental_term", e.target.value)} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm">
                   <option value="weekly">Weekly</option><option value="monthly">Monthly</option><option value="long_term">Long-term</option>
                 </select>
                 {f.rental_term === "weekly" && selectedVehicle && weeklyToMonthlySavings > 0 && (
@@ -314,7 +324,7 @@ function Apply() {
               </div>
               <div className="md:col-span-2">
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Payment method</label>
-                <select value={f.payment_method} onChange={(e) => update("payment_method", e.target.value)} className="mt-1 w-full bg-soft rounded-lg px-5 py-3 text-sm">
+                <select value={f.payment_method} onChange={(e) => update("payment_method", e.target.value)} className="mt-1 w-full bg-soft rounded-lg pl-5 pr-10 py-3 text-sm">
                   <option value="debit">Debit</option><option value="credit">Credit</option><option value="cashapp">Cash App</option>
                 </select>
               </div>
