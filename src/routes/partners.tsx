@@ -8,10 +8,10 @@ import { Banknote, ShieldCheck, MapPin, Wrench, KeySquare, Cog, Satellite, FileT
 export const Route = createFileRoute("/partners")({
   head: () => ({
     meta: [
-      { title: "Fleet Owner Program — REAL AUTOMOTIVE" },
+      { title: "Partner Program — REAL AUTOMOTIVE" },
       { name: "description", content: "You own the car, we run everything. Place your idle vehicle in the Real Automotive fleet and earn monthly payouts. Fully managed. You keep the title." },
       { property: "og:title", content: "You Own The Car. We Run Everything." },
-      { property: "og:description", content: "Real Automotive's Fleet Owner Program — we screen drivers, GPS-track every car, and handle maintenance and recovery. You keep the title." },
+      { property: "og:description", content: "Real Automotive's Partner Program — we screen drivers, GPS-track every car, and handle maintenance and recovery. You keep the title." },
     ],
   }),
   component: Partners,
