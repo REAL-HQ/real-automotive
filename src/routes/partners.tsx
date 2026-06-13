@@ -359,6 +359,7 @@ function Field({ label, value, onChange, type = "text", error }: { label: string
 function Select({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: string[] }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
+  const formatOption = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1).toLowerCase() : s);
 
   useEffect(() => {
     if (!open) return;
@@ -387,7 +388,7 @@ function Select({ label, value, onChange, options }: { label: string; value: str
           aria-haspopup="listbox"
           aria-expanded={open}
         >
-          {value || "Select…"}
+          {value ? formatOption(value) : "Select…"}
         </button>
         <svg className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 8l4 4 4-4" strokeLinecap="round" strokeLinejoin="round"/></svg>
         {open && (
@@ -416,7 +417,7 @@ function Select({ label, value, onChange, options }: { label: string; value: str
                 role="option"
                 aria-selected={value === o}
               >
-                {o}
+                {formatOption(o)}
               </button>
             ))}
           </div>
