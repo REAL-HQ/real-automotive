@@ -210,3 +210,20 @@ function Admin() {
     </SiteLayout>
   );
 }
+
+function SignedPhoto({ path, index }: { path: string; index: number }) {
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => {
+    let active = true;
+    supabase.storage.from("owner-vehicle-photos").createSignedUrl(path, 60 * 60).then(({ data }) => {
+      if (active && data?.signedUrl) setUrl(data.signedUrl);
+    });
+    return () => { active = false; };
+  }, [path]);
+  if (!url) return <div className="aspect-square rounded-lg bg-white border border-border" />;
+  return (
+    <a href={url} target="_blank" rel="noreferrer" className="block aspect-square rounded-lg overflow-hidden bg-white border border-border">
+      <img src={url} alt={`Vehicle ${index + 1}`} className="w-full h-full object-cover" />
+    </a>
+  );
+}
