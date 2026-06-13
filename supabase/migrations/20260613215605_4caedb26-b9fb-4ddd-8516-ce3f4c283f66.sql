@@ -1,0 +1,1 @@
+CREATE POLICY "Public can read vehicle photos" ON storage.objects FOR SELECT USING (bucket_id = 'vehicle-photos');

@@ -5,6 +5,7 @@ import type { Tables } from "@/integrations/supabase/types";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { FadeUp } from "@/components/site/FadeUp";
 import { Check, Gauge, Fuel, Calendar, Wrench } from "lucide-react";
+import { resolvePhotoUrl } from "@/lib/photoUrl";
 
 export const Route = createFileRoute("/fleet/$id")({
   head: () => ({
@@ -45,7 +46,7 @@ function VehicleDetail() {
           <FadeUp>
             <div className="rounded-2xl bg-soft overflow-hidden aspect-[4/3]">
               {v.photos?.[0] && (
-                <img src={v.photos[0]} alt={`${v.make} ${v.model}`} className="w-full h-full object-cover" />
+                <img src={resolvePhotoUrl(v.photos[0]) ?? ""} alt={`${v.make} ${v.model}`} className="w-full h-full object-cover" />
               )}
             </div>
           </FadeUp>
