@@ -123,10 +123,16 @@ function SignIn() {
               {loading ? "…" : mode === "signin" ? "Sign In" : "Create Account"}
             </button>
           </form>
-          <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
-            className="mt-4 text-xs text-muted-foreground hover:text-foreground">
-            {mode === "signin" ? "Need An Account? Create One" : "Already Have An Account? Sign In"}
-          </button>
+          <p className="mt-4 text-xs text-muted-foreground">
+            {mode === "signin" ? "Need An Account? " : "Already Have An Account? "}
+            <button
+              type="button"
+              onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+              className="text-real-red hover:underline font-medium"
+            >
+              {mode === "signin" ? "Create Account" : "Sign In"}
+            </button>
+          </p>
         </div>
       </div>
     </div>
