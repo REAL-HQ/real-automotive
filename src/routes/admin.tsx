@@ -8,6 +8,7 @@ import { LeadsPanel } from "@/components/admin/LeadsPanel";
 import { FleetOwnersPanel } from "@/components/admin/FleetOwnersPanel";
 import { Logo } from "@/components/site/Logo";
 import { toast } from "sonner";
+import adminHero from "@/assets/admin-hero.jpg";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Admin — REAL AUTOMOTIVE" }, { name: "robots", content: "noindex" }] }),
@@ -97,27 +98,12 @@ function SignIn() {
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Left panel — brand */}
-      <div className="relative hidden lg:flex flex-col justify-between p-12 bg-black text-white overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-real-red/30 via-black to-black pointer-events-none" />
-        <div className="relative z-10">
+      {/* Left panel — image */}
+      <div className="relative hidden lg:block overflow-hidden bg-black">
+        <img src={adminHero} alt="" className="absolute inset-0 w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/40 pointer-events-none" />
+        <div className="relative z-10 p-12">
           <Logo offset={false} />
-        </div>
-        <div className="relative z-10 max-w-md">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium mb-6">
-            <span className="w-1.5 h-1.5 rounded-full bg-real-red" /> Admin Console
-          </div>
-          <h2 className="text-4xl font-semibold leading-tight">
-            Drive the fleet.<br />Move the business.
-          </h2>
-          <p className="mt-4 text-sm text-white/70 max-w-sm">
-            Manage applications, vehicles, partners, and leads — all in one place.
-          </p>
-        </div>
-        <div className="relative z-10 grid grid-cols-3 gap-6 max-w-md">
-          <Stat n="100%" l="Insured Fleet" />
-          <Stat n="24/7" l="Driver Ready" />
-          <Stat n="Same Day" l="Approvals" />
         </div>
       </div>
 
@@ -125,8 +111,8 @@ function SignIn() {
       <div className="flex items-center justify-center px-6 py-12 bg-background">
         <div className="w-full max-w-sm">
           <div className="lg:hidden mb-8 flex justify-center"><Logo offset={false} /></div>
-          <h1 className="text-3xl font-semibold">{mode === "signin" ? "Welcome back" : "Create account"}</h1>
-          <p className="mt-2 text-sm text-muted-foreground">Restricted to authorized team members.</p>
+          <h1 className="text-3xl font-semibold">{mode === "signin" ? "Welcome Back" : "Create Account"}</h1>
+          <p className="mt-2 text-sm text-muted-foreground">Restricted To Authorized Team Members.</p>
           <form onSubmit={submit} className="mt-8 space-y-3">
             <input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required placeholder="Email"
               className="w-full bg-soft rounded-lg px-5 py-3 text-sm" />
@@ -139,19 +125,10 @@ function SignIn() {
           </form>
           <button onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
             className="mt-4 text-xs text-muted-foreground hover:text-foreground">
-            {mode === "signin" ? "Need an account? Create one" : "Already have an account? Sign in"}
+            {mode === "signin" ? "Need An Account? Create One" : "Already Have An Account? Sign In"}
           </button>
         </div>
       </div>
-    </div>
-  );
-}
-
-function Stat({ n, l }: { n: string; l: string }) {
-  return (
-    <div>
-      <div className="text-xl font-semibold">{n}</div>
-      <div className="text-xs text-white/60 mt-1">{l}</div>
     </div>
   );
 }
