@@ -6,6 +6,7 @@ import { ApplicationsPanel } from "@/components/admin/ApplicationsPanel";
 import { VehiclesPanel } from "@/components/admin/VehiclesPanel";
 import { LeadsPanel } from "@/components/admin/LeadsPanel";
 import { FleetOwnersPanel } from "@/components/admin/FleetOwnersPanel";
+import { Logo } from "@/components/site/Logo";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/admin")({
