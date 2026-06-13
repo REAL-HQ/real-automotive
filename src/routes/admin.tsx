@@ -57,7 +57,7 @@ function Admin() {
             <h1 className="text-3xl font-semibold">Admin</h1>
             <p className="text-xs text-muted-foreground mt-1">Signed in as {session.user.email}</p>
           </div>
-          <button onClick={signOut} className="text-sm text-muted-foreground hover:text-foreground">Sign out</button>
+          <button onClick={signOut} className="text-sm text-muted-foreground hover:text-foreground">Sign Out</button>
         </div>
         <div className="flex gap-1 mb-8 flex-wrap border-b border-border">
           {TABS.map((t) => (
@@ -166,7 +166,7 @@ function NoAccess({ userId, onSignOut }: { userId: string; onSignOut: () => void
         <p className="mt-3 text-muted-foreground text-sm">Ask an existing admin to grant access by running:<br/>
           <code className="text-xs">INSERT INTO user_roles (user_id, role) VALUES ('{userId}', 'admin');</code>
         </p>
-        <button onClick={onSignOut} className="mt-6 rounded-lg border border-border px-6 py-2 text-sm">Sign out</button>
+        <button onClick={onSignOut} className="mt-6 rounded-lg border border-border px-6 py-2 text-sm">Sign Out</button>
       </div>
     </AdminShell>
   );
