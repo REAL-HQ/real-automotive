@@ -34,6 +34,12 @@ export function Nav() {
         <Logo />
         <div className="flex items-center gap-3">
           <Link
+            to="/admin"
+            className="hidden sm:inline-flex items-center text-[13px] font-medium text-muted-foreground hover:text-foreground transition"
+          >
+            Log in
+          </Link>
+          <Link
             to="/apply"
             className="inline-flex items-center rounded-lg bg-real-red px-4 py-2 text-[13px] font-medium text-white hover:bg-red-700 transition active:scale-95"
           >
