@@ -17,14 +17,18 @@ export const Route = createFileRoute("/investors")({
   component: Investors,
 });
 
+const VEHICLE_TYPES = ["Sedan", "SUV", "Minivan", "Hybrid", "EV"];
+
 function Investors() {
-  const [form, setForm] = useState({ name: "", email: "", phone: "", capital_range: "", vehicles_interested: 1, message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", capital_range: "", vehicles_interested: 1, vehicle_types: [] as string[], message: "" });
   const [sent, setSent] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
-    const { error } = await supabase.from("investor_leads").insert(form);
+    const { vehicle_types, ...rest } = form;
+    const payload = { ...rest, message: [vehicle_types.length ? `Vehicle types: ${vehicle_types.join(", ")}` : "", rest.message].filter(Boolean).join("\n\n") };
+    const { error } = await supabase.from("investor_leads").insert(payload);
     if (error) setErr(error.message); else setSent(true);
   }
 
@@ -83,15 +87,34 @@ function Investors() {
               <I label="Phone" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} />
               <div>
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Capital range</label>
-                <select value={form.capital_range} onChange={(e) => setForm({ ...form, capital_range: e.target.value })} className="mt-1 w-full bg-soft rounded-lg px-5 py-3 text-sm">
+                <select value={form.capital_range} onChange={(e) => setForm({ ...form, capital_range: e.target.value })} className="mt-1 w-full bg-white border border-border rounded-lg px-5 py-3 text-sm">
                   <option value="">Select…</option>
-                  <option>$10k – $50k</option>
+                  <option>$5k – $25k</option>
+                  <option>$25k – $50k</option>
                   <option>$50k – $150k</option>
                   <option>$150k – $500k</option>
                   <option>$500k+</option>
                 </select>
               </div>
               <I label="Vehicles interested" type="number" value={String(form.vehicles_interested)} onChange={(v) => setForm({ ...form, vehicles_interested: Number(v) })} />
+              <div className="md:col-span-2">
+                <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Vehicle types <span className="normal-case tracking-normal text-muted-foreground/70">(optional)</span></label>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {VEHICLE_TYPES.map((t) => {
+                    const active = form.vehicle_types.includes(t);
+                    return (
+                      <button
+                        type="button"
+                        key={t}
+                        onClick={() => setForm({ ...form, vehicle_types: active ? form.vehicle_types.filter((x) => x !== t) : [...form.vehicle_types, t] })}
+                        className={`rounded-full px-4 py-1.5 text-xs border transition ${active ? "bg-real-red text-white border-real-red" : "bg-white text-foreground border-border hover:border-foreground/40"}`}
+                      >
+                        {t}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
               <div className="md:col-span-2">
                 <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Message</label>
                 <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={4} className="mt-1 w-full bg-soft rounded-2xl px-4 py-3 text-sm" />
