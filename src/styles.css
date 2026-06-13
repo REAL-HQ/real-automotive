@@ -178,6 +178,9 @@
   }
   .select-soft option { background-color: #ffffff; color: #111111; }
 
+  select { color-scheme: light; }
+  select option { background-color: #ffffff; color: #111111; }
+
   .container-real {
     max-width: 1200px;
     margin-inline: auto;
