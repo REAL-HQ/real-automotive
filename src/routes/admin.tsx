@@ -133,15 +133,6 @@ function SignIn() {
   );
 }
 
-function Stat({ n, l }: { n: string; l: string }) {
-  return (
-    <div>
-      <div className="text-xl font-semibold">{n}</div>
-      <div className="text-xs text-white/60 mt-1">{l}</div>
-    </div>
-  );
-}
-
 function NoAccess({ userId, onSignOut }: { userId: string; onSignOut: () => void }) {
   return (
     <SiteLayout>
