@@ -1,11 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import type { Tables } from "@/integrations/supabase/types";
 import { DoorOpen, Car, BadgeCheck, Users, Shield, Wrench, Infinity as InfinityIcon, ArrowRight } from "lucide-react";
+import { resolvePhotoUrl } from "@/lib/photoUrl";
 
 type Vehicle = Tables<"vehicles">;
 
 export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
-  const img = vehicle.photos?.[0];
+  const img = resolvePhotoUrl(vehicle.photos?.[0]);
   const uber = vehicle.uber_eligibility ?? [];
   const status = vehicle.status ?? "available";
   const statusMeta =
