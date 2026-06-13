@@ -8,10 +8,10 @@ import { Banknote, ShieldCheck, MapPin, Wrench, KeySquare, Cog, Satellite, FileT
 export const Route = createFileRoute("/partners")({
   head: () => ({
     meta: [
-      { title: "Fleet Owner Program — REAL AUTOMOTIVE" },
+      { title: "Partner Program — REAL AUTOMOTIVE" },
       { name: "description", content: "You own the car, we run everything. Place your idle vehicle in the Real Automotive fleet and earn monthly payouts. Fully managed. You keep the title." },
       { property: "og:title", content: "You Own The Car. We Run Everything." },
-      { property: "og:description", content: "Real Automotive's Fleet Owner Program — we screen drivers, GPS-track every car, and handle maintenance and recovery. You keep the title." },
+      { property: "og:description", content: "Real Automotive's Partner Program — we screen drivers, GPS-track every car, and handle maintenance and recovery. You keep the title." },
     ],
   }),
   component: Partners,
@@ -157,7 +157,7 @@ function Partners() {
       {/* Hero */}
       <section className="container-real pt-20 md:pt-28 pb-12 text-center">
         <FadeUp>
-          <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">Fleet Owner Program</div>
+          <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">Partner Program</div>
           <h1 className="mt-4 text-4xl md:text-6xl font-semibold max-w-3xl mx-auto leading-[1.05]">
             You Own The Car.
             <br />
