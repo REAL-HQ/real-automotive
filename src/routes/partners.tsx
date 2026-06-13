@@ -157,7 +157,7 @@ function Partners() {
       {/* Hero */}
       <section className="container-real pt-20 md:pt-28 pb-12 text-center">
         <FadeUp>
-          <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">Fleet Owner Program</div>
+          <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">Partner Program</div>
           <h1 className="mt-4 text-4xl md:text-6xl font-semibold max-w-3xl mx-auto leading-[1.05]">
             You Own The Car.
             <br />
