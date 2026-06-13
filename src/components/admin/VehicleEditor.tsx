@@ -151,7 +151,7 @@ export function VehicleEditor({ vehicle, onClose, onSaved }: {
         </div>
         <div className="p-6 space-y-5">
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <Num label="Year" v={f.year} onChange={(n) => set("year", n)} />
+            <Num label="Year" v={f.year} onChange={(n) => set("year", n ?? new Date().getFullYear())} />
             <Txt label="Make" v={f.make} onChange={(s) => set("make", s)} />
             <Txt label="Model" v={f.model} onChange={(s) => set("model", s)} />
             <Txt label="Trim" v={f.trim} onChange={(s) => set("trim", s)} />
