@@ -64,7 +64,7 @@ export function DriversPanel() {
         {filtered.map((a) => {
           const veh = a.vehicle_id ? vehicleMap[a.vehicle_id] : null;
           return (
-          <div key={a.id} className="rounded-xl bg-soft p-4 flex flex-wrap items-center gap-3">
+          <div key={a.id} onClick={() => setOpen(a)} className="rounded-xl bg-soft p-4 flex flex-wrap items-center gap-3 cursor-pointer hover:shadow-sm transition-shadow">
             <div className="flex-1 min-w-[240px]">
               <div className="flex items-center gap-2">
                 <span className="font-medium">{a.full_name}</span>
@@ -78,14 +78,15 @@ export function DriversPanel() {
                 {` · pay: ${a.payment_status} · dep: ${a.deposit_status}`}
               </div>
             </div>
-            <Select value={a.status} onValueChange={(status) => update(a.id, { status })}>
-              <SelectTrigger className="h-8 w-32 bg-white text-foreground"><SelectValue /></SelectTrigger>
-              <SelectContent>
-                {DRIVER_STATUSES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
-              </SelectContent>
-            </Select>
-            <button onClick={() => setOpen(a)} className="rounded-md bg-black text-white px-3 py-1.5 text-sm">View</button>
-            <button onClick={() => remove(a.id)} className="rounded-md border border-border px-3 py-1.5 text-sm hover:bg-real-red hover:text-white hover:border-real-red">Delete</button>
+            <div onClick={(e) => e.stopPropagation()}>
+              <Select value={a.status} onValueChange={(status) => update(a.id, { status })}>
+                <SelectTrigger className="h-8 w-32 bg-white text-foreground"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {DRIVER_STATUSES.map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                </SelectContent>
+              </Select>
+            </div>
+            <button onClick={(e) => { e.stopPropagation(); remove(a.id); }} className="rounded-md border border-border px-3 py-1.5 text-sm hover:bg-real-red hover:text-white hover:border-real-red">Delete</button>
           </div>
         );})}
         {filtered.length === 0 && <div className="text-sm text-muted-foreground">No drivers.</div>}
