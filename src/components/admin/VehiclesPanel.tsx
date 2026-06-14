@@ -40,7 +40,7 @@ export function VehiclesPanel() {
       <div className="flex justify-end mb-4">
         <button onClick={() => setEditing("new")}
           className="inline-flex items-center gap-2 rounded-md bg-real-red text-white px-4 py-2 text-sm font-medium hover:opacity-90">
-          <Plus className="w-4 h-4" /> Add vehicle
+          <Plus className="w-4 h-4" /> Add Vehicle
         </button>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -80,7 +80,7 @@ export function VehiclesPanel() {
           );
         })}
       </div>
-      {rows.length === 0 && <div className="text-sm text-muted-foreground mt-6">No vehicles yet. Click "Add vehicle" to create one.</div>}
+      {rows.length === 0 && <div className="text-sm text-muted-foreground mt-6">No vehicles yet. Click "Add Vehicle" to create one.</div>}
 
       {editing && (
         <VehicleEditor
