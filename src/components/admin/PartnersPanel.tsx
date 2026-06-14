@@ -3,6 +3,8 @@ import { supabase } from "@/integrations/supabase/client";
 import type { Partner, FleetOwner, InvestorLead } from "./types";
 import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useServerFn } from "@tanstack/react-start";
+import { linkPartnerLogin } from "@/lib/partner.functions";
 
 const PARTNER_TYPES = ["vehicle_owner","capital_partner","private_lender","jv_partner","other"] as const;
 const PARTNER_STATUSES = ["prospect","active","paused","closed"] as const;
@@ -89,6 +91,7 @@ export function PartnersPanel() {
               </Select>
               <button onClick={() => remove(p.id)} className="rounded-md border border-border px-3 py-1.5 text-xs hover:bg-real-red hover:text-white hover:border-real-red">Delete</button>
             </div>
+            <LinkLoginRow partner={p} onLinked={refresh} />
             <div className="grid grid-cols-3 gap-2 mt-3">
               <NumInput label="Capital ($)" value={p.capital_committed as any} onSave={(v) => update(p.id, { capital_committed: v })} />
               <NumInput label="Vehicles" value={p.vehicles_contributed as any} onSave={(v) => update(p.id, { vehicles_contributed: v })} />
@@ -164,6 +167,52 @@ function AddPartner({ onClose, onSave }: { onClose: () => void; onSave: (p: Part
           <button onClick={() => form.name && onSave(form)} className="rounded-md bg-real-red text-white px-4 py-2 text-sm">Add</button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function LinkLoginRow({ partner, onLinked }: { partner: Partner & { user_id?: string | null }; onLinked: () => void }) {
+  const linkFn = useServerFn(linkPartnerLogin);
+  const [email, setEmail] = useState("");
+  const [busy, setBusy] = useState(false);
+  const linked = !!(partner as any).user_id;
+
+  async function link() {
+    if (!email) return;
+    setBusy(true);
+    try {
+      await linkFn({ data: { partnerId: partner.id, email } });
+      toast.success(`Linked ${email} as partner login`);
+      setEmail("");
+      onLinked();
+    } catch (e: any) {
+      toast.error(e?.message || "Could not link");
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  return (
+    <div className="mt-3 flex flex-wrap items-center gap-2 text-xs">
+      <span className="text-muted-foreground">Partner login:</span>
+      {linked ? (
+        <span className="inline-flex items-center gap-1 rounded-md bg-green-100 text-green-800 px-2 py-0.5">Linked ✓</span>
+      ) : (
+        <>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="partner@email.com"
+            className="bg-white border border-border rounded-md px-2 py-1 text-xs"
+          />
+          <button onClick={link} disabled={busy || !email}
+            className="rounded-md bg-black text-white px-3 py-1 disabled:opacity-50">
+            {busy ? "…" : "Link Login"}
+          </button>
+          <span className="text-muted-foreground">(account must have signed up at /partner first)</span>
+        </>
+      )}
     </div>
   );
 }

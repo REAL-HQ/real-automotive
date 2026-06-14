@@ -1,60 +1,59 @@
+## Section 1 — Partner Portal (`/partner`)
 
-# Admin Refactor — Fleet Operations Platform
+Build a real partner-facing portal so a logged-in partner sees only their own data. This turn = Section 1 only; Sections 2–4 (Maintenance DB, role views, AI notifications) follow in subsequent turns.
 
-Scaling the admin from form-based panels into operational areas: **Drivers, Vehicles, Partners, Payments, Settings**.
+### 1. Migration (one file)
 
-## 1. Navigation
+- Extend `app_role` enum: add `'partner'` (alongside existing `admin`).
+- `partners`: add `user_id uuid REFERENCES auth.users(id) ON DELETE SET NULL` so a partner row can be linked to a login. Add `revenue_split_pct numeric DEFAULT 50`.
+- `vehicles`: add `partner_id uuid REFERENCES public.partners(id) ON DELETE SET NULL` so we know which partner owns each car.
+- `applications` (drivers) — confirm `background_check_status`, `mvr_status` exist (they do per plan.md); add `rideshare_history_status text`, `earnings_verified_status text` (`pending|passed|failed` each).
+- New `documents` table:
+  - `id, driver_id (→applications), partner_id (→partners), vehicle_id (→vehicles), kind text` (`drivers_license | rental_agreement`), `storage_bucket text, storage_path text, visibility text[] default '{partner,admin}'`, timestamps.
+  - RLS: admin all; partner SELECT where `partner_id` matches their partner row AND `'partner' = ANY(visibility)`.
+  - GRANTs: `SELECT, INSERT, UPDATE, DELETE` to `authenticated`; `ALL` to `service_role`.
+- RLS policy updates:
+  - `partners`: partner can SELECT their own row (`user_id = auth.uid()`).
+  - `vehicles`: partner can SELECT vehicles where `partner_id` matches their partner row.
+  - `applications`: partner can SELECT only the driver currently assigned to one of their vehicles (join via `vehicle_id`), and only the vetting columns + name fields — enforced by a SECURITY DEFINER view `public.partner_driver_view` exposing just `id, full_name, vehicle_id, background_check_status, mvr_status, rideshare_history_status, earnings_verified_status`.
+  - `payments`: partner can SELECT payments where vehicle belongs to their partner row.
 
-Replace 5 tabs (Applications, Vehicles, Fleet Owners, Investors, Contact) with:
+### 2. Auth wiring
 
-- **Drivers** · **Vehicles** · **Partners** · **Payments** · **Settings**
+- Admin grants partner login via existing `user_roles` flow (`role='partner'`) and sets `partners.user_id` to the matched auth user. Add a small "Link Login" action in admin's `PartnersPanel` (input email → look up auth user via server fn → set user_id + insert user_roles row).
+- New route `/partner` — top-level, with its own `beforeLoad` redirect: if not signed in → `/admin` (reuse SignIn), if signed in but no `partner` role → "No partner access" screen.
 
-`src/routes/admin.tsx` — update `TABS` array + panel routing.
+### 3. Partner Dashboard UI (`/partner`)
 
-## 2. Database migration
+Single page, dark sidebar branding consistent with admin. Panels in this order:
 
-A single migration adds the operational fields. No table renames (keeps existing `applications` data as the driver record).
+1. **My Vehicles** (top): for each vehicle owned by partner, a card with photo, year/make/model, VIN, current renter name + vetting badges (Background ✓, Rideshare History ✓, Earnings Verified ✓ — green when `passed`, neutral "Pending" otherwise).
+2. **Renter Documents** (per vehicle, expandable): "License" and "Rental Agreement" buttons (Lucide `IdCard`, `FileSignature`). Click → server fn returns signed URL from storage bucket, opens in new tab. No other PII shown.
+3. **Pickup & Roles status note** — static info card with the exact PDF copy.
+4. **How Your Split Works** — info panel with 50/50 explainer, $350 → $175 example, routine-vs-major maintenance language.
+5. **Earnings Breakdown** (per vehicle): table with columns Gross Rent Collected → Your Rent Share (50%) → Maint. Share (50%) → Net. Period selector: This Week / This Month. Computed via a server fn that sums `payments` for the partner's vehicles. Maintenance share shows $0 with a "Coming with Maintenance system" hint (lands in Section 2).
 
-**`applications` → driver lifecycle fields**
-- `status` enum widened: `new | reviewing | approved | active | suspended | declined | closed`
-- `deposit_status` (`not_paid | partially_paid | paid | refunded`), `deposit_amount`, `deposit_paid`
-- `weekly_rent`, `payment_status` (`current | late | past_due | collections`)
-- `background_check_status`, `mvr_status` (`pending | passed | failed`)
-- `incident_count` int default 0
-- (existing) `vehicle_id`, `notes` reused
+### 4. Server functions (`src/lib/partner.functions.ts`)
 
-**New `partners` table** (replaces split fleet_owners/investors usage going forward; existing tables kept read-only as legacy leads)
-- `name, email, phone, partner_type` (`vehicle_owner | capital_partner | private_lender | jv_partner | other`)
-- `capital_committed, vehicles_contributed, monthly_payment, notes, documents jsonb, status`
-- RLS: admin-only read/write via `has_role(auth.uid(),'admin')`. GRANTs to authenticated + service_role.
+All use `requireSupabaseAuth` + check partner role + scope by `partners.user_id = auth.uid()`:
+- `getMyPartner()` → partner row + vehicles + current renter per vehicle (with vetting fields).
+- `getRenterDocumentUrl({ documentId })` → signed URL (60s) from storage; verifies partner_id match before signing.
+- `getMyEarnings({ period: 'week'|'month' })` → per-vehicle aggregates.
+- `linkPartnerLogin({ partnerId, email })` (admin-only) → looks up auth user by email via admin client, sets `partners.user_id`, upserts `user_roles` row with `partner`.
 
-**New `payments` table**
-- `driver_id` (→ applications), `vehicle_id`, `amount`, `type` (`rent | deposit | late_fee`), `due_date`, `paid_date`, `status` (`paid | current | late | past_due | collections`), `payment_method`, `late_fees`, `balance_due`, `notes`
-- RLS: admin-only. GRANTs to authenticated + service_role.
+### 5. Out of scope this turn
+- Maintenance tables, shops, notifications (Sections 2–4).
+- Document upload UI (admin uploads via storage console for now; we just read).
+- Major-repair line-items in Earnings (added in Section 2 when `maintenance_records` exists).
 
-**New `app_settings` table** (single-row key/value json) for rental terms, deposit defaults, payment settings, notifications, etc.
+### Technical notes
+- Storage: reuse existing `license-uploads` bucket for licenses; new `rental-agreements` bucket (private) created in the migration via storage API call (or admin manually — confirm in migration).
+- All new tables get standard GRANTs + RLS as per Lovable rules.
+- White dropdowns rule preserved.
+- No edge functions, no Twilio, no AI calls this turn.
 
-## 3. Panels
-
-- `DriversPanel.tsx` — renamed from ApplicationsPanel; 7 status filter chips with counts; expanded modal with new fields (deposit, rent, payment, BG check, MVR, incidents, vehicle info resolved from `vehicles` join showing `year make model · VIN`).
-- `VehiclesPanel.tsx` — unchanged.
-- `PartnersPanel.tsx` — new; CRUD on `partners` with type filter; also shows legacy fleet_owner_submissions + investor_leads as "Legacy submissions" sub-list (read-only, with "Convert to Partner" action).
-- `PaymentsPanel.tsx` — new; table view with driver name, vehicle, amount, due date, status, method, late fees, balance; filter by status, sort by due date.
-- `SettingsPanel.tsx` — new; sections for Rental Terms, Deposit Defaults, Payment Settings, Admin Users (list user_roles), Notifications, App Settings, Partner Settings. Persists to `app_settings`.
-
-## 4. Removed
-- Contact tab removed from admin nav. `contact_leads` table is kept (public contact form still writes to it); a future enhancement can surface them inside Drivers/Partners/Leads. For now they remain accessible only via DB.
-
-## Technical notes
-
-- Status enums stored as TEXT with CHECK constraints (easier to evolve than PG enums).
-- Vehicle resolution in Drivers modal: join via existing `vehicles` table on `vehicle_id`.
-- All new tables: admin-only RLS using existing `has_role()` security-definer function. Standard GRANTs included.
-- `updated_at` trigger reused via existing pattern.
-- No edits to existing `src/integrations/supabase/*` autogen files; types regenerate after migration.
-- White dropdowns rule preserved — all new selects use shadcn `Select` (already styled white).
-
-## Out of scope (call out)
-- Real payment processing/Stripe integration — Payments tab is tracking only.
-- Routing contact submissions into Drivers/Partners automatically — surfaced as legacy lists for now.
-- Bulk import of vehicles/drivers.
+### Build order in this turn
+1. Migration (you approve, I wait for green light).
+2. Server fns + types regenerated.
+3. `/partner` route + panels.
+4. Admin "Link Login" action.
