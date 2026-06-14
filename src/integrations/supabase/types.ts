@@ -46,6 +46,7 @@ export type Database = {
           deposit_paid: number | null
           deposit_status: string
           dob: string | null
+          earnings_verified_status: string
           email: string
           full_name: string
           id: string
@@ -62,6 +63,7 @@ export type Database = {
           platform_active: boolean | null
           platforms: string[] | null
           rental_term: string | null
+          rideshare_history_status: string
           start_date: string | null
           state: string | null
           status: string
@@ -85,6 +87,7 @@ export type Database = {
           deposit_paid?: number | null
           deposit_status?: string
           dob?: string | null
+          earnings_verified_status?: string
           email: string
           full_name: string
           id?: string
@@ -101,6 +104,7 @@ export type Database = {
           platform_active?: boolean | null
           platforms?: string[] | null
           rental_term?: string | null
+          rideshare_history_status?: string
           start_date?: string | null
           state?: string | null
           status?: string
@@ -124,6 +128,7 @@ export type Database = {
           deposit_paid?: number | null
           deposit_status?: string
           dob?: string | null
+          earnings_verified_status?: string
           email?: string
           full_name?: string
           id?: string
@@ -140,6 +145,7 @@ export type Database = {
           platform_active?: boolean | null
           platforms?: string[] | null
           rental_term?: string | null
+          rideshare_history_status?: string
           start_date?: string | null
           state?: string | null
           status?: string
@@ -186,6 +192,70 @@ export type Database = {
           phone?: string | null
         }
         Relationships: []
+      }
+      documents: {
+        Row: {
+          created_at: string
+          driver_id: string | null
+          id: string
+          kind: string
+          notes: string | null
+          partner_id: string | null
+          storage_bucket: string
+          storage_path: string
+          updated_at: string
+          vehicle_id: string | null
+          visibility: string[]
+        }
+        Insert: {
+          created_at?: string
+          driver_id?: string | null
+          id?: string
+          kind: string
+          notes?: string | null
+          partner_id?: string | null
+          storage_bucket: string
+          storage_path: string
+          updated_at?: string
+          vehicle_id?: string | null
+          visibility?: string[]
+        }
+        Update: {
+          created_at?: string
+          driver_id?: string | null
+          id?: string
+          kind?: string
+          notes?: string | null
+          partner_id?: string | null
+          storage_bucket?: string
+          storage_path?: string
+          updated_at?: string
+          vehicle_id?: string | null
+          visibility?: string[]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       fleet_owner_submissions: {
         Row: {
@@ -301,8 +371,10 @@ export type Database = {
           notes: string | null
           partner_type: string
           phone: string | null
+          revenue_split_pct: number
           status: string
           updated_at: string
+          user_id: string | null
           vehicles_contributed: number | null
         }
         Insert: {
@@ -316,8 +388,10 @@ export type Database = {
           notes?: string | null
           partner_type?: string
           phone?: string | null
+          revenue_split_pct?: number
           status?: string
           updated_at?: string
+          user_id?: string | null
           vehicles_contributed?: number | null
         }
         Update: {
@@ -331,8 +405,10 @@ export type Database = {
           notes?: string | null
           partner_type?: string
           phone?: string | null
+          revenue_split_pct?: number
           status?: string
           updated_at?: string
+          user_id?: string | null
           vehicles_contributed?: number | null
         }
         Relationships: []
@@ -439,6 +515,7 @@ export type Database = {
           model: string
           monthly_rate: number | null
           mpg: number | null
+          partner_id: string | null
           photos: string[] | null
           seats: number | null
           status: string
@@ -461,6 +538,7 @@ export type Database = {
           model: string
           monthly_rate?: number | null
           mpg?: number | null
+          partner_id?: string | null
           photos?: string[] | null
           seats?: number | null
           status?: string
@@ -483,6 +561,7 @@ export type Database = {
           model?: string
           monthly_rate?: number | null
           mpg?: number | null
+          partner_id?: string | null
           photos?: string[] | null
           seats?: number | null
           status?: string
@@ -491,7 +570,15 @@ export type Database = {
           weekly_rate?: number
           year?: number
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "vehicles_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -505,9 +592,11 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_partner_owner: { Args: { _partner_id: string }; Returns: boolean }
+      partner_owns_vehicle: { Args: { _vehicle_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "user"
+      app_role: "admin" | "user" | "partner"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -635,7 +724,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user"],
+      app_role: ["admin", "user", "partner"],
     },
   },
 } as const
