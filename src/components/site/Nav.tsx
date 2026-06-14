@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, User, LogOut, Shield } from "lucide-react";
 import { Logo } from "./Logo";
@@ -22,6 +22,7 @@ const menuLinks = [
 ];
 
 export function Nav() {
+  const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const [session, setSession] = useState<any>(null);
@@ -53,7 +54,7 @@ export function Nav() {
       }`}
     >
       <div className="flex h-12 items-center justify-between px-[3%]">
-        <Logo />
+        {location.pathname !== "/admin" && <Logo />}
         <div className="flex items-center gap-3">
           {session ? (
             <DropdownMenu>
