@@ -237,7 +237,8 @@ export const linkPartnerLogin = createServerFn({ method: "POST" })
     while (page < 20) {
       const { data: list, error } = await supabaseAdmin.auth.admin.listUsers({ page, perPage: 200 });
       if (error) throw new Error(error.message);
-      const match = list.users.find((u) => (u.email ?? "").toLowerCase() === data.email.toLowerCase());
+      const target = data.email.toLowerCase();
+      const match = list.users.find((u) => ((u.email ?? "") as string).toLowerCase() === target);
       if (match) { userId = match.id; break; }
       if (list.users.length < 200) break;
       page += 1;
