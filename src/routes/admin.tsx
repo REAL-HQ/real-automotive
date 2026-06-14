@@ -27,7 +27,7 @@ export const Route = createFileRoute("/admin")({
 
 const TABS = [
   { id: "drivers", label: "Drivers", icon: Users, description: "Manage applicants, active renters and driver lifecycle" },
-  { id: "vehicles", label: "Vehicles", icon: Car, description: "Fleet inventory and vehicle status" },
+  { id: "vehicles", label: "Vehicles", icon: Car, description: "Fleet Inventory & Vehicle Status" },
   { id: "partners", label: "Partners", icon: Handshake, description: "Vehicle owners, capital partners and lenders" },
   { id: "payments", label: "Payments", icon: CreditCard, description: "Rent, deposits and balances" },
   { id: "settings", label: "Settings", icon: SettingsIcon, description: "Rental terms, payments, admin users and preferences" },
