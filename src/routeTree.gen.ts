@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PartnerRouteImport } from './routes/partner'
 import { Route as InvestorsRouteImport } from './routes/investors'
@@ -22,6 +23,11 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FleetIdRouteImport } from './routes/fleet.$id'
 
+const PortalRoute = PortalRouteImport.update({
+  id: '/portal',
+  path: '/portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PartnersRoute = PartnersRouteImport.update({
   id: '/partners',
   path: '/partners',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/investors': typeof InvestorsRoute
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
+  '/portal': typeof PortalRoute
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRoutesByTo {
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/investors': typeof InvestorsRoute
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
+  '/portal': typeof PortalRoute
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRoutesById {
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/investors': typeof InvestorsRoute
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
+  '/portal': typeof PortalRoute
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRouteTypes {
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/investors'
     | '/partner'
     | '/partners'
+    | '/portal'
     | '/fleet/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/investors'
     | '/partner'
     | '/partners'
+    | '/portal'
     | '/fleet/$id'
   id:
     | '__root__'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/investors'
     | '/partner'
     | '/partners'
+    | '/portal'
     | '/fleet/$id'
   fileRoutesById: FileRoutesById
 }
@@ -183,10 +195,18 @@ export interface RootRouteChildren {
   InvestorsRoute: typeof InvestorsRoute
   PartnerRoute: typeof PartnerRoute
   PartnersRoute: typeof PartnersRoute
+  PortalRoute: typeof PortalRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/portal': {
+      id: '/portal'
+      path: '/portal'
+      fullPath: '/portal'
+      preLoaderRoute: typeof PortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/partners': {
       id: '/partners'
       path: '/partners'
@@ -296,6 +316,7 @@ const rootRouteChildren: RootRouteChildren = {
   InvestorsRoute: InvestorsRoute,
   PartnerRoute: PartnerRoute,
   PartnersRoute: PartnersRoute,
+  PortalRoute: PortalRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
