@@ -47,7 +47,9 @@ function Admin() {
   const [session, setSession] = useState<any>(null);
   const [checking, setChecking] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [tab, setTab] = useState<Tab>("drivers");
+  const urlTab = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("tab") : null;
+  const initialTab: Tab = urlTab && (TABS.some((t) => t.id === urlTab) || urlTab === "messages") ? (urlTab as Tab) : "drivers";
+  const [tab, setTab] = useState<Tab>(initialTab);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => { setSession(data.session); setChecking(false); });
