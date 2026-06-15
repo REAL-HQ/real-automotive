@@ -72,20 +72,20 @@ export const getDriverDashboard = createServerFn({ method: "GET" })
     if (rental?.vehicle_id) {
       const { data: v } = await supabase
         .from("vehicles")
-        .select("id,year,make,model,trim,color,photo,plate,status,photos")
+        .select("id,year,make,model,trim,color,status,photos")
         .eq("id", rental.vehicle_id)
         .maybeSingle();
       if (v) {
-        const photos = (v as any).photos as string[] | null;
+        const photos = (v.photos as string[] | null) ?? null;
         vehicle = {
           id: v.id,
           year: v.year,
           make: v.make,
           model: v.model,
-          trim: (v as any).trim ?? null,
-          color: (v as any).color ?? null,
-          photo: (photos && photos[0]) || (v as any).photo || null,
-          plate: (v as any).plate ?? null,
+          trim: v.trim ?? null,
+          color: v.color ?? null,
+          photo: (photos && photos[0]) || null,
+          plate: null,
           status: v.status ?? null,
         };
       }
