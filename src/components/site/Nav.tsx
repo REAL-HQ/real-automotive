@@ -262,7 +262,7 @@ function IconBadgeButton({
       type="button"
       onClick={onClick}
       aria-label={`${ariaLabel}${count > 0 ? ` (${count} unread)` : ""}`}
-      className="relative inline-flex items-center justify-center h-9 w-9 rounded-full bg-soft text-muted-foreground hover:bg-muted hover:text-foreground transition"
+      className="relative inline-flex items-center justify-center h-9 w-9 text-muted-foreground hover:text-foreground transition"
     >
       {children}
       {count > 0 && (
