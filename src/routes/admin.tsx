@@ -37,18 +37,19 @@ const TABS = [
   { id: "payments", label: "Payments", icon: CreditCard, description: "Rent, deposits and balances" },
   { id: "maintenance", label: "Maintenance", icon: Wrench, description: "Vehicle Service Records, Schedules & Cost Splits" },
   { id: "shops", label: "Shops", icon: Store, description: "Preferred Maintenance Providers by Market" },
-  { id: "messages", label: "Messages", icon: MessageSquare, description: "Inbound Driver & Partner Conversations" },
   { id: "websites", label: "Websites", icon: Globe, description: "Market-Specific Marketing Sites" },
   { id: "team", label: "Team", icon: UserCog, description: "Internal Roles & Access Control" },
   { id: "settings", label: "Settings", icon: SettingsIcon, description: "Rental terms, payments, admin users and preferences" },
 ] as const;
-type Tab = typeof TABS[number]["id"];
+type Tab = typeof TABS[number]["id"] | "messages";
 
 function Admin() {
   const [session, setSession] = useState<any>(null);
   const [checking, setChecking] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [tab, setTab] = useState<Tab>("drivers");
+  const urlTab = typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("tab") : null;
+  const initialTab: Tab = urlTab && (TABS.some((t) => t.id === urlTab) || urlTab === "messages") ? (urlTab as Tab) : "drivers";
+  const [tab, setTab] = useState<Tab>(initialTab);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => { setSession(data.session); setChecking(false); });
@@ -68,7 +69,7 @@ function Admin() {
   if (!session) return <SignIn />;
   if (!isAdmin) return <NoAccess userId={session.user.id} onSignOut={signOut} />;
 
-  const current = TABS.find((t) => t.id === tab)!;
+  const current = TABS.find((t) => t.id === tab) ?? { id: "messages" as Tab, label: "Messages", description: "Inbound Driver & Partner Conversations" };
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
