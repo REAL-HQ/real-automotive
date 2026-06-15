@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, User, LogOut, Shield } from "lucide-react";
+import { Menu, X, User, LogOut, Shield, MessageSquare, Bell, LifeBuoy, Car, Handshake } from "lucide-react";
 import { Logo } from "./Logo";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
@@ -27,6 +27,9 @@ export function Nav() {
   const [open, setOpen] = useState(false);
   const [session, setSession] = useState<any>(null);
   const [authReady, setAuthReady] = useState(false);
+  const [roles, setRoles] = useState<string[]>([]);
+  const [unreadMessages, setUnreadMessages] = useState(0);
+  const [unreadNotifications, setUnreadNotifications] = useState(0);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 4);
@@ -52,10 +55,49 @@ export function Nav() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!session) {
+      setRoles([]);
+      setUnreadMessages(0);
+      setUnreadNotifications(0);
+      return;
+    }
+    const uid = session.user.id;
+    let cancelled = false;
+    (async () => {
+      const [rolesRes, msgRes, notifRes] = await Promise.all([
+        supabase.from("user_roles").select("role").eq("user_id", uid),
+        supabase
+          .from("messages")
+          .select("id", { count: "exact", head: true })
+          .eq("recipient_id", uid)
+          .eq("read", false),
+        supabase
+          .from("notifications")
+          .select("id", { count: "exact", head: true })
+          .or(`driver_id.eq.${uid},user_id.eq.${uid}`)
+          .eq("read", false),
+      ]);
+      if (cancelled) return;
+      setRoles((rolesRes.data ?? []).map((r: any) => r.role));
+      setUnreadMessages(msgRes.count ?? 0);
+      setUnreadNotifications(notifRes.count ?? 0);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [session]);
+
   async function handleSignOut() {
     await supabase.auth.signOut();
     toast.success("Signed out");
   }
+
+  const isDriver = roles.includes("driver");
+  const isPartner = roles.includes("partner");
+  const isAdmin = roles.includes("admin") || roles.includes("team");
+  const accountHref = isAdmin ? "/admin" : isPartner ? "/partner" : isDriver ? "/portal" : "/admin";
+  const accountLabel = isAdmin ? "Admin" : isPartner ? "Partner Portal" : isDriver ? "Driver Portal" : "Account";
 
   return (
     <header
@@ -71,7 +113,35 @@ export function Nav() {
           {!authReady ? (
             <div className="h-8 w-24" aria-hidden />
           ) : session ? (
-            <DropdownMenu>
+            <>
+              <IconBadgeButton ariaLabel="Messages" count={unreadMessages} onClick={() => toast.info("Messages inbox is coming online with the messaging panel.")}>
+                <MessageSquare className="w-4 h-4" />
+              </IconBadgeButton>
+              <IconBadgeButton ariaLabel="Notifications" count={unreadNotifications} onClick={() => toast.info("Notification center is coming online shortly.")}>
+                <Bell className="w-4 h-4" />
+              </IconBadgeButton>
+              {isDriver && (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <button
+                      className="inline-flex items-center justify-center h-8 w-8 rounded-lg bg-soft text-foreground hover:bg-muted transition"
+                      aria-label="Help"
+                    >
+                      <LifeBuoy className="w-4 h-4" />
+                    </button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuLabel>Help & Support</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={() => toast.info("Open Report An Issue from the driver portal.")}>Report An Issue</DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link to="/contact" className="cursor-pointer w-full">Contact Support</Link></DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => toast.info("Roadside dispatch is connected on production.")}>Roadside & Accident</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => toast.info("Vehicle swap request opens with the issues panel.")}>Request A Swap</DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link to="/faq" className="cursor-pointer w-full">Help Center & FAQ</Link></DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              )}
+              <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
                   className="hidden sm:inline-flex items-center justify-center h-8 px-3 rounded-lg bg-soft text-foreground hover:bg-muted transition gap-2 text-[13px]"
@@ -89,9 +159,9 @@ export function Nav() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <Link to="/admin" className="cursor-pointer flex items-center gap-2 w-full">
-                    <Shield className="w-4 h-4" />
-                    Account
+                  <Link to={accountHref} className="cursor-pointer flex items-center gap-2 w-full">
+                    {isAdmin ? <Shield className="w-4 h-4" /> : isPartner ? <Handshake className="w-4 h-4" /> : <Car className="w-4 h-4" />}
+                    {accountLabel}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
@@ -101,6 +171,7 @@ export function Nav() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            </>
           ) : (
             <Link
               to="/admin"
@@ -163,5 +234,33 @@ export function Nav() {
         </>
       )}
     </header>
+  );
+}
+
+function IconBadgeButton({
+  ariaLabel,
+  count,
+  onClick,
+  children,
+}: {
+  ariaLabel: string;
+  count: number;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={`${ariaLabel}${count > 0 ? ` (${count} unread)` : ""}`}
+      className="relative inline-flex items-center justify-center h-8 w-8 rounded-lg bg-soft text-foreground hover:bg-muted transition"
+    >
+      {children}
+      {count > 0 && (
+        <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 rounded-full bg-real-red text-white text-[10px] font-semibold flex items-center justify-center">
+          {count > 9 ? "9+" : count}
+        </span>
+      )}
+    </button>
   );
 }
