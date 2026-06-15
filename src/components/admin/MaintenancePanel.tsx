@@ -7,10 +7,10 @@ type Row = {
   id: string;
   vehicle_id: string;
   item: string;
-  category: string | null;
+  category: string;
   status: string;
   due_date: string | null;
-  cost: number | null;
+  total_cost: number;
   notes: string | null;
   created_at: string;
 };
@@ -29,7 +29,7 @@ export function MaintenancePanel() {
       supabase.from("vehicles").select("id, year, make, model").order("created_at", { ascending: false }),
     ]);
     if (m.error) toast.error(m.error.message);
-    setRows((m.data as Row[]) ?? []);
+    setRows((m.data as any) ?? []);
     setVehicles((v.data as any) ?? []);
     setLoading(false);
   }
@@ -85,7 +85,7 @@ export function MaintenancePanel() {
                   <td>{r.item}</td>
                   <td className="capitalize">{r.category ?? "—"}</td>
                   <td>{r.due_date ? new Date(r.due_date).toLocaleDateString() : "—"}</td>
-                  <td>{r.cost ? `$${r.cost}` : "—"}</td>
+                  <td>{r.total_cost ? `$${r.total_cost}` : "—"}</td>
                   <td>
                     <select value={r.status} onChange={(e) => updateStatus(r.id, e.target.value)} className="rounded border border-border bg-white px-2 py-1 text-xs">
                       <option value="scheduled">Scheduled</option>
@@ -121,7 +121,7 @@ function NewMaintenanceForm({ vehicles, onClose, onCreated }: { vehicles: any[];
     setSaving(true);
     const { error } = await supabase.from("maintenance_records").insert({
       vehicle_id: vehicleId, item, category, status: "scheduled",
-      due_date: dueDate || null, cost: cost ? Number(cost) : null, notes: notes || null,
+      due_date: dueDate || null, total_cost: cost ? Number(cost) : 0, notes: notes || null,
     } as any);
     setSaving(false);
     if (error) return toast.error(error.message);
