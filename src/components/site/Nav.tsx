@@ -115,19 +115,19 @@ export function Nav() {
           ) : session ? (
             <>
               <IconBadgeButton ariaLabel="Messages" count={unreadMessages} onClick={() => toast.info("Messages inbox is coming online with the messaging panel.")}>
-                <MessageSquare className="w-4 h-4" />
+                <MessageSquare className="w-[18px] h-[18px]" strokeWidth={1.8} />
               </IconBadgeButton>
               <IconBadgeButton ariaLabel="Notifications" count={unreadNotifications} onClick={() => toast.info("Notification center is coming online shortly.")}>
-                <Bell className="w-4 h-4" />
+                <Bell className="w-[18px] h-[18px]" strokeWidth={1.8} />
               </IconBadgeButton>
               {isDriver && (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
-                      className="inline-flex items-center justify-center h-8 w-8 rounded-lg bg-soft text-foreground hover:bg-muted transition"
+                      className="inline-flex items-center justify-center h-9 w-9 rounded-full bg-soft text-muted-foreground hover:bg-muted hover:text-foreground transition"
                       aria-label="Help"
                     >
-                      <LifeBuoy className="w-4 h-4" />
+                      <LifeBuoy className="w-[18px] h-[18px]" strokeWidth={1.8} />
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
@@ -144,11 +144,10 @@ export function Nav() {
               <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button
-                  className="hidden sm:inline-flex items-center justify-center h-8 px-3 rounded-lg bg-soft text-foreground hover:bg-muted transition gap-2 text-[13px]"
+                  className="hidden sm:inline-flex items-center justify-center h-9 w-9 rounded-full border-2 border-real-red bg-white text-muted-foreground hover:text-foreground transition"
                   aria-label="Profile"
                 >
-                  <User className="w-4 h-4" />
-                  <span className="font-medium">Profile</span>
+                  <User className="w-[18px] h-[18px]" strokeWidth={1.8} />
                 </button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-56">
@@ -253,11 +252,11 @@ function IconBadgeButton({
       type="button"
       onClick={onClick}
       aria-label={`${ariaLabel}${count > 0 ? ` (${count} unread)` : ""}`}
-      className="relative inline-flex items-center justify-center h-8 w-8 rounded-lg bg-soft text-foreground hover:bg-muted transition"
+      className="relative inline-flex items-center justify-center h-9 w-9 rounded-full bg-soft text-muted-foreground hover:bg-muted hover:text-foreground transition"
     >
       {children}
       {count > 0 && (
-        <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 rounded-full bg-real-red text-white text-[10px] font-semibold flex items-center justify-center">
+        <span className="absolute -top-1.5 -right-1.5 h-5 w-5 rounded-full bg-real-red text-white text-[11px] font-semibold flex items-center justify-center leading-none">
           {count > 9 ? "9+" : count}
         </span>
       )}
