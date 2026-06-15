@@ -37,12 +37,11 @@ const TABS = [
   { id: "payments", label: "Payments", icon: CreditCard, description: "Rent, deposits and balances" },
   { id: "maintenance", label: "Maintenance", icon: Wrench, description: "Vehicle Service Records, Schedules & Cost Splits" },
   { id: "shops", label: "Shops", icon: Store, description: "Preferred Maintenance Providers by Market" },
-  { id: "messages", label: "Messages", icon: MessageSquare, description: "Inbound Driver & Partner Conversations" },
   { id: "websites", label: "Websites", icon: Globe, description: "Market-Specific Marketing Sites" },
   { id: "team", label: "Team", icon: UserCog, description: "Internal Roles & Access Control" },
   { id: "settings", label: "Settings", icon: SettingsIcon, description: "Rental terms, payments, admin users and preferences" },
 ] as const;
-type Tab = typeof TABS[number]["id"];
+type Tab = typeof TABS[number]["id"] | "messages";
 
 function Admin() {
   const [session, setSession] = useState<any>(null);
