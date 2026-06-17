@@ -83,8 +83,10 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
           <span className="truncate">Doors: {vehicle.doors ?? "—"}</span>
         </div>
         <div className="flex items-center gap-2 min-w-0">
-          <InfinityIcon className="w-4 h-4 shrink-0" strokeWidth={1.75} />
-          <span className="truncate">Unlimited Miles</span>
+          <fuelMeta.Icon className="w-4 h-4 shrink-0" strokeWidth={1.75} />
+          <span className="truncate">
+            {vehicle.miles_per_tank ? `${vehicle.miles_per_tank} miles` : fuelMeta.label}
+          </span>
         </div>
         {uber.length > 0 && (
           <div className="col-span-2 flex items-start gap-2 min-w-0">
