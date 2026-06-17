@@ -9,7 +9,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   const img = resolvePhotoUrl(vehicle.photos?.[0]);
   const uber = vehicle.uber_eligibility ?? [];
   const status = vehicle.status ?? "available";
-  const fuel = (vehicle as any).fuel_type ?? "gas";
+  const fuel = vehicle.fuel_type ?? "gas";
   const fuelMeta =
     fuel === "ev"
       ? { label: "Electric", Icon: Zap, cls: "bg-blue-50 text-blue-700 border-blue-200" }
