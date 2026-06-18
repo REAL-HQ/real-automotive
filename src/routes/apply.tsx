@@ -102,7 +102,6 @@ function ApplyStep1() {
       rental_length: f.rental_length,
       rental_term,
       vehicle_id: f.vehicle_id || null,
-      source: "city_lp",
       status: "pending",
     };
     const { data, error } = await supabase.from("applications").insert(payload).select("id").single();
