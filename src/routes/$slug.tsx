@@ -18,6 +18,7 @@ import {
   Sparkles,
   UserCheck,
   Wrench,
+  Zap,
 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
