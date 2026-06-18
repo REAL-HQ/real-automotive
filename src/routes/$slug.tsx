@@ -504,10 +504,16 @@ function GigLogoMarquee({ items }: { items: string[] }) {
       <div className="flex w-max animate-marquee">
         {doubled.map((item, i) => {
           const logoUrl = gigLogoMap[item];
+          const isAmazon = item === "Amazon Flex";
           return (
             <div key={`${item}-${i}`} className="flex items-center justify-center px-6 md:px-10">
               {logoUrl ? (
-                <img src={logoUrl} alt={item} className="h-10 md:h-14 w-auto max-w-[120px] md:max-w-[160px] opacity-80 hover:opacity-100 transition" loading="lazy" />
+                <img
+                  src={logoUrl}
+                  alt={item}
+                  className={`h-10 md:h-14 w-auto opacity-80 hover:opacity-100 transition ${isAmazon ? "" : "max-w-[120px] md:max-w-[160px]"}`}
+                  loading="lazy"
+                />
               ) : (
                 <span className="text-xl md:text-2xl font-semibold text-foreground">{item}</span>
               )}
