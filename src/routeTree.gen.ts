@@ -22,6 +22,7 @@ import { Route as ApplyRouteImport } from './routes/apply'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as FleetIdRouteImport } from './routes/fleet.$id'
+import { Route as ApplyStep2RouteImport } from './routes/apply.step2'
 
 const PortalRoute = PortalRouteImport.update({
   id: '/portal',
@@ -88,11 +89,16 @@ const FleetIdRoute = FleetIdRouteImport.update({
   path: '/$id',
   getParentRoute: () => FleetRoute,
 } as any)
+const ApplyStep2Route = ApplyStep2RouteImport.update({
+  id: '/step2',
+  path: '/step2',
+  getParentRoute: () => ApplyRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
-  '/apply': typeof ApplyRoute
+  '/apply': typeof ApplyRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/fleet': typeof FleetRouteWithChildren
@@ -102,12 +108,13 @@ export interface FileRoutesByFullPath {
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
+  '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
-  '/apply': typeof ApplyRoute
+  '/apply': typeof ApplyRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/fleet': typeof FleetRouteWithChildren
@@ -117,13 +124,14 @@ export interface FileRoutesByTo {
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
+  '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
-  '/apply': typeof ApplyRoute
+  '/apply': typeof ApplyRouteWithChildren
   '/contact': typeof ContactRoute
   '/faq': typeof FaqRoute
   '/fleet': typeof FleetRouteWithChildren
@@ -133,6 +141,7 @@ export interface FileRoutesById {
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
+  '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
 }
 export interface FileRouteTypes {
@@ -150,6 +159,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/partners'
     | '/portal'
+    | '/apply/step2'
     | '/fleet/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -165,6 +175,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/partners'
     | '/portal'
+    | '/apply/step2'
     | '/fleet/$id'
   id:
     | '__root__'
@@ -180,13 +191,14 @@ export interface FileRouteTypes {
     | '/partner'
     | '/partners'
     | '/portal'
+    | '/apply/step2'
     | '/fleet/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
-  ApplyRoute: typeof ApplyRoute
+  ApplyRoute: typeof ApplyRouteWithChildren
   ContactRoute: typeof ContactRoute
   FaqRoute: typeof FaqRoute
   FleetRoute: typeof FleetRouteWithChildren
@@ -291,8 +303,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FleetIdRouteImport
       parentRoute: typeof FleetRoute
     }
+    '/apply/step2': {
+      id: '/apply/step2'
+      path: '/step2'
+      fullPath: '/apply/step2'
+      preLoaderRoute: typeof ApplyStep2RouteImport
+      parentRoute: typeof ApplyRoute
+    }
   }
 }
+
+interface ApplyRouteChildren {
+  ApplyStep2Route: typeof ApplyStep2Route
+}
+
+const ApplyRouteChildren: ApplyRouteChildren = {
+  ApplyStep2Route: ApplyStep2Route,
+}
+
+const ApplyRouteWithChildren = ApplyRoute._addFileChildren(ApplyRouteChildren)
 
 interface FleetRouteChildren {
   FleetIdRoute: typeof FleetIdRoute
@@ -307,7 +336,7 @@ const FleetRouteWithChildren = FleetRoute._addFileChildren(FleetRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
-  ApplyRoute: ApplyRoute,
+  ApplyRoute: ApplyRouteWithChildren,
   ContactRoute: ContactRoute,
   FaqRoute: FaqRoute,
   FleetRoute: FleetRouteWithChildren,
