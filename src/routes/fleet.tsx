@@ -24,8 +24,8 @@ function FleetPage() {
   const [vehicles, setVehicles] = useState<Tables<"vehicles">[]>([]);
   const [make, setMake] = useState("all");
   const [categories, setCategories] = useState<Record<string, boolean>>({
-    economy: true,
-    comfort: true,
+    sedan: true,
+    suv: true,
     xl: true,
   });
   const [onlyAvail, setOnlyAvail] = useState(true);
