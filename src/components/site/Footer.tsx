@@ -33,9 +33,11 @@ const ownerLinks: { to: string; label: string; hash?: string }[] = [
 
 export function Footer() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const matches = useRouterState({ select: (s) => s.matches });
   const isPartners = pathname === "/partners";
+  const isCity = matches.some((m) => m.routeId === "/$slug");
   return (
-    <footer className={isPartners ? "" : "mt-24"}>
+    <footer className={isPartners || isCity ? "" : "mt-24"}>
       {!isPartners && (
       <div className="border-y border-border bg-soft">
         <div className="container-real py-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-xs md:text-sm text-foreground/80">
@@ -48,7 +50,7 @@ export function Footer() {
         </div>
       </div>
       )}
-      {!isPartners && (
+      {!(isPartners || isCity) && (
       <div className="bg-real-red text-white">
         <div className="container-real py-14 md:py-20 flex flex-col items-center gap-8 text-center">
           <div>
