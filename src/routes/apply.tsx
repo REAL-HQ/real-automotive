@@ -27,7 +27,7 @@ const PLATFORM_STATUSES = [
   { value: "Not Yet", label: "Not Yet" },
 ];
 
-const WEEKLY_OPTIONS = ["1 Week", "2 Weeks", "3+ Weeks"];
+const WEEKLY_OPTIONS = ["1 Week", "2 Weeks", "3+ Weeks", "4+ Weeks"];
 const MONTHLY_OPTIONS = ["1 Month", "2 Months", "3+ Months"];
 
 type Step1Form = {
