@@ -9,7 +9,7 @@ import { Sparkles, Upload, X, Loader2 } from "lucide-react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const STATUSES = ["available", "rented", "maintenance", "reserved"];
-const BODY_TYPES = ["sedan", "suv", "hatchback", "minivan", "truck", "coupe"];
+const BODY_TYPES = ["sedan", "suv", "xl"];
 
 type FormState = {
   year: number;
