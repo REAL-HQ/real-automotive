@@ -524,14 +524,13 @@ function GigLogoMarquee({ items }: { items: string[] }) {
       <div className="flex w-max animate-marquee">
         {repeated.map((item, i) => {
           const logoUrl = gigLogoMap[item];
-          const isAmazon = item === "Amazon Flex";
           return (
             <div key={`${item}-${i}`} className="flex shrink-0 items-center justify-center px-5 md:px-8">
               {logoUrl ? (
                 <img
                   src={logoUrl}
                   alt={item}
-                  className={`h-7 md:h-10 w-auto opacity-80 hover:opacity-100 transition ${isAmazon ? "" : "max-w-[90px] md:max-w-[120px]"}`}
+                  className="h-7 md:h-10 w-auto object-contain opacity-80 hover:opacity-100 transition"
                   loading="lazy"
                 />
               ) : (
