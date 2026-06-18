@@ -90,21 +90,22 @@ function FleetPage() {
               <label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Category</label>
               <div className="flex flex-wrap gap-2">
                 {[
-                  { k: "economy", label: "Economy" },
-                  { k: "comfort", label: "Comfort" },
-                  { k: "xl", label: "XL" },
+                  { k: "sedan", label: "Sedans", tagline: "Great MPG · Uber & Lyft" },
+                  { k: "suv", label: "SUVs", tagline: "More Room · Comfort Rides" },
+                  { k: "xl", label: "XL Vehicles", tagline: "6+ Seats · UberXL & Lyft XL" },
                 ].map((c) => (
                   <button
                     key={c.k}
                     type="button"
                     onClick={() => toggleCat(c.k)}
-                    className={`px-4 py-2 rounded-lg text-sm border transition ${
+                    className={`text-left px-4 py-2 rounded-lg text-sm border transition ${
                       categories[c.k]
                         ? "bg-real-red text-white border-real-red"
                         : "bg-white text-foreground border-border hover:border-foreground/40"
                     }`}
                   >
-                    {c.label}
+                    <span className="block font-medium">{c.label}</span>
+                    <span className="block text-[10px] opacity-90 leading-tight">{c.tagline}</span>
                   </button>
                 ))}
               </div>
