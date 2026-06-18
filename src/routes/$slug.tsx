@@ -230,7 +230,7 @@ function CityPage() {
         </div>
       </section>
 
-      <section className="bg-soft py-8 md:py-10">
+      <section className="bg-white py-8 md:py-10">
         <div className="container-real text-center">
           <div className="text-[11px] font-semibold uppercase tracking-[0.25em] text-real-red">Eligible To Drive For</div>
         </div>
@@ -498,24 +498,25 @@ const gigLogoMap: Record<string, string> = {
 };
 
 function GigLogoMarquee({ items }: { items: string[] }) {
-  const doubled = [...items, ...items];
+  // Quadruple for a seamless, continuous loop regardless of viewport width
+  const repeated = [...items, ...items, ...items, ...items];
   return (
     <div className="mt-5 overflow-hidden">
       <div className="flex w-max animate-marquee">
-        {doubled.map((item, i) => {
+        {repeated.map((item, i) => {
           const logoUrl = gigLogoMap[item];
           const isAmazon = item === "Amazon Flex";
           return (
-            <div key={`${item}-${i}`} className="flex items-center justify-center px-6 md:px-10">
+            <div key={`${item}-${i}`} className="flex shrink-0 items-center justify-center px-5 md:px-8">
               {logoUrl ? (
                 <img
                   src={logoUrl}
                   alt={item}
-                  className={`h-10 md:h-14 w-auto opacity-80 hover:opacity-100 transition ${isAmazon ? "" : "max-w-[120px] md:max-w-[160px]"}`}
+                  className={`h-7 md:h-10 w-auto opacity-80 hover:opacity-100 transition ${isAmazon ? "" : "max-w-[90px] md:max-w-[120px]"}`}
                   loading="lazy"
                 />
               ) : (
-                <span className="text-xl md:text-2xl font-semibold text-foreground">{item}</span>
+                <span className="text-base md:text-xl font-semibold text-foreground">{item}</span>
               )}
             </div>
           );
