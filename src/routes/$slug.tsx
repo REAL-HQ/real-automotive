@@ -68,6 +68,15 @@ const defaultBenefits: Benefit[] = [
   { icon: "zap", label: "Same-Day Approval" },
 ];
 
+const heroBenefits = [
+  { icon: Zap, label: "Same-Day Approvals" },
+  { icon: InfinityIcon, label: "Unlimited Miles" },
+  { icon: CreditCard, label: "No Credit Check" },
+  { icon: Wrench, label: "Maintenance Handled" },
+  { icon: Shield, label: "Insurance Options" },
+  { icon: Calendar, label: "Flexible Weekly Terms" },
+];
+
 const defaultHowItWorks: Step[] = [
   { n: "01", title: "Apply", body: "Share your contact details and rental timeline so we can start your quote." },
   { n: "02", title: "Same Day Approval", body: "Our team reviews your application quickly and confirms the best next steps." },
