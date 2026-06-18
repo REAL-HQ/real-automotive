@@ -6,6 +6,7 @@ import {
   Briefcase,
   CalendarClock,
   Car,
+  ChevronDown,
   Check,
   Clock3,
   FileText,
@@ -334,6 +335,7 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+  const [durationOpen, setDurationOpen] = useState(false);
 
   const utms = useMemo(() => {
     if (typeof window === "undefined") return {};
@@ -447,16 +449,29 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
               </button>
             ))}
           </div>
-          <div className="mt-3">
-            <select
-              value={form.rental_length}
-              onChange={(event) => update("rental_length", event.target.value)}
-              className="select-soft w-full rounded-lg border border-border bg-white px-3 py-2 text-sm text-foreground"
+          <div className="relative mt-3">
+            <button
+              type="button"
+              onClick={() => setDurationOpen((open) => !open)}
+              className="flex w-full items-center justify-between rounded-lg border border-border bg-white px-3 py-2 text-left text-sm text-foreground"
             >
-              {(form.rental_mode === "weekly" ? WEEKLY_OPTIONS : MONTHLY_OPTIONS).map((option) => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
+              <span>{form.rental_length}</span>
+              <ChevronDown className="mr-2 h-4 w-4 text-muted-foreground" />
+            </button>
+            {durationOpen && (
+              <div className="absolute left-0 right-0 top-[calc(100%+0.35rem)] z-30 overflow-hidden rounded-lg border border-border bg-white py-1 text-sm text-foreground shadow-xl">
+                {(form.rental_mode === "weekly" ? WEEKLY_OPTIONS : MONTHLY_OPTIONS).map((option) => (
+                  <button
+                    key={option}
+                    type="button"
+                    onClick={() => { update("rental_length", option); setDurationOpen(false); }}
+                    className={`block w-full px-3 py-2 text-left hover:bg-soft ${form.rental_length === option ? "font-semibold text-real-red" : "text-foreground"}`}
+                  >
+                    {option}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           {errors.rental_length && <div className="mt-2 text-sm text-real-red">{errors.rental_length}</div>}
         </div>
