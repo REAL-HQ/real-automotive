@@ -206,7 +206,9 @@ function CityPage() {
             </button>
           </FadeUp>
           <FadeUp delay={80}>
-            <QuoteFormCard site={site} market={market} compact />
+            <div id="quote-form" className="scroll-mt-24">
+              <QuoteFormCard site={site} market={market} compact />
+            </div>
           </FadeUp>
         </div>
       </section>
@@ -237,20 +239,6 @@ function CityPage() {
         </div>
       </section>
 
-      <section id="quote-form" className="bg-white py-14 md:py-20 scroll-mt-24">
-        <div className="container-real grid items-start gap-10 lg:grid-cols-[0.95fr_1.05fr]">
-          <FadeUp>
-            <div className="text-[11px] font-semibold uppercase tracking-[0.25em] text-real-red">Step 1 Of 2</div>
-            <h2 className="mt-4 text-3xl md:text-5xl">Get Your {site.title} Quote.</h2>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg">
-              Save your spot now. We collect only the basics here, then Step 2 finishes your driver profile.
-            </p>
-          </FadeUp>
-          <FadeUp delay={80}>
-            <QuoteFormCard site={site} market={market} />
-          </FadeUp>
-        </div>
-      </section>
 
       <section className="bg-soft py-14 md:py-20">
         <div className="container-real">
