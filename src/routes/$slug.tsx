@@ -229,7 +229,7 @@ function CityPage() {
         <div className="container-real text-center">
           <div className="text-[11px] font-semibold uppercase tracking-[0.25em] text-real-red">Eligible To Drive For</div>
           <div className="mt-5 flex flex-wrap items-center justify-center gap-3 md:gap-4">
-            {gigItems.map((item) => <GigLogo key={item} label={item} />)}
+            <GigLogoMarquee items={gigItems} />
           </div>
           <p className="mt-5 text-xs leading-relaxed text-muted-foreground whitespace-nowrap">
             {asString(gigConfig.disclaimer) ?? "REAL AUTOMOTIVE is not affiliated with Uber, Lyft, DoorDash, Instacart, or Amazon Flex. Platform eligibility may vary by location and platform rules."}
@@ -498,10 +498,32 @@ function Field({ label, value, error, onChange, type = "text" }: { label: string
   );
 }
 
-function GigLogo({ label }: { label: string }) {
+const gigLogoMap: Record<string, string> = {
+  Uber: "https://cdn.simpleicons.org/uber/000000",
+  Lyft: "https://cdn.simpleicons.org/lyft/FF00BF",
+  DoorDash: "https://cdn.simpleicons.org/doordash/FF3008",
+  Instacart: "https://cdn.simpleicons.org/instacart/FF8200",
+  "Amazon Flex": "https://cdn.simpleicons.org/amazon/FF9900",
+};
+
+function GigLogoMarquee({ items }: { items: string[] }) {
+  const doubled = [...items, ...items];
   return (
-    <div className="flex min-h-14 min-w-32 items-center justify-center border border-border bg-white px-5 py-3 text-base font-semibold text-foreground shadow-sm">
-      {label}
+    <div className="mt-5 overflow-hidden">
+      <div className="flex w-max animate-marquee">
+        {doubled.map((item, i) => {
+          const logoUrl = gigLogoMap[item];
+          return (
+            <div key={`${item}-${i}`} className="flex items-center justify-center px-6 md:px-8">
+              {logoUrl ? (
+                <img src={logoUrl} alt={item} className="h-7 md:h-8 w-auto opacity-80 hover:opacity-100 transition" loading="lazy" />
+              ) : (
+                <span className="text-lg font-semibold text-foreground">{item}</span>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
