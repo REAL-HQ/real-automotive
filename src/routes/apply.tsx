@@ -109,7 +109,7 @@ function ApplyStep1() {
             <div className="max-w-xl mx-auto">
               <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase mb-3">Step 1 Of 2</div>
               <h1 className="text-3xl md:text-4xl font-semibold">Get Your Quote</h1>
-              <p className="mt-3 text-muted-foreground">Tell us a little about yourself and how long you need the car.</p>
+              <p className="mt-3 text-muted-foreground">Tell us a little about yourself to get started.</p>
             </div>
           </FadeUp>
 
