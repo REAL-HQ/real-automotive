@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Check } from "lucide-react";
+import { CheckCircle2, XCircle, MinusCircle } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
 import { FadeUp } from "./FadeUp";
@@ -60,6 +60,29 @@ export function ComparisonSection({ siteId }: { siteId?: string }) {
 
   const [colReal, colUber, colTrad] = data.columns;
 
+  const renderCell = (text: string, tone: "win" | "lose" | "neutral") => {
+    const Icon = tone === "win" ? CheckCircle2 : tone === "lose" ? XCircle : MinusCircle;
+    const iconClass =
+      tone === "win"
+        ? "text-green-600"
+        : tone === "lose"
+        ? "text-red-500/80"
+        : "text-muted-foreground/60";
+    return (
+      <span className="inline-flex items-center justify-center gap-2">
+        <Icon className={`w-[18px] h-[18px] shrink-0 ${iconClass}`} strokeWidth={2} />
+        <span>{text}</span>
+      </span>
+    );
+  };
+
+  const competitorTone = (text: string): "win" | "lose" | "neutral" => {
+    const t = text.toLowerCase().trim();
+    if (t === "no" || t.startsWith("restrictive") || t.startsWith("not ") || t.startsWith("often")) return "lose";
+    if (t === "yes" || t === "included" || t.startsWith("unlimited")) return "win";
+    return "neutral";
+  };
+
   return (
     <section className="bg-soft py-14 md:py-20">
       <div className="container-real">
@@ -70,47 +93,54 @@ export function ComparisonSection({ siteId }: { siteId?: string }) {
 
         <FadeUp delay={60}>
           <div className="overflow-x-auto -mx-4 px-4 md:mx-0 md:px-0">
-            <div className="min-w-[640px] rounded-2xl border border-border bg-white overflow-hidden">
+            <div className="min-w-[640px] rounded-2xl border border-border bg-white overflow-hidden shadow-sm">
               <table className="w-full border-collapse">
                 <thead>
                   <tr>
-                    <th className="text-left p-4 md:p-5 text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border border-r bg-white w-[28%]">
+                    <th className="text-left px-5 md:px-6 py-5 text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground border-b border-border border-r bg-white w-[28%]">
                       Feature
                     </th>
-                    <th className="p-4 md:p-5 text-center text-sm font-semibold text-white bg-real-red border-b border-real-red border-r w-[24%]">
+                    <th className="px-5 md:px-6 py-5 text-center text-sm font-bold uppercase tracking-wider text-white bg-real-red border-b border-real-red border-r w-[24%]">
                       {colReal}
                     </th>
-                    <th className="p-4 md:p-5 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border border-r bg-white w-[24%]">
+                    <th className="px-5 md:px-6 py-5 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground border-b border-border border-r bg-white w-[24%]">
                       {colUber}
                     </th>
-                    <th className="p-4 md:p-5 text-center text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border bg-white w-[24%]">
+                    <th className="px-5 md:px-6 py-5 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-muted-foreground border-b border-border bg-white w-[24%]">
                       {colTrad}
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {data.rows.map((row, i) => (
-                    <tr key={row.feature} className={`group transition-colors ${i % 2 === 1 ? "bg-soft/50 hover:bg-muted/60" : "bg-white hover:bg-muted/40"}`}>
-                      <td className="p-4 md:p-5 text-sm font-medium text-foreground border-b border-border border-r">
+                    <tr
+                      key={row.feature}
+                      className={`group transition-colors ${
+                        i % 2 === 1 ? "bg-soft/40" : "bg-white"
+                      } hover:bg-muted/70`}
+                    >
+                      <td className="px-5 md:px-6 py-5 md:py-6 text-[15px] font-semibold text-foreground border-b border-border border-r">
                         {row.feature}
                       </td>
                       <td
-                        className={`p-4 md:p-5 text-center text-sm border-b border-border border-r transition-colors ${
-                          row.real_is_win ? "bg-real-red/[0.04] group-hover:bg-real-red/[0.06]" : ""
+                        className={`px-5 md:px-6 py-5 md:py-6 text-center text-[15px] border-b border-border border-r transition-colors ${
+                          row.real_is_win
+                            ? "bg-real-red/[0.05] group-hover:bg-real-red/[0.09]"
+                            : "group-hover:bg-real-red/[0.04]"
                         }`}
                       >
-                        <span className="inline-flex items-center justify-center gap-1.5">
+                        <span className="inline-flex items-center justify-center gap-2 font-semibold text-foreground">
                           {row.real_is_win && (
-                            <Check className="w-4 h-4 text-green-600 shrink-0" strokeWidth={2.5} />
+                            <CheckCircle2 className="w-[18px] h-[18px] text-real-red shrink-0" strokeWidth={2} />
                           )}
-                          <span className="font-medium text-foreground">{row.real}</span>
+                          <span>{row.real}</span>
                         </span>
                       </td>
-                      <td className="p-4 md:p-5 text-center text-sm text-muted-foreground border-b border-border border-r">
-                        {row.uberlyft}
+                      <td className="px-5 md:px-6 py-5 md:py-6 text-center text-[14px] text-muted-foreground border-b border-border border-r">
+                        {renderCell(row.uberlyft, competitorTone(row.uberlyft))}
                       </td>
-                      <td className="p-4 md:p-5 text-center text-sm text-muted-foreground border-b border-border">
-                        {row.traditional}
+                      <td className="px-5 md:px-6 py-5 md:py-6 text-center text-[14px] text-muted-foreground border-b border-border">
+                        {renderCell(row.traditional, competitorTone(row.traditional))}
                       </td>
                     </tr>
                   ))}
