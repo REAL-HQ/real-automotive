@@ -55,7 +55,7 @@ export function LocationsSection() {
   if (cards.length === 0) return null;
 
   return (
-    <section className="bg-white py-14 md:py-20">
+    <section className="bg-white pt-14 md:pt-20 pb-6 md:pb-8">
       <div className="container-real">
         <FadeUp className="mb-10 md:mb-12 flex items-end justify-between flex-wrap gap-4">
           <div>
