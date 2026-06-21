@@ -8,6 +8,7 @@ import { VehicleCard } from "@/components/site/VehicleCard";
 import { FadeUp } from "@/components/site/FadeUp";
 import { LocationsSection } from "@/components/site/LocationsSection";
 import { ComparisonSection } from "@/components/site/ComparisonSection";
+import { TrustedByDrivers } from "@/components/site/TrustedByDrivers";
 import heroBg from "@/assets/hero-bg.jpg";
 import fleetPartnerBg from "@/assets/fleet-partner.jpg";
 
@@ -84,7 +85,7 @@ function Index() {
               { label: "No Credit Check", Icon: Check },
               { label: "Insurance Options Available", Icon: Shield },
               { label: "Maintenance Included", Icon: Wrench },
-              { label: "High-Mileage Friendly", Icon: InfinityIcon },
+              { label: "Unlimited Miles", Icon: InfinityIcon },
               { label: "Same-Day Approval", Icon: Zap },
             ].map(({ label, Icon }) => (
               <span key={label} className="inline-flex items-center gap-2">
@@ -157,6 +158,8 @@ function Index() {
 
       <ComparisonSection />
 
+      <TrustedByDrivers />
+
       <section className="bg-soft py-10 md:py-16">
         <div className="container-real">
           <FadeUp className="text-center mb-8">
@@ -166,7 +169,7 @@ function Index() {
             {[
               { I: Shield, t: "Insurance Options Available", d: "Flexible insurance options are available so you can get covered and focus on driving." },
               { I: Wrench, t: "Maintenance Handled", d: "Routine maintenance is on us. You drive, we keep it running." },
-              { I: InfinityIcon, t: "High-Mileage Friendly", d: "Built for the long hours gig work demands. Your mileage terms are spelled out in your rental agreement." },
+              { I: InfinityIcon, t: "Unlimited Miles", d: "Drive as much as gig work demands — your unlimited mileage terms are spelled out in your rental agreement (Roamly-verified)." },
               { I: Briefcase, t: "Built For Gig Work", d: "Uber, Lyft, DoorDash, Instacart, Amazon Flex and more." },
               { I: CalendarDays, t: "Flexible Payments", d: "Choose a weekly or monthly payment schedule that fits your driving goals." },
               { I: BadgeCheck, t: "Flexible Rental Terms", d: "No annual commitment required. Stay flexible and stay on the road." },

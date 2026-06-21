@@ -192,6 +192,28 @@ function Partners() {
         </div>
       </section>
 
+      {/* Founder operator credibility */}
+      <section className="bg-white py-12 md:py-16">
+        <div className="container-real">
+          <FadeUp className="mx-auto max-w-3xl rounded-2xl border border-border bg-soft p-8 md:p-10 text-center">
+            <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">Operator Track Record</div>
+            <h2 className="mt-3 text-2xl md:text-3xl font-semibold leading-tight">
+              700+ Five-Star Rentals.
+            </h2>
+            <p className="mt-4 text-muted-foreground leading-relaxed">
+              Our founder has personally completed 700+ five-star rentals on Turo — a public,
+              verifiable track record of running rental vehicles safely, profitably, and at
+              scale. The same operating discipline runs the Real Automotive fleet your car
+              joins.
+            </p>
+            <p className="mt-3 text-xs text-muted-foreground/80">
+              Founder's personal Turo history. Turo is a separate travel-rental channel and
+              is not used for rideshare.
+            </p>
+          </FadeUp>
+        </div>
+      </section>
+
       {/* Benefit cards */}
       <section className="bg-soft py-20">
         <div className="container-real grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
