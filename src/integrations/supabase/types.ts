@@ -1050,28 +1050,40 @@ export type Database = {
       sites: {
         Row: {
           created_at: string
+          hero_image_url: string | null
           id: string
           is_published: boolean
           market_id: string | null
+          show_on_homepage: boolean
           slug: string
+          sort_order: number
+          status: string
           title: string
           updated_at: string
         }
         Insert: {
           created_at?: string
+          hero_image_url?: string | null
           id?: string
           is_published?: boolean
           market_id?: string | null
+          show_on_homepage?: boolean
           slug: string
+          sort_order?: number
+          status?: string
           title: string
           updated_at?: string
         }
         Update: {
           created_at?: string
+          hero_image_url?: string | null
           id?: string
           is_published?: boolean
           market_id?: string | null
+          show_on_homepage?: boolean
           slug?: string
+          sort_order?: number
+          status?: string
           title?: string
           updated_at?: string
         }
@@ -1198,6 +1210,65 @@ export type Database = {
             columns: ["partner_id"]
             isOneToOne: false
             referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      waitlist: {
+        Row: {
+          created_at: string
+          driver_status: string | null
+          email: string
+          full_name: string
+          gclid: string | null
+          id: string
+          market_id: string | null
+          phone: string | null
+          source: string
+          utm_campaign: string | null
+          utm_content: string | null
+          utm_medium: string | null
+          utm_source: string | null
+          utm_term: string | null
+        }
+        Insert: {
+          created_at?: string
+          driver_status?: string | null
+          email: string
+          full_name: string
+          gclid?: string | null
+          id?: string
+          market_id?: string | null
+          phone?: string | null
+          source?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Update: {
+          created_at?: string
+          driver_status?: string | null
+          email?: string
+          full_name?: string
+          gclid?: string | null
+          id?: string
+          market_id?: string | null
+          phone?: string | null
+          source?: string
+          utm_campaign?: string | null
+          utm_content?: string | null
+          utm_medium?: string | null
+          utm_source?: string | null
+          utm_term?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "waitlist_market_id_fkey"
+            columns: ["market_id"]
+            isOneToOne: false
+            referencedRelation: "markets"
             referencedColumns: ["id"]
           },
         ]
