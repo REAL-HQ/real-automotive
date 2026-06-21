@@ -97,6 +97,18 @@ function Index() {
         </div>
       </section>
 
+      <section className="bg-white py-8 md:py-10">
+        <div className="container-real text-center">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.25em] text-real-red">Eligible To Drive For</div>
+        </div>
+        <GigLogoMarquee items={["Uber", "Lyft", "DoorDash", "Instacart", "Amazon Flex", "UberEats", "Grubhub"]} />
+        <div className="container-real text-center">
+          <p className="mt-5 text-xs leading-relaxed text-muted-foreground whitespace-nowrap">
+            REAL AUTOMOTIVE is not affiliated with Uber, Lyft, DoorDash, Instacart, or Amazon Flex. Platform eligibility may vary by location and platform rules.
+          </p>
+        </div>
+      </section>
+
       <section className="bg-soft py-10 md:py-16">
         <div className="container-real">
           <FadeUp className="mb-6 flex items-end justify-between flex-wrap gap-4">
