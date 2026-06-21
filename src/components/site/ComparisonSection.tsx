@@ -122,10 +122,10 @@ export function ComparisonSection({ siteId }: { siteId?: string }) {
                         {row.feature}
                       </td>
                       <td
-                        className={`px-5 md:px-6 py-5 md:py-6 text-center text-[15px] border-b border-border border-r transition-colors ${
+                        className={`px-5 md:px-6 py-5 md:py-6 text-center text-[15px] border-b border-border border-r bg-real-red/[0.08] transition-colors ${
                           row.real_is_win
-                            ? "bg-real-red/[0.05] group-hover:bg-real-red/[0.09]"
-                            : "group-hover:bg-real-red/[0.04]"
+                            ? "group-hover:bg-real-red/[0.12]"
+                            : "group-hover:bg-real-red/[0.10]"
                         }`}
                       >
                         <span className={`inline-flex items-center justify-center gap-2 font-semibold ${row.real_is_win && row.real !== "Yes" && row.real !== "No" ? "text-green-600" : "text-foreground"}`}>
