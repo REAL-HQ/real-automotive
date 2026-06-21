@@ -191,6 +191,37 @@ function ApplyStep2() {
                 />
               </div>
 
+              <div className="mt-6">
+                <label className="text-[10px] uppercase tracking-wider text-muted-foreground">How Long Do You Want To Rent?</label>
+                <div className="mt-2 inline-flex rounded-lg border border-border bg-white p-1">
+                  {(["weekly", "monthly"] as const).map((mode) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => {
+                        setRentalMode(mode);
+                        setRentalLength(mode === "weekly" ? "1 Week" : "1 Month");
+                      }}
+                      className={`rounded-md px-4 py-1.5 text-sm capitalize transition ${rentalMode === mode ? "bg-real-red text-white" : "text-muted-foreground hover:text-foreground"}`}
+                    >
+                      {mode === "weekly" ? "By The Week" : "By The Month"}
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-3">
+                  <Select value={rentalLength} onValueChange={setRentalLength}>
+                    <SelectTrigger className="w-full bg-white border-border text-sm">
+                      <SelectValue placeholder="Select duration" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(rentalMode === "weekly" ? WEEKLY_OPTIONS : MONTHLY_OPTIONS).map((option) => (
+                        <SelectItem key={option} value={option}>{option}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
               <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Pickup Date</label>
