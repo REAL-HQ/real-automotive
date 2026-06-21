@@ -86,6 +86,7 @@ function CityCard({ card, onWaitlist }: { card: LocationCard; onWaitlist: () => 
   const isLive = card.status === "live";
   const inner = (
     <div className="relative w-[220px] md:w-[260px] h-[300px] md:h-[340px] rounded-xl overflow-hidden shrink-0 snap-start group cursor-pointer">
+      <div aria-hidden className="absolute inset-0 bg-neutral-800" />
       <img
         src={card.hero_image_url ?? ""}
         alt={`${card.city} city skyline`}
@@ -93,7 +94,6 @@ function CityCard({ card, onWaitlist }: { card: LocationCard; onWaitlist: () => 
         onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none"; }}
         className={`absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 ${isLive ? "" : "grayscale-[40%] brightness-90"}`}
       />
-      <div aria-hidden className="absolute inset-0 bg-neutral-800" />
       <div aria-hidden className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent" />
       <div className="absolute top-3 right-3">
         {isLive ? (
