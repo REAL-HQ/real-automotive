@@ -21,6 +21,8 @@ export const Route = createFileRoute("/apply/step2")({
 
 const PLATFORMS = ["Uber", "Lyft", "DoorDash", "Instacart", "Amazon Flex", "Uber Eats"];
 const TRIP_RANGES = ["0 - 100", "100 - 500", "500 - 1,000", "1,000 - 5,000", "5,000+"];
+const WEEKLY_OPTIONS = ["1 Week", "2 Weeks", "3 Weeks", "4+ Weeks"];
+const MONTHLY_OPTIONS = ["1 Month", "2 Months", "3+ Months"];
 
 const TIME_OPTIONS = (() => {
   const out: string[] = [];
@@ -41,6 +43,8 @@ function ApplyStep2() {
   const [platforms, setPlatforms] = useState<string[]>([]);
   const [trips, setTrips] = useState("");
   const [rating, setRating] = useState("");
+  const [rentalMode, setRentalMode] = useState<"weekly" | "monthly">("weekly");
+  const [rentalLength, setRentalLength] = useState<string>("1 Week");
   const [pickupDate, setPickupDate] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   const [returnDate, setReturnDate] = useState("");
@@ -76,6 +80,8 @@ function ApplyStep2() {
         platforms,
         trips_completed: trips,
         rating: rating ? Number(rating) : null,
+        rental_term: rentalMode,
+        rental_length: rentalLength,
         pickup_date: pickupDate,
         pickup_time: pickupTime,
         return_date: returnDate,
@@ -183,6 +189,37 @@ function ApplyStep2() {
                   placeholder="e.g. 4.95"
                   className="mt-2 w-full bg-white border border-border rounded-lg px-3 py-2 text-sm"
                 />
+              </div>
+
+              <div className="mt-6">
+                <label className="text-[10px] uppercase tracking-wider text-muted-foreground">How Long Do You Want To Rent?</label>
+                <div className="mt-2 inline-flex rounded-lg border border-border bg-white p-1">
+                  {(["weekly", "monthly"] as const).map((mode) => (
+                    <button
+                      key={mode}
+                      type="button"
+                      onClick={() => {
+                        setRentalMode(mode);
+                        setRentalLength(mode === "weekly" ? "1 Week" : "1 Month");
+                      }}
+                      className={`rounded-md px-4 py-1.5 text-sm capitalize transition ${rentalMode === mode ? "bg-real-red text-white" : "text-muted-foreground hover:text-foreground"}`}
+                    >
+                      {mode === "weekly" ? "By The Week" : "By The Month"}
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-3">
+                  <Select value={rentalLength} onValueChange={setRentalLength}>
+                    <SelectTrigger className="w-full bg-white border-border text-sm">
+                      <SelectValue placeholder="Select duration" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {(rentalMode === "weekly" ? WEEKLY_OPTIONS : MONTHLY_OPTIONS).map((option) => (
+                        <SelectItem key={option} value={option}>{option}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
 
               <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">

@@ -345,7 +345,6 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
-  const [durationOpen, setDurationOpen] = useState(false);
 
   const utms = useMemo(() => {
     if (typeof window === "undefined") return {};
@@ -374,7 +373,6 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
     if (!z.string().email().safeParse(form.email).success) next.email = "Invalid Email";
     if (!/^\d{7,}$/.test(form.phone.replace(/\D/g, ""))) next.phone = "Invalid Phone";
     if (!form.platform_status) next.platform_status = "Required";
-    if (!form.rental_length) next.rental_length = "Required";
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -440,47 +438,6 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
             })}
           </div>
           {errors.platform_status && <div className="mt-2 text-sm text-real-red">{errors.platform_status}</div>}
-        </div>
-
-        <div>
-          <label className="text-[10px] uppercase tracking-wider text-muted-foreground">How Long Do You Want To Rent?</label>
-          <div className="mt-2 inline-flex rounded-lg border border-border bg-white p-1">
-            {(["weekly", "monthly"] as const).map((mode) => (
-              <button
-                key={mode}
-                type="button"
-                onClick={() => update("rental_mode", mode)}
-                className={`rounded-md px-4 py-1.5 text-sm capitalize transition ${form.rental_mode === mode ? "bg-real-red text-white" : "text-muted-foreground hover:text-foreground"}`}
-              >
-                {mode === "weekly" ? "By The Week" : "By The Month"}
-              </button>
-            ))}
-          </div>
-          <div className="relative mt-3">
-            <button
-              type="button"
-              onClick={() => setDurationOpen((open) => !open)}
-              className="flex w-full items-center justify-between rounded-lg border border-border bg-white px-3 py-2 text-left text-sm text-foreground"
-            >
-              <span>{form.rental_length}</span>
-              <ChevronDown className="mr-2 h-4 w-4 text-muted-foreground" />
-            </button>
-            {durationOpen && (
-              <div className="absolute left-0 right-0 top-[calc(100%+0.35rem)] z-30 overflow-hidden rounded-lg border border-border bg-white py-1 text-sm text-foreground shadow-xl">
-                {(form.rental_mode === "weekly" ? WEEKLY_OPTIONS : MONTHLY_OPTIONS).map((option) => (
-                  <button
-                    key={option}
-                    type="button"
-                    onClick={() => { update("rental_length", option); setDurationOpen(false); }}
-                    className={`block w-full px-3 py-2 text-left hover:bg-soft ${form.rental_length === option ? "font-semibold text-real-red" : "text-foreground"}`}
-                  >
-                    {option}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          {errors.rental_length && <div className="mt-2 text-sm text-real-red">{errors.rental_length}</div>}
         </div>
       </div>
       <button
