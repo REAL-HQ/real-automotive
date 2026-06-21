@@ -55,9 +55,9 @@ export function LocationsSection() {
   if (cards.length === 0) return null;
 
   return (
-    <section className="bg-white py-6 md:py-10">
+    <section className="bg-white py-4 md:py-6">
       <div className="container-real">
-        <FadeUp className="mb-4 flex items-end justify-between flex-wrap gap-4">
+        <FadeUp className="mb-3 flex items-end justify-between flex-wrap gap-4">
           <div>
             <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">Our Locations</div>
             <h2 className="mt-2 text-3xl md:text-5xl">Where We Operate.</h2>
