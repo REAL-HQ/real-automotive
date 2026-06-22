@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PartnerRouteImport } from './routes/partner'
@@ -25,6 +26,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as FleetIdRouteImport } from './routes/fleet.$id'
 import { Route as ApplyStep2RouteImport } from './routes/apply.step2'
 
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortalRoute = PortalRouteImport.update({
   id: '/portal',
   path: '/portal',
@@ -115,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
+  '/privacy': typeof PrivacyRoute
   '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
 }
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
+  '/privacy': typeof PrivacyRoute
   '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
 }
@@ -150,6 +158,7 @@ export interface FileRoutesById {
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
+  '/privacy': typeof PrivacyRoute
   '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
 }
@@ -169,6 +178,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/partners'
     | '/portal'
+    | '/privacy'
     | '/apply/step2'
     | '/fleet/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -186,6 +196,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/partners'
     | '/portal'
+    | '/privacy'
     | '/apply/step2'
     | '/fleet/$id'
   id:
@@ -203,6 +214,7 @@ export interface FileRouteTypes {
     | '/partner'
     | '/partners'
     | '/portal'
+    | '/privacy'
     | '/apply/step2'
     | '/fleet/$id'
   fileRoutesById: FileRoutesById
@@ -221,10 +233,18 @@ export interface RootRouteChildren {
   PartnerRoute: typeof PartnerRoute
   PartnersRoute: typeof PartnersRoute
   PortalRoute: typeof PortalRoute
+  PrivacyRoute: typeof PrivacyRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portal': {
       id: '/portal'
       path: '/portal'
@@ -367,17 +387,8 @@ const rootRouteChildren: RootRouteChildren = {
   PartnerRoute: PartnerRoute,
   PartnersRoute: PartnersRoute,
   PortalRoute: PortalRoute,
+  PrivacyRoute: PrivacyRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
