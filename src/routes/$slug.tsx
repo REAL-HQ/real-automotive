@@ -199,8 +199,8 @@ function CityPage() {
         <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-black/75 via-black/60 to-black/85" />
         <div className="container-real grid items-center gap-10 lg:grid-cols-[1fr_440px]">
           <FadeUp>
-            <div className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.25em] text-real-red">
-              <MapPin className="h-3.5 w-3.5" /> {eyebrow}
+            <div className="inline-flex items-center gap-2 rounded-full border border-real-red/40 bg-real-red/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.25em] text-white backdrop-blur-sm">
+              <MapPin className="h-3.5 w-3.5 text-real-red" /> {eyebrow}
             </div>
             <h1 className="mt-5 max-w-4xl text-[42px] font-semibold leading-[1.05] text-white md:text-[70px]">
               {headline}
