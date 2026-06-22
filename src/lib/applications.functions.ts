@@ -43,7 +43,7 @@ export const submitApplication = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row, error } = await supabaseAdmin
       .from("applications")
-      .insert({ ...data, status: "pending" })
+      .insert({ ...data, status: "new" })
       .select("id")
       .single();
 
