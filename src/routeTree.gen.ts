@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SmsConsentRouteImport } from './routes/sms-consent'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PartnersRouteImport } from './routes/partners'
@@ -30,6 +31,11 @@ import { Route as ApplyStep2RouteImport } from './routes/apply.step2'
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SmsConsentRoute = SmsConsentRouteImport.update({
+  id: '/sms-consent',
+  path: '/sms-consent',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -128,6 +134,7 @@ export interface FileRoutesByFullPath {
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
   '/privacy': typeof PrivacyRoute
+  '/sms-consent': typeof SmsConsentRoute
   '/terms': typeof TermsRoute
   '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
@@ -147,6 +154,7 @@ export interface FileRoutesByTo {
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
   '/privacy': typeof PrivacyRoute
+  '/sms-consent': typeof SmsConsentRoute
   '/terms': typeof TermsRoute
   '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
   '/privacy': typeof PrivacyRoute
+  '/sms-consent': typeof SmsConsentRoute
   '/terms': typeof TermsRoute
   '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
@@ -188,6 +197,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/portal'
     | '/privacy'
+    | '/sms-consent'
     | '/terms'
     | '/apply/step2'
     | '/fleet/$id'
@@ -207,6 +217,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/portal'
     | '/privacy'
+    | '/sms-consent'
     | '/terms'
     | '/apply/step2'
     | '/fleet/$id'
@@ -226,6 +237,7 @@ export interface FileRouteTypes {
     | '/partners'
     | '/portal'
     | '/privacy'
+    | '/sms-consent'
     | '/terms'
     | '/apply/step2'
     | '/fleet/$id'
@@ -246,6 +258,7 @@ export interface RootRouteChildren {
   PartnersRoute: typeof PartnersRoute
   PortalRoute: typeof PortalRoute
   PrivacyRoute: typeof PrivacyRoute
+  SmsConsentRoute: typeof SmsConsentRoute
   TermsRoute: typeof TermsRoute
 }
 
@@ -256,6 +269,13 @@ declare module '@tanstack/react-router' {
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sms-consent': {
+      id: '/sms-consent'
+      path: '/sms-consent'
+      fullPath: '/sms-consent'
+      preLoaderRoute: typeof SmsConsentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -408,6 +428,7 @@ const rootRouteChildren: RootRouteChildren = {
   PartnersRoute: PartnersRoute,
   PortalRoute: PortalRoute,
   PrivacyRoute: PrivacyRoute,
+  SmsConsentRoute: SmsConsentRoute,
   TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
