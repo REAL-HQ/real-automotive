@@ -349,6 +349,7 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
     platform_status: "",
     rental_mode: "weekly",
     rental_length: "1 Week",
+    sms_consent: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
