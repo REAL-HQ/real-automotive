@@ -456,6 +456,24 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
           {errors.platform_status && <div className="mt-2 text-sm text-real-red">{errors.platform_status}</div>}
         </div>
       </div>
+      <label className="mt-5 flex items-start gap-2.5 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={form.sms_consent}
+          onChange={(e) => update("sms_consent", e.target.checked)}
+          className="mt-0.5 h-4 w-4 accent-real-red shrink-0"
+        />
+        <span className="text-[11px] leading-snug text-muted-foreground">
+          By checking this box, I agree to receive SMS text messages from REAL AUTOMOTIVE about my application, rental updates, and scheduling at the number provided. Message and data rates may apply. Reply STOP to opt out. See our{" "}
+          <Link to="/sms-consent" className="underline hover:text-foreground">SMS Consent</Link> and{" "}
+          <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>.
+        </span>
+      </label>
+      <p className="mt-3 text-[11px] leading-snug text-muted-foreground">
+        By clicking Continue, you agree to our{" "}
+        <Link to="/terms" className="underline hover:text-foreground">Terms</Link> and{" "}
+        <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>.
+      </p>
       <button
         type="button"
         onClick={submit}
