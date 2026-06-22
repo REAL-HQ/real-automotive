@@ -14,11 +14,16 @@ import {
   Infinity as InfinityIcon,
   KeyRound,
   MapPin,
+  Phone,
   Shield,
   Sparkles,
   UserCheck,
   Wrench,
   Zap,
+  IdCard,
+  CreditCard,
+  Smartphone,
+  ShieldCheck,
 } from "lucide-react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -28,6 +33,7 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 import { FadeUp } from "@/components/site/FadeUp";
 import { ComparisonSection } from "@/components/site/ComparisonSection";
 import { TrustedByDrivers } from "@/components/site/TrustedByDrivers";
+import { StickyCallBar } from "@/components/site/StickyCallBar";
 import heroBg from "@/assets/hero-bg.jpg";
 import sedanImg from "@/assets/cars/accord.jpg.asset.json";
 import suvImg from "@/assets/cars/crv.jpg.asset.json";
@@ -97,6 +103,7 @@ type QuoteForm = {
   platform_status: (typeof PLATFORM_STATUSES)[number] | "";
   rental_mode: "weekly" | "monthly";
   rental_length: string;
+  sms_consent: boolean;
 };
 
 export const Route = createFileRoute("/$slug")({
@@ -314,6 +321,12 @@ function CityPage() {
 
       <TrustedByDrivers siteId={site.id} />
 
+      <WhatYouNeedSection />
+
+      <ServiceAreaSection cityLabel={cityLabel} city={site.title} />
+
+      <CityFAQSection cityLabel={cityLabel} content={content} />
+
       <section className="bg-black py-16 text-center text-white md:py-20">
         <div className="container-real">
           <FadeUp>
@@ -329,6 +342,8 @@ function CityPage() {
           </FadeUp>
         </div>
       </section>
+      <div className="h-20 sm:hidden" aria-hidden />
+      <StickyCallBar onApplyClick={scrollToForm} />
     </SiteLayout>
   );
 }
@@ -342,6 +357,7 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
     platform_status: "",
     rental_mode: "weekly",
     rental_length: "1 Week",
+    sms_consent: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -440,6 +456,24 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
           {errors.platform_status && <div className="mt-2 text-sm text-real-red">{errors.platform_status}</div>}
         </div>
       </div>
+      <label className="mt-5 flex items-start gap-2.5 cursor-pointer">
+        <input
+          type="checkbox"
+          checked={form.sms_consent}
+          onChange={(e) => update("sms_consent", e.target.checked)}
+          className="mt-0.5 h-4 w-4 accent-real-red shrink-0"
+        />
+        <span className="text-[11px] leading-snug text-muted-foreground">
+          By checking this box, I agree to receive SMS text messages from REAL AUTOMOTIVE about my application, rental updates, and scheduling at the number provided. Message and data rates may apply. Reply STOP to opt out. See our{" "}
+          <Link to="/sms-consent" className="underline hover:text-foreground">SMS Consent</Link> and{" "}
+          <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>.
+        </span>
+      </label>
+      <p className="mt-3 text-[11px] leading-snug text-muted-foreground">
+        By clicking Continue, you agree to our{" "}
+        <Link to="/terms" className="underline hover:text-foreground">Terms</Link> and{" "}
+        <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>.
+      </p>
       <button
         type="button"
         onClick={submit}
@@ -523,4 +557,115 @@ function interpolate(value: string, site: Site, market: Market | null) {
     .replaceAll("{city}", site.title)
     .replaceAll("{State}", market?.state ?? "")
     .replaceAll("{state}", market?.state ?? "");
+}
+
+function WhatYouNeedSection() {
+  const items = [
+    { Icon: IdCard, title: "Valid Driver's License", body: "Active U.S. driver's license, 21 or older. Out-of-state licenses welcome." },
+    { Icon: CreditCard, title: "Refundable Deposit", body: "Standard deposit due at pickup. Held against damage and returned at end of rental." },
+    { Icon: Smartphone, title: "Smartphone & Gig Account", body: "Active or pending account with Uber, Lyft, DoorDash, Instacart, or similar." },
+    { Icon: ShieldCheck, title: "Clean Recent Record", body: "Reasonable driving history. No major violations in the last 3 years." },
+  ];
+  return (
+    <section className="bg-white py-14 md:py-20">
+      <div className="container-real">
+        <FadeUp className="text-center max-w-2xl mx-auto">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.25em] text-real-red">What You'll Need To Apply</div>
+          <h2 className="mt-3 text-3xl md:text-5xl">Quick Checklist Before You Apply.</h2>
+          <p className="mt-4 text-muted-foreground">Have these ready and most drivers are approved the same day.</p>
+        </FadeUp>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {items.map(({ Icon, title, body }, i) => (
+            <FadeUp key={title} delay={i * 60}>
+              <div className="h-full rounded-2xl border border-border bg-soft p-6">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-xl bg-real-red/10 text-real-red">
+                  <Icon className="h-6 w-6" strokeWidth={1.75} />
+                </div>
+                <div className="mt-5 text-lg font-semibold">{title}</div>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
+              </div>
+            </FadeUp>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ServiceAreaSection({ cityLabel, city }: { cityLabel: string; city: string }) {
+  return (
+    <section className="bg-soft py-14 md:py-16 border-y border-border">
+      <div className="container-real grid items-center gap-8 md:grid-cols-[auto_1fr_auto]">
+        <FadeUp>
+          <div className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-real-red text-white">
+            <MapPin className="h-7 w-7" strokeWidth={1.75} />
+          </div>
+        </FadeUp>
+        <FadeUp>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.25em] text-real-red">Service Area</div>
+          <h2 className="mt-2 text-2xl md:text-3xl font-semibold">Serving {cityLabel} And Surrounding Cities.</h2>
+          <p className="mt-3 text-muted-foreground max-w-2xl leading-relaxed">
+            Pickup and support based in {city}. We rent to gig drivers across the wider metro area — call us to confirm coverage in your neighborhood.
+          </p>
+        </FadeUp>
+        <FadeUp>
+          <a
+            href="tel:+18135550100"
+            className="inline-flex items-center gap-2 rounded-lg border border-real-red bg-white px-5 py-3 text-sm font-semibold text-real-red transition hover:bg-real-red hover:text-white"
+          >
+            <Phone className="h-4 w-4" strokeWidth={2.25} /> (813) 555-0100
+          </a>
+        </FadeUp>
+      </div>
+    </section>
+  );
+}
+
+type FaqItem = { q: string; a: string };
+
+function CityFAQSection({ cityLabel, content }: { cityLabel: string; content: ContentMap }) {
+  const defaults: FaqItem[] = [
+    { q: "Do I need good credit to qualify?", a: "No. We don't run a credit check. Approval is based on your driving record and gig-platform eligibility." },
+    { q: "How fast can I be on the road?", a: "Most drivers are approved the same day and picking up a vehicle within 24 to 48 hours." },
+    { q: "Is insurance included?", a: "Insurance options are available with every rental. Our team will walk you through what's included before you sign." },
+    { q: "Are miles unlimited?", a: "Yes. Drive as many miles as you need — there are no per-mile fees." },
+    { q: "What if the car needs maintenance?", a: "Routine maintenance is included. If something comes up, we handle it so you can keep earning." },
+    { q: `Do you operate in ${cityLabel}?`, a: `Yes. We support gig drivers throughout the ${cityLabel} metro area. Call us to confirm pickup near you.` },
+  ];
+  const items = arrayOfObjects<FaqItem>(content.faq, defaults);
+  return (
+    <section className="bg-white py-14 md:py-20">
+      <div className="container-real max-w-3xl">
+        <FadeUp className="text-center">
+          <div className="text-[11px] font-semibold uppercase tracking-[0.25em] text-real-red">FAQ</div>
+          <h2 className="mt-3 text-3xl md:text-5xl">Common Questions From {cityLabel} Drivers.</h2>
+        </FadeUp>
+        <div className="mt-10 divide-y divide-border rounded-2xl border border-border bg-white">
+          {items.map((item, i) => (
+            <FaqRow key={`${item.q}-${i}`} item={item} defaultOpen={i === 0} />
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FaqRow({ item, defaultOpen = false }: { item: FaqItem; defaultOpen?: boolean }) {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left transition hover:bg-soft"
+        aria-expanded={open}
+      >
+        <span className="text-base font-semibold text-foreground">{item.q}</span>
+        <ChevronDown className={`h-5 w-5 shrink-0 text-real-red transition-transform ${open ? "rotate-180" : ""}`} strokeWidth={2} />
+      </button>
+      {open && (
+        <div className="px-5 pb-5 text-sm leading-relaxed text-muted-foreground">{item.a}</div>
+      )}
+    </div>
+  );
 }

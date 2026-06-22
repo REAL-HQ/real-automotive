@@ -9,6 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SmsConsentRouteImport } from './routes/sms-consent'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as PortalRouteImport } from './routes/portal'
 import { Route as PartnersRouteImport } from './routes/partners'
 import { Route as PartnerRouteImport } from './routes/partner'
@@ -25,6 +28,21 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as FleetIdRouteImport } from './routes/fleet.$id'
 import { Route as ApplyStep2RouteImport } from './routes/apply.step2'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SmsConsentRoute = SmsConsentRouteImport.update({
+  id: '/sms-consent',
+  path: '/sms-consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortalRoute = PortalRouteImport.update({
   id: '/portal',
   path: '/portal',
@@ -115,6 +133,9 @@ export interface FileRoutesByFullPath {
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
+  '/privacy': typeof PrivacyRoute
+  '/sms-consent': typeof SmsConsentRoute
+  '/terms': typeof TermsRoute
   '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
 }
@@ -132,6 +153,9 @@ export interface FileRoutesByTo {
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
+  '/privacy': typeof PrivacyRoute
+  '/sms-consent': typeof SmsConsentRoute
+  '/terms': typeof TermsRoute
   '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
 }
@@ -150,6 +174,9 @@ export interface FileRoutesById {
   '/partner': typeof PartnerRoute
   '/partners': typeof PartnersRoute
   '/portal': typeof PortalRoute
+  '/privacy': typeof PrivacyRoute
+  '/sms-consent': typeof SmsConsentRoute
+  '/terms': typeof TermsRoute
   '/apply/step2': typeof ApplyStep2Route
   '/fleet/$id': typeof FleetIdRoute
 }
@@ -169,6 +196,9 @@ export interface FileRouteTypes {
     | '/partner'
     | '/partners'
     | '/portal'
+    | '/privacy'
+    | '/sms-consent'
+    | '/terms'
     | '/apply/step2'
     | '/fleet/$id'
   fileRoutesByTo: FileRoutesByTo
@@ -186,6 +216,9 @@ export interface FileRouteTypes {
     | '/partner'
     | '/partners'
     | '/portal'
+    | '/privacy'
+    | '/sms-consent'
+    | '/terms'
     | '/apply/step2'
     | '/fleet/$id'
   id:
@@ -203,6 +236,9 @@ export interface FileRouteTypes {
     | '/partner'
     | '/partners'
     | '/portal'
+    | '/privacy'
+    | '/sms-consent'
+    | '/terms'
     | '/apply/step2'
     | '/fleet/$id'
   fileRoutesById: FileRoutesById
@@ -221,10 +257,34 @@ export interface RootRouteChildren {
   PartnerRoute: typeof PartnerRoute
   PartnersRoute: typeof PartnersRoute
   PortalRoute: typeof PortalRoute
+  PrivacyRoute: typeof PrivacyRoute
+  SmsConsentRoute: typeof SmsConsentRoute
+  TermsRoute: typeof TermsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sms-consent': {
+      id: '/sms-consent'
+      path: '/sms-consent'
+      fullPath: '/sms-consent'
+      preLoaderRoute: typeof SmsConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portal': {
       id: '/portal'
       path: '/portal'
@@ -367,17 +427,10 @@ const rootRouteChildren: RootRouteChildren = {
   PartnerRoute: PartnerRoute,
   PartnersRoute: PartnersRoute,
   PortalRoute: PortalRoute,
+  PrivacyRoute: PrivacyRoute,
+  SmsConsentRoute: SmsConsentRoute,
+  TermsRoute: TermsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
