@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { Nav } from "@/components/site/Nav";
 import { FadeUp } from "@/components/site/FadeUp";
-import { supabase } from "@/integrations/supabase/client";
+import { submitApplication } from "@/lib/applications.functions";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -48,6 +49,7 @@ function getInitial(vehicle_id: string): Step1Form {
 function ApplyStep1() {
   const { vehicle: preVehicle } = Route.useSearch();
   const navigate = useNavigate();
+  const saveApplication = useServerFn(submitApplication);
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [f, setF] = useState<Step1Form>(() => {
@@ -88,16 +90,16 @@ function ApplyStep1() {
       email: f.email,
       platform_status: f.platform_status,
       vehicle_id: f.vehicle_id || null,
-      status: "pending",
     };
-    const { data, error } = await supabase.from("applications").insert(payload).select("id").single();
-    setSubmitting(false);
-    if (error) {
-      toast.error(error.message);
-      return;
+    try {
+      const data = await saveApplication({ data: payload });
+      localStorage.removeItem(STORAGE_KEY);
+      navigate({ to: "/apply/step2", search: { id: data.id } });
+    } catch (error: any) {
+      toast.error(error?.message || "Could not submit your application. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
-    localStorage.removeItem(STORAGE_KEY);
-    navigate({ to: "/apply/step2", search: { id: data.id } });
   }
 
   return (
