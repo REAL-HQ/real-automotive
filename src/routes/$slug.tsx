@@ -321,6 +321,12 @@ function CityPage() {
 
       <TrustedByDrivers siteId={site.id} />
 
+      <WhatYouNeedSection />
+
+      <ServiceAreaSection cityLabel={cityLabel} city={site.title} />
+
+      <CityFAQSection cityLabel={cityLabel} content={content} />
+
       <section className="bg-black py-16 text-center text-white md:py-20">
         <div className="container-real">
           <FadeUp>
@@ -336,6 +342,8 @@ function CityPage() {
           </FadeUp>
         </div>
       </section>
+      <div className="h-20 sm:hidden" aria-hidden />
+      <StickyCallBar onApplyClick={scrollToForm} />
     </SiteLayout>
   );
 }
