@@ -413,7 +413,6 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
       city: market?.name ?? site.title,
       state: market?.state ?? null,
       source: "city_lp",
-      status: "pending",
       ...utms,
     };
     try {
@@ -426,7 +425,6 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
       toast.error(error?.message || "Could not submit your application. Please try again.");
     } finally {
       setSubmitting(false);
-      return;
     }
   }
 
