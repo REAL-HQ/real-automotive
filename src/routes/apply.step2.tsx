@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { Nav } from "@/components/site/Nav";
 import { FadeUp } from "@/components/site/FadeUp";
-import { supabase } from "@/integrations/supabase/client";
+import { completeApplicationProfile } from "@/lib/applications.functions";
 import { toast } from "sonner";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -40,6 +41,7 @@ const todayStr = () => new Date().toISOString().slice(0, 10);
 
 function ApplyStep2() {
   const { id } = Route.useSearch();
+  const completeApplication = useServerFn(completeApplicationProfile);
   const [platforms, setPlatforms] = useState<string[]>([]);
   const [trips, setTrips] = useState("");
   const [rating, setRating] = useState("");
@@ -74,9 +76,10 @@ function ApplyStep2() {
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase
-      .from("applications")
-      .update({
+    try {
+      await completeApplication({
+        data: {
+          id,
         platforms,
         trips_completed: trips,
         rating: rating ? Number(rating) : null,
@@ -86,14 +89,14 @@ function ApplyStep2() {
         pickup_time: pickupTime,
         return_date: returnDate,
         return_time: returnTime,
-      })
-      .eq("id", id);
-    setSubmitting(false);
-    if (error) {
-      toast.error(error.message);
-      return;
+        },
+      });
+      setDone(true);
+    } catch (error: any) {
+      toast.error(error?.message || "Could not submit your application. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
-    setDone(true);
   };
 
   if (done) {

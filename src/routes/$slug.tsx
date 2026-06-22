@@ -1,4 +1,5 @@
 import { createFileRoute, Link, notFound, useNavigate } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useMemo, useState } from "react";
 import {
   ArrowRight,
@@ -29,6 +30,7 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { Json } from "@/integrations/supabase/types";
+import { submitApplication } from "@/lib/applications.functions";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { FadeUp } from "@/components/site/FadeUp";
 import { ComparisonSection } from "@/components/site/ComparisonSection";
@@ -350,6 +352,7 @@ function CityPage() {
 
 function QuoteFormCard({ site, market, compact = false }: { site: Site; market: Market | null; compact?: boolean }) {
   const navigate = useNavigate();
+  const saveApplication = useServerFn(submitApplication);
   const [form, setForm] = useState<QuoteForm>({
     full_name: "",
     phone: "",
@@ -410,19 +413,19 @@ function QuoteFormCard({ site, market, compact = false }: { site: Site; market: 
       city: market?.name ?? site.title,
       state: market?.state ?? null,
       source: "city_lp",
-      status: "pending",
       ...utms,
     };
-    const { data, error } = await supabase.from("applications").insert(payload as any).select("id").single();
-    setSubmitting(false);
-    if (error) {
-      toast.error(error.message);
-      return;
+    try {
+      const data = await saveApplication({ data: payload });
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new CustomEvent("lead", { detail: { city: site.slug, applicationId: data.id } }));
+      }
+      navigate({ to: "/apply/step2", search: { id: data.id } });
+    } catch (error: any) {
+      toast.error(error?.message || "Could not submit your application. Please try again.");
+    } finally {
+      setSubmitting(false);
     }
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("lead", { detail: { city: site.slug, applicationId: data.id } }));
-    }
-    navigate({ to: "/apply/step2", search: { id: data.id } });
   }
 
   return (
