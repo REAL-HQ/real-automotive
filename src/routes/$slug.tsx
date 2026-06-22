@@ -637,7 +637,7 @@ function CityFAQSection({ cityLabel, content }: { cityLabel: string; content: Co
     <section className="bg-white py-14 md:py-20">
       <div className="container-real max-w-3xl">
         <FadeUp className="text-center">
-          <div className="text-[11px] font-semibold uppercase tracking-[0.25em] text-real-red">FAQ</div>
+          <div className="text-[11px] font-semibold uppercase tracking-[0.25em] text-real-red">Common Questions</div>
           <h2 className="mt-3 text-3xl md:text-5xl">Common Questions From {cityLabel} Drivers.</h2>
         </FadeUp>
         <div className="mt-10 divide-y divide-border rounded-2xl border border-border bg-white">
