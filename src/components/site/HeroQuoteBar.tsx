@@ -59,8 +59,10 @@ export function HeroQuoteBar({
       document.getElementById("quote-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
-    const qs = params.toString();
-    navigate({ to: `/${target}${qs ? `?${qs}` : ""}#quote-form` as any });
+    const search: Record<string, string> = {};
+    if (length) search.len = length;
+    if (gig) search.gig = gig;
+    navigate({ to: "/$slug", params: { slug: target }, search, hash: "quote-form" });
   }
 
   return (
