@@ -74,7 +74,7 @@ export function QuoteHero(props: QuoteHeroProps) {
               alt="Clean, fuel-efficient economy sedan — rideshare ready"
               width={1024}
               height={768}
-              className="w-full max-w-2xl object-contain drop-shadow-2xl"
+              className="w-full max-w-md md:max-w-2xl object-contain drop-shadow-2xl"
               loading="eager"
             />
             <p className="mt-2 text-xs text-white/60 tracking-wide">
