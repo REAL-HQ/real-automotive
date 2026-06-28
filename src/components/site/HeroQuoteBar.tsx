@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import heroBg from "@/assets/hero-bg.jpg";
@@ -14,7 +14,7 @@ export function HeroQuoteBar({
   presetCityLabel,
 }: {
   headline: string;
-  subhead: string;
+  subhead: ReactNode;
   eyebrow?: string;
   presetCitySlug?: string;
   presetCityLabel?: string;
@@ -72,7 +72,7 @@ export function HeroQuoteBar({
         <h1 className="mt-4 text-[40px] md:text-[72px] leading-[1.02] font-semibold text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.6)]">
           {headline}
         </h1>
-        <p className="mt-5 text-base md:text-xl text-white/85 max-w-3xl mx-auto leading-relaxed">
+        <p className="mt-5 text-base md:text-xl text-white/85 max-w-3xl mx-auto leading-relaxed whitespace-pre-line">
           {subhead}
         </p>
       </FadeUp>
