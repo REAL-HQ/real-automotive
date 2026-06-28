@@ -72,7 +72,7 @@ function Index() {
   }, []);
 
   return (
-    <SiteLayout>
+    <SiteLayout hideNav>
       <QuoteHero
         mode="homepage"
         locations={locations}
