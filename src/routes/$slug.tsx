@@ -235,7 +235,11 @@ function CityPage() {
       </section>
 
       <section className="border-y border-border bg-white">
-        <div className="container-real flex flex-wrap items-center justify-between gap-x-8 gap-y-4 py-5">
+        <div className="container-real py-5">
+          <p className="mb-4 text-center text-sm md:text-base text-foreground/80">
+            Tired Of Overpriced Rentals, Credit Checks, And Confusing Rules? We Keep It Simple.
+          </p>
+          <div className="flex flex-wrap items-center justify-between gap-x-8 gap-y-4">
           {benefits.map((benefit) => {
             const Icon = iconMap[(benefit.icon ?? "check") as keyof typeof iconMap] ?? Check;
             return (
@@ -245,6 +249,7 @@ function CityPage() {
               </div>
             );
           })}
+          </div>
         </div>
       </section>
 
