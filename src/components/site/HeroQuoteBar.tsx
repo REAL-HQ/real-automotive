@@ -55,10 +55,10 @@ export function HeroQuoteBar({
       return;
     }
     const qs = new URLSearchParams();
+    qs.set("city", target);
     if (length) qs.set("len", length);
     if (gig) qs.set("gig", gig);
-    const q = qs.toString();
-    window.location.href = `/${target}${q ? `?${q}` : ""}#quote-form`;
+    window.location.href = `/apply?${qs.toString()}#quote-form`;
   }
 
   return (
