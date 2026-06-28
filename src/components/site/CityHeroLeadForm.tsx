@@ -107,7 +107,7 @@ export function CityHeroLeadForm({
   }
 
   return (
-    <section className="relative isolate overflow-hidden px-6 md:px-12 pt-24 md:pt-32 pb-14 md:pb-20 text-center text-white">
+    <section id={id} className="relative isolate overflow-hidden px-6 md:px-12 pt-24 md:pt-32 pb-14 md:pb-20 text-center text-white">
       <div aria-hidden className="absolute inset-0 -z-20 bg-cover bg-center" style={{ backgroundImage: `url(${heroBg})` }} />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-black/75 via-black/60 to-black/85" />
       <FadeUp>
