@@ -190,7 +190,7 @@ function CityPage() {
   const scrollToForm = () => window.scrollTo({ top: 0, behavior: "smooth" });
 
   return (
-    <SiteLayout>
+    <SiteLayout hideNav>
       <QuoteHero
         mode="city"
         city={{
