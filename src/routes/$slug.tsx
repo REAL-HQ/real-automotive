@@ -226,9 +226,6 @@ function CityPage() {
 
       <section className="border-y border-border bg-white">
         <div className="container-real py-5">
-          <p className="mb-4 text-center text-sm md:text-base text-foreground/80">
-            Tired Of Overpriced Rentals, Credit Checks, And Confusing Rules? We Keep It Simple.
-          </p>
           <div className="flex flex-nowrap items-center justify-center gap-x-4 md:gap-x-6 lg:gap-x-8 gap-y-3 overflow-x-auto">
           {benefits.map((benefit) => {
             const Icon = iconMap[(benefit.icon ?? "check") as keyof typeof iconMap] ?? Check;
