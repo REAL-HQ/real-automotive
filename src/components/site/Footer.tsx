@@ -123,7 +123,7 @@ export function Footer() {
       </div>
       <div className="border-t border-border">
         <div className="container-real py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
-          <div>© 2026 REAL AUTOMOTIVE. All Rights Reserved.</div>
+          <div>© 2026 REAL RENTALS. All Rights Reserved.</div>
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             <Link to="/privacy" className="hover:text-foreground transition-colors">Privacy Policy</Link>
             <Link to="/terms" className="hover:text-foreground transition-colors">Terms Of Service</Link>

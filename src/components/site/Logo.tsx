@@ -4,7 +4,7 @@ export function Logo({ width = 120, offset = true }: { width?: number; offset?: 
   return (
     <Link
       to="/"
-      aria-label="REAL AUTOMOTIVE home"
+      aria-label="REAL RENTALS home"
       className={`${offset ? "relative top-[28px]" : ""} flex-shrink-0`}
       style={{
         display: "block",

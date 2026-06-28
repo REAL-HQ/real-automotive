@@ -4,10 +4,10 @@ import { SiteLayout } from "@/components/site/SiteLayout";
 export const Route = createFileRoute("/privacy")({
   head: () => ({
     meta: [
-      { title: "Privacy Policy | REAL AUTOMOTIVE" },
-      { name: "description", content: "How REAL AUTOMOTIVE collects, uses, and protects the personal information you share with us." },
-      { property: "og:title", content: "Privacy Policy | REAL AUTOMOTIVE" },
-      { property: "og:description", content: "How REAL AUTOMOTIVE collects, uses, and protects the personal information you share with us." },
+      { title: "Privacy Policy | REAL RENTALS" },
+      { name: "description", content: "How REAL RENTALS collects, uses, and protects the personal information you share with us." },
+      { property: "og:title", content: "Privacy Policy | REAL RENTALS" },
+      { property: "og:description", content: "How REAL RENTALS collects, uses, and protects the personal information you share with us." },
     ],
   }),
   component: PrivacyPage,
@@ -22,7 +22,7 @@ function PrivacyPage() {
         <p className="mt-3 text-sm text-muted-foreground">Last updated: June 2026</p>
 
         <div className="mt-10 space-y-8 text-foreground/85 leading-relaxed">
-          <p>This Privacy Policy explains how REAL AUTOMOTIVE ("we", "us", "our") collects, uses, and shares information when you visit our website or submit an application for a rental.</p>
+          <p>This Privacy Policy explains how REAL RENTALS ("we", "us", "our") collects, uses, and shares information when you visit our website or submit an application for a rental.</p>
 
           <div>
             <h2 className="text-xl font-semibold text-foreground">Information We Collect</h2>
