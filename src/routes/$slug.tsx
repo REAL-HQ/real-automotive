@@ -156,7 +156,7 @@ function CityPage() {
     market,
   );
   const eyebrow = interpolate(asString(content.hero_eyebrow) ?? cityLabel, site, market);
-  const benefits = arrayOfObjects<Benefit>(content.benefits, defaultBenefits);
+  
   const gigConfig = objectOf<GigPlatforms>(content.gig_platforms, {});
   const gigItems = Array.isArray(gigConfig.items) && gigConfig.items.length > 0 ? gigConfig.items : DEFAULT_GIGS;
   const howItWorks = arrayOfObjects<Step>(content.how_it_works, defaultHowItWorks);
