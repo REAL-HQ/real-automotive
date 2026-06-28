@@ -7,7 +7,7 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { submitApplication } from "@/lib/applications.functions";
 import { Logo } from "./Logo";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-bg-new.jpg.asset.json";
 import heroCar from "@/assets/hero-economy-car.png.asset.json";
 
 export type QuoteLocation = {
