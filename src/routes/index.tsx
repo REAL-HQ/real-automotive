@@ -81,6 +81,9 @@ function Index() {
 
       <section className="border-y border-border bg-white">
         <div className="container-real py-5 md:py-6">
+          <p className="mb-4 text-center text-sm md:text-base text-foreground/80">
+            Tired Of Overpriced Rentals, Credit Checks, And Confusing Rules? We Keep It Simple.
+          </p>
           <div className="flex flex-wrap items-center justify-center gap-x-8 md:gap-x-10 gap-y-3 text-sm md:text-base font-medium text-foreground">
             {[
               { label: "No Credit Check", Icon: Check },
