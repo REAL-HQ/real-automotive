@@ -42,13 +42,12 @@ const PHONE_HREF = "tel:+18135550100";
 
 export function QuoteHero(props: QuoteHeroProps) {
   return (
-    <section className="relative isolate overflow-hidden bg-black text-white">
+    <section className="relative isolate overflow-hidden bg-[#0a0a0a] text-white">
       <div
         aria-hidden
-        className="absolute inset-0 -z-20 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroBg.url})` }}
+        className="absolute inset-0 -z-20 bg-gradient-to-b from-[#1a1a1a] via-[#0d0d0d] to-black"
       />
-      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/60 to-black/85" />
+      <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-black/30 via-transparent to-black/40" />
 
       <div className="container-real">
         <HeroTopBar />
@@ -63,7 +62,7 @@ export function QuoteHero(props: QuoteHeroProps) {
             </p>
           </div>
 
-          <div className="mt-8 md:mt-10 mx-auto max-w-xl">
+          <div className="mt-8 md:mt-10 mx-auto max-w-5xl">
             <QuoteWidget {...props} />
           </div>
 
