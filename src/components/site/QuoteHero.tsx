@@ -338,7 +338,7 @@ function CollapsedWidget({
         <button
           type="button"
           onClick={onGetQuote}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-real-red px-6 py-2.5 text-sm font-semibold text-white hover:bg-real-red/90 transition active:scale-[0.98] whitespace-nowrap"
+          className="inline-flex items-center justify-center gap-2 rounded bg-real-red px-6 py-2.5 text-sm font-semibold text-white hover:bg-real-red/90 transition active:scale-[0.98] whitespace-nowrap"
         >
           Get My Quote <ArrowRight className="w-4 h-4" />
         </button>
