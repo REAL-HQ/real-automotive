@@ -14,7 +14,7 @@ export function HeroQuoteBar({
   presetCityLabel,
 }: {
   headline: string;
-  subhead: string;
+  subhead: ReactNode;
   eyebrow?: string;
   presetCitySlug?: string;
   presetCityLabel?: string;
