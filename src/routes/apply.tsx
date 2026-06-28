@@ -92,7 +92,7 @@ function ApplyStep1() {
       .eq("is_published", true)
       .maybeSingle()
       .then(({ data }) => {
-        if (!data) return;
+        if (!data?.market_id) return;
         const m = data.markets as { name: string; state: string | null } | null;
         setMarket({ id: data.market_id, name: m?.name ?? preCity, state: m?.state ?? null });
       });
