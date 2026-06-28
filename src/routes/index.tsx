@@ -52,7 +52,13 @@ function Index() {
       <HeroQuoteBar
         eyebrow="Rent. Drive. Earn."
         headline="Start Driving. Start Earning. This Week."
-        subhead="Insurance options available. Maintenance included. Fast approval."
+        subhead={
+          <>
+            Rent a vehicle for Uber, Lyft, DoorDash and delivery work.
+            <br />
+            Insurance options available. Maintenance included. Fast approval. Drive this week.
+          </>
+        }
       />
 
 
