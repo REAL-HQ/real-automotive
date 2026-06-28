@@ -126,7 +126,7 @@ function HeroTopBar() {
         </a>
         <Link
           to="/apply"
-          className="inline-flex items-center rounded-lg bg-real-red px-4 py-2 text-[13px] font-semibold text-white hover:bg-real-red/90 transition active:scale-95"
+          className="inline-flex items-center rounded bg-real-red px-4 py-2 text-[13px] font-semibold text-white hover:bg-real-red/90 transition active:scale-95"
         >
           Book Now
         </Link>
@@ -338,7 +338,7 @@ function CollapsedWidget({
         <button
           type="button"
           onClick={onGetQuote}
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-real-red px-6 py-2.5 text-sm font-semibold text-white hover:bg-real-red/90 transition active:scale-[0.98] whitespace-nowrap"
+          className="inline-flex items-center justify-center gap-2 rounded bg-real-red px-6 py-2.5 text-sm font-semibold text-white hover:bg-real-red/90 transition active:scale-[0.98] whitespace-nowrap"
         >
           Get My Quote <ArrowRight className="w-4 h-4" />
         </button>
@@ -436,7 +436,7 @@ function ExpandedForm({
         type="button"
         onClick={onContinue}
         disabled={submitting}
-        className="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-real-red px-6 py-3 text-sm font-semibold text-white hover:bg-real-red/90 transition active:scale-[0.98] disabled:opacity-50"
+        className="w-full inline-flex items-center justify-center gap-2 rounded bg-real-red px-6 py-3 text-sm font-semibold text-white hover:bg-real-red/90 transition active:scale-[0.98] disabled:opacity-50"
       >
         {submitting ? "Saving…" : "Continue"} <ArrowRight className="w-4 h-4" />
       </button>
@@ -533,7 +533,7 @@ function WaitlistModal({ city, onClose }: { city: QuoteLocation; onClose: () => 
             <CheckCircle2 className="w-12 h-12 text-real-red mx-auto" />
             <h3 className="mt-4 text-2xl font-semibold">You&apos;re On The List</h3>
             <p className="mt-2 text-muted-foreground text-sm">We&apos;ll Tell You When {city.name} Opens.</p>
-            <button onClick={onClose} className="mt-6 rounded-lg bg-real-red text-white px-6 py-2.5 text-sm font-medium hover:opacity-90 transition active:scale-95">
+            <button onClick={onClose} className="mt-6 rounded bg-real-red text-white px-6 py-2.5 text-sm font-medium hover:opacity-90 transition active:scale-95">
               Close
             </button>
           </div>
@@ -567,7 +567,7 @@ function WaitlistModal({ city, onClose }: { city: QuoteLocation; onClose: () => 
                   ))}
                 </div>
               </div>
-              <button disabled={submitting} className="w-full rounded-lg bg-real-red text-white py-3 text-sm font-semibold hover:opacity-90 transition active:scale-95 disabled:opacity-50">
+              <button disabled={submitting} className="w-full rounded bg-real-red text-white py-3 text-sm font-semibold hover:opacity-90 transition active:scale-95 disabled:opacity-50">
                 {submitting ? "Submitting…" : "Notify Me"}
               </button>
             </form>
