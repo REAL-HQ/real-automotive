@@ -533,7 +533,7 @@ function WaitlistModal({ city, onClose }: { city: QuoteLocation; onClose: () => 
             <CheckCircle2 className="w-12 h-12 text-real-red mx-auto" />
             <h3 className="mt-4 text-2xl font-semibold">You&apos;re On The List</h3>
             <p className="mt-2 text-muted-foreground text-sm">We&apos;ll Tell You When {city.name} Opens.</p>
-            <button onClick={onClose} className="mt-6 rounded-lg bg-real-red text-white px-6 py-2.5 text-sm font-medium hover:opacity-90 transition active:scale-95">
+            <button onClick={onClose} className="mt-6 rounded bg-real-red text-white px-6 py-2.5 text-sm font-medium hover:opacity-90 transition active:scale-95">
               Close
             </button>
           </div>
@@ -567,7 +567,7 @@ function WaitlistModal({ city, onClose }: { city: QuoteLocation; onClose: () => 
                   ))}
                 </div>
               </div>
-              <button disabled={submitting} className="w-full rounded-lg bg-real-red text-white py-3 text-sm font-semibold hover:opacity-90 transition active:scale-95 disabled:opacity-50">
+              <button disabled={submitting} className="w-full rounded bg-real-red text-white py-3 text-sm font-semibold hover:opacity-90 transition active:scale-95 disabled:opacity-50">
                 {submitting ? "Submitting…" : "Notify Me"}
               </button>
             </form>
