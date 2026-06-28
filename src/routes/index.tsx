@@ -90,7 +90,7 @@ function Index() {
               { label: "No Credit Check", Icon: Check },
               { label: "No Deposit", Icon: Wallet },
               { label: "Unlimited Miles", Icon: InfinityIcon },
-              { label: "Insurance Included", Icon: Shield },
+              { label: "Insurance Options Available", Icon: Shield },
               { label: "Maintenance Included", Icon: Wrench },
               { label: "Same Day Approval", Icon: Zap },
             ].map(({ label, Icon }) => (
@@ -139,7 +139,7 @@ function Index() {
       <section className="container-real py-14 md:py-24">
         <FadeUp className="text-center mb-14 max-w-5xl mx-auto">
           <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">How It Works</div>
-          <h2 className="mt-3 text-3xl md:text-5xl">From Application To Paycheck.</h2>
+          <h2 className="mt-3 text-3xl md:text-5xl">From Booking To Paycheck.</h2>
           <p className="mt-4 text-muted-foreground leading-relaxed md:whitespace-nowrap">Four simple steps. No credit check. No long wait. Get behind the wheel and start earning this week.</p>
         </FadeUp>
         <div className="relative">
