@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import heroBg from "@/assets/hero-bg.jpg";
@@ -20,7 +19,6 @@ export function HeroQuoteBar({
   presetCitySlug?: string;
   presetCityLabel?: string;
 }) {
-  const navigate = useNavigate();
   const [cities, setCities] = useState<CityOpt[]>(
     presetCitySlug && presetCityLabel ? [{ slug: presetCitySlug, label: presetCityLabel }] : [],
   );
@@ -52,17 +50,15 @@ export function HeroQuoteBar({
   function submit() {
     const target = city || presetCitySlug;
     if (!target) return;
-    const params = new URLSearchParams();
-    if (length) params.set("len", length);
-    if (gig) params.set("gig", gig);
     if (presetCitySlug && target === presetCitySlug) {
       document.getElementById("quote-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
     }
-    const search: Record<string, string> = {};
-    if (length) search.len = length;
-    if (gig) search.gig = gig;
-    navigate({ to: "/$slug", params: { slug: target }, search, hash: "quote-form" });
+    const qs = new URLSearchParams();
+    if (length) qs.set("len", length);
+    if (gig) qs.set("gig", gig);
+    const q = qs.toString();
+    window.location.href = `/${target}${q ? `?${q}` : ""}#quote-form`;
   }
 
   return (
