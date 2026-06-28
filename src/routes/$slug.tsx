@@ -37,7 +37,7 @@ import { FadeUp } from "@/components/site/FadeUp";
 import { ComparisonSection } from "@/components/site/ComparisonSection";
 import { TrustedByDrivers } from "@/components/site/TrustedByDrivers";
 import { StickyCallBar } from "@/components/site/StickyCallBar";
-import heroBg from "@/assets/hero-bg.jpg";
+import { HeroQuoteBar } from "@/components/site/HeroQuoteBar";
 import sedanImg from "@/assets/cars/accord.jpg.asset.json";
 import suvImg from "@/assets/cars/crv.jpg.asset.json";
 import xlImg from "@/assets/cars/odyssey.jpg.asset.json";
@@ -206,29 +206,19 @@ function CityPage() {
 
   return (
     <SiteLayout>
-      <section className="relative isolate overflow-hidden bg-black px-6 py-12 text-white md:px-12 md:py-16">
-        <div aria-hidden className="absolute inset-0 -z-20 bg-cover bg-center" style={{ backgroundImage: `url(${heroBg})` }} />
-        <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-black/75 via-black/60 to-black/85" />
-        <div className="container-real grid items-center gap-10 lg:grid-cols-[1fr_440px]">
+      <HeroQuoteBar
+        eyebrow={eyebrow}
+        headline={headline}
+        subhead={subhead}
+        presetCitySlug={site.slug}
+        presetCityLabel={cityLabel}
+      />
+
+      <section className="bg-soft py-12 md:py-16">
+        <div className="container-real max-w-2xl">
           <FadeUp>
-            <div className="inline-flex items-center gap-2 rounded-full border border-real-red/40 bg-real-red/15 px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.25em] text-white backdrop-blur-sm">
-              <MapPin className="h-3.5 w-3.5 text-real-red" /> {eyebrow}
-            </div>
-            <h1 className="mt-5 max-w-4xl text-[42px] font-semibold leading-[1.05] text-white md:text-[70px]">
-              {headline}
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/80 md:text-xl">{subhead}</p>
-            <button
-              type="button"
-              onClick={scrollToForm}
-              className="mt-9 inline-flex items-center gap-2 rounded-lg bg-real-red px-8 py-4 text-sm font-semibold text-white transition hover:opacity-90 active:scale-95"
-            >
-              {ctaLabel} <ArrowRight className="h-4 w-4" />
-            </button>
-          </FadeUp>
-          <FadeUp delay={80}>
             <div id="quote-form" className="scroll-mt-24">
-              <QuoteFormCard site={site} market={market} compact />
+              <QuoteFormCard site={site} market={market} />
             </div>
           </FadeUp>
         </div>
