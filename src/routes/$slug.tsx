@@ -172,24 +172,14 @@ function CityPage() {
 
   return (
     <SiteLayout>
-      <HeroQuoteBar
+      <CityHeroLeadForm
+        id="quote-form"
         eyebrow={eyebrow}
         headline={headline}
         subhead={subhead}
-        presetCitySlug={site.slug}
-        presetCityLabel={cityLabel}
+        site={site}
+        market={market}
       />
-
-      <section className="bg-soft py-12 md:py-16">
-        <div className="container-real max-w-2xl">
-          <FadeUp>
-            <div id="quote-form" className="scroll-mt-24">
-              <QuoteFormCard site={site} market={market} />
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
 
       <section className="bg-white py-8 md:py-10">
         <div className="container-real text-center">
