@@ -24,12 +24,14 @@ export function CityHeroLeadForm({
   eyebrow,
   headline,
   subhead,
+  id,
 }: {
   site: Site;
   market: Market | null;
   eyebrow: string;
   headline: string;
   subhead: React.ReactNode;
+  id?: string;
 }) {
   const navigate = useNavigate();
   const saveApplication = useServerFn(submitApplication);
