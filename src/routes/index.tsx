@@ -17,9 +17,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "REAL RENTALS | Start Driving. Start Earning. This Week." },
-      { name: "description", content: "Rent a vehicle for Uber, Lyft, DoorDash and delivery work from $350/week. Insurance options available. Maintenance included. Fast approval." },
+      { name: "description", content: "Rent a vehicle for Uber, Lyft, DoorDash and delivery work from $350/week. Insurance included. Maintenance included. Fast approval." },
       { property: "og:title", content: "Start Driving. Start Earning. This Week." },
-      { property: "og:description", content: "Insurance options available and maintenance included. Fast approval. Drive this week." },
+      { property: "og:description", content: "Insurance included and maintenance included. Fast approval. Drive this week." },
     ],
   }),
   component: Index,
@@ -56,7 +56,7 @@ function Index() {
           <>
             Rent a vehicle for Uber, Lyft, DoorDash and delivery work.
             <br />
-            Insurance options available. Maintenance included. Fast approval. Drive this week.
+            Insurance included. Maintenance included. Fast approval. Drive this week.
           </>
         }
       />
@@ -98,7 +98,7 @@ function Index() {
       <section className="container-real py-14 md:py-24">
         <FadeUp className="text-center mb-14 max-w-5xl mx-auto">
           <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">How It Works</div>
-          <h2 className="mt-3 text-3xl md:text-5xl">From Application To Paycheck.</h2>
+          <h2 className="mt-3 text-3xl md:text-5xl">From Booking To Paycheck.</h2>
           <p className="mt-4 text-muted-foreground leading-relaxed md:whitespace-nowrap">Four simple steps. No credit check. No long wait. Get behind the wheel and start earning this week.</p>
         </FadeUp>
         <div className="relative">
@@ -128,7 +128,7 @@ function Index() {
         </div>
         <FadeUp className="mt-12 text-center">
           <Link to="/apply" className="inline-flex items-center gap-2 rounded-lg bg-real-red text-white px-8 py-4 text-sm font-semibold hover:opacity-90 transition active:scale-95">
-            Start Your Application <ArrowRight className="w-4 h-4" />
+            Book Now <ArrowRight className="w-4 h-4" />
           </Link>
         </FadeUp>
       </section>
@@ -144,7 +144,7 @@ function Index() {
           </FadeUp>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { I: Shield, t: "Insurance Options Available", d: "Flexible insurance options are available so you can get covered and focus on driving." },
+              { I: Shield, t: "Insurance Included", d: "Insurance is included with every rental so you can get covered and focus on driving." },
               { I: Wrench, t: "Maintenance Handled", d: "Routine maintenance is on us. You drive, we keep it running." },
               { I: InfinityIcon, t: "Unlimited Miles", d: "Drive as much as gig work demands — your unlimited mileage terms are spelled out in your rental agreement (Roamly-verified)." },
               { I: Briefcase, t: "Built For Gig Work", d: "Uber, Lyft, DoorDash, Instacart, Amazon Flex and more." },
