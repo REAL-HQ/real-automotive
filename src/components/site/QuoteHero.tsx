@@ -7,7 +7,7 @@ import { z } from "zod";
 import { supabase } from "@/integrations/supabase/client";
 import { submitApplication } from "@/lib/applications.functions";
 import { Logo } from "./Logo";
-import heroBg from "@/assets/hero-bg.jpg";
+import heroBg from "@/assets/hero-bg-new.jpg.asset.json";
 import heroCar from "@/assets/hero-economy-car.png.asset.json";
 
 export type QuoteLocation = {
@@ -47,7 +47,7 @@ export function QuoteHero(props: QuoteHeroProps) {
       <div
         aria-hidden
         className="absolute inset-0 -z-20 bg-cover bg-center"
-        style={{ backgroundImage: `url(${heroBg})` }}
+        style={{ backgroundImage: `url(${heroBg.url})` }}
       />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/60 to-black/85" />
 
@@ -74,7 +74,7 @@ export function QuoteHero(props: QuoteHeroProps) {
               alt="Clean, fuel-efficient economy sedan — rideshare ready"
               width={1024}
               height={768}
-              className="w-full max-w-2xl object-contain drop-shadow-2xl"
+              className="w-full max-w-md md:max-w-2xl object-contain drop-shadow-2xl"
               loading="eager"
             />
             <p className="mt-2 text-xs text-white/60 tracking-wide">
