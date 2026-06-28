@@ -30,7 +30,7 @@ import { FadeUp } from "@/components/site/FadeUp";
 import { ComparisonSection } from "@/components/site/ComparisonSection";
 import { TrustedByDrivers } from "@/components/site/TrustedByDrivers";
 import { StickyCallBar } from "@/components/site/StickyCallBar";
-import { HeroQuoteBar } from "@/components/site/HeroQuoteBar";
+import { CityHeroLeadForm } from "@/components/site/CityHeroLeadForm";
 import sedanImg from "@/assets/cars/accord.jpg.asset.json";
 import suvImg from "@/assets/cars/crv.jpg.asset.json";
 import xlImg from "@/assets/cars/odyssey.jpg.asset.json";
@@ -67,15 +67,6 @@ const WEEKLY_OPTIONS = ["1 Week", "2 Weeks", "3 Weeks", "4+ Weeks"];
 const MONTHLY_OPTIONS = ["1 Month", "2 Months", "3+ Months"];
 const DEFAULT_GIGS = ["Uber", "Lyft", "DoorDash", "Instacart", "Amazon Flex", "UberEats", "Grubhub"];
 
-type QuoteForm = {
-  full_name: string;
-  phone: string;
-  email: string;
-  platform_status: (typeof PLATFORM_STATUSES)[number] | "";
-  rental_mode: "weekly" | "monthly";
-  rental_length: string;
-  sms_consent: boolean;
-};
 
 export const Route = createFileRoute("/$slug")({
   loader: async ({ params }) => {
@@ -108,7 +99,7 @@ export const Route = createFileRoute("/$slug")({
     const seoTitle = asString(content.seo_title) ?? `Drive For Uber, Lyft & Delivery In ${title}${state} | REAL RENTALS`;
     const seoDescription =
       asString(content.seo_description) ??
-      `Get a rideshare or delivery rental quote in ${title}${state}. Unlimited miles, maintenance handled, insurance options, and fast approvals.`;
+      `Get a rideshare or delivery rental quote in ${title}${state}. Unlimited miles, maintenance handled, insurance included, and fast approvals.`;
     return {
       meta: [
         { title: seoTitle },
@@ -151,7 +142,7 @@ function CityPage() {
   const headline = interpolate(asString(content.hero_headline) ?? `Drive For Uber, Lyft & Delivery Service Apps In ${site.title} This Week`, site, market);
   const subhead = interpolate(
     asString(content.hero_subhead) ??
-      "Rent a vehicle for Uber, Lyft, DoorDash and delivery work.\nInsurance options available. Maintenance included. Fast approval. Drive this week.",
+      "Rent a vehicle for Uber, Lyft, DoorDash and delivery work.\nInsurance included. Maintenance included. Fast approval. Drive this week.",
     site,
     market,
   );
@@ -172,24 +163,14 @@ function CityPage() {
 
   return (
     <SiteLayout>
-      <HeroQuoteBar
+      <CityHeroLeadForm
+        id="quote-form"
         eyebrow={eyebrow}
         headline={headline}
         subhead={subhead}
-        presetCitySlug={site.slug}
-        presetCityLabel={cityLabel}
+        site={site}
+        market={market}
       />
-
-      <section className="bg-soft py-12 md:py-16">
-        <div className="container-real max-w-2xl">
-          <FadeUp>
-            <div id="quote-form" className="scroll-mt-24">
-              <QuoteFormCard site={site} market={market} />
-            </div>
-          </FadeUp>
-        </div>
-      </section>
-
 
       <section className="bg-white py-8 md:py-10">
         <div className="container-real text-center">
@@ -293,160 +274,6 @@ function CityPage() {
       <div className="h-20 sm:hidden" aria-hidden />
       <StickyCallBar onApplyClick={scrollToForm} />
     </SiteLayout>
-  );
-}
-
-function QuoteFormCard({ site, market, compact = false }: { site: Site; market: Market | null; compact?: boolean }) {
-  const navigate = useNavigate();
-  const saveApplication = useServerFn(submitApplication);
-  const [form, setForm] = useState<QuoteForm>({
-    full_name: "",
-    phone: "",
-    email: "",
-    platform_status: "",
-    rental_mode: "weekly",
-    rental_length: "1 Week",
-    sms_consent: false,
-  });
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitting, setSubmitting] = useState(false);
-
-  const utms = useMemo(() => {
-    if (typeof window === "undefined") return {};
-    const params = new URLSearchParams(window.location.search);
-    return {
-      utm_source: params.get("utm_source"),
-      utm_medium: params.get("utm_medium"),
-      utm_campaign: params.get("utm_campaign"),
-      utm_term: params.get("utm_term"),
-      utm_content: params.get("utm_content"),
-      gclid: params.get("gclid"),
-    };
-  }, []);
-
-  const update = <K extends keyof QuoteForm>(key: K, value: QuoteForm[K]) => {
-    setForm((current) => {
-      const next = { ...current, [key]: value };
-      if (key === "rental_mode") next.rental_length = value === "weekly" ? "1 Week" : "1 Month";
-      return next;
-    });
-  };
-
-  const validate = () => {
-    const next: Record<string, string> = {};
-    if (!z.string().min(2).safeParse(form.full_name).success) next.full_name = "Required";
-    if (!z.string().email().safeParse(form.email).success) next.email = "Invalid Email";
-    if (!/^\d{7,}$/.test(form.phone.replace(/\D/g, ""))) next.phone = "Invalid Phone";
-    if (!form.platform_status) next.platform_status = "Required";
-    setErrors(next);
-    return Object.keys(next).length === 0;
-  };
-
-  async function submit() {
-    if (!validate()) {
-      toast.error("Please fix the highlighted fields.");
-      return;
-    }
-    setSubmitting(true);
-    const payload = {
-      full_name: form.full_name,
-      phone: form.phone,
-      email: form.email,
-      platform_status: form.platform_status,
-      rental_length: form.rental_length,
-      rental_term: form.rental_mode,
-      market_id: site.market_id,
-      city: market?.name ?? site.title,
-      state: market?.state ?? null,
-      source: "city_lp",
-      ...utms,
-    };
-    try {
-      const data = await saveApplication({ data: payload });
-      if (typeof window !== "undefined") {
-        window.dispatchEvent(new CustomEvent("lead", { detail: { city: site.slug, applicationId: data.id } }));
-      }
-      navigate({ to: "/apply/step2", search: { id: data.id } });
-    } catch (error: any) {
-      toast.error(error?.message || "Could not submit your application. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
-  return (
-    <div className={`border border-border bg-white text-foreground shadow-2xl shadow-black/20 ${compact ? "p-5 md:p-6" : "p-6 md:p-8"}`}>
-      <div>
-        <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-real-red">Step 1 Of 2</div>
-        <h2 className="mt-2 text-2xl font-semibold">Get My Quote</h2>
-      </div>
-      <div className="mt-6 grid grid-cols-1 gap-4">
-        <Field label="Full Name" value={form.full_name} error={errors.full_name} onChange={(value) => update("full_name", value)} />
-        <Field label="Phone" value={form.phone} error={errors.phone} onChange={(value) => update("phone", value)} />
-        <Field label="Email" type="email" value={form.email} error={errors.email} onChange={(value) => update("email", value)} />
-
-        <div>
-          <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Are You Already Active On A Gig App?</label>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {PLATFORM_STATUSES.map((status) => {
-              const active = form.platform_status === status;
-              return (
-                <button
-                  key={status}
-                  type="button"
-                  onClick={() => update("platform_status", status)}
-                  className={`rounded-lg border px-5 py-2 text-sm transition ${active ? "border-real-red bg-real-red text-white" : "border-border bg-white text-foreground hover:border-foreground/40"}`}
-                >
-                  {status}
-                </button>
-              );
-            })}
-          </div>
-          {errors.platform_status && <div className="mt-2 text-sm text-real-red">{errors.platform_status}</div>}
-        </div>
-      </div>
-      <label className="mt-5 flex items-start gap-2.5 cursor-pointer">
-        <input
-          type="checkbox"
-          checked={form.sms_consent}
-          onChange={(e) => update("sms_consent", e.target.checked)}
-          className="mt-0.5 h-4 w-4 accent-real-red shrink-0"
-        />
-        <span className="text-[11px] leading-snug text-muted-foreground">
-          By checking this box, I agree to receive SMS text messages from REAL RENTALS about my application, rental updates, and scheduling at the number provided. Message and data rates may apply. Reply STOP to opt out. See our{" "}
-          <Link to="/sms-consent" className="underline hover:text-foreground">SMS Consent</Link> and{" "}
-          <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>.
-        </span>
-      </label>
-      <p className="mt-3 text-[11px] leading-snug text-muted-foreground">
-        By clicking Continue, you agree to our{" "}
-        <Link to="/terms" className="underline hover:text-foreground">Terms</Link> and{" "}
-        <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>.
-      </p>
-      <button
-        type="button"
-        onClick={submit}
-        disabled={submitting}
-        className="mt-7 inline-flex w-full items-center justify-center rounded-lg bg-real-red px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90 active:scale-[0.98] disabled:opacity-50"
-      >
-        {submitting ? "Saving…" : "Continue"}
-      </button>
-    </div>
-  );
-}
-
-function Field({ label, value, error, onChange, type = "text" }: { label: string; value: string; error?: string; onChange: (value: string) => void; type?: string }) {
-  return (
-    <label className="block">
-      <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</span>
-      <input
-        type={type}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        className={`mt-1 w-full rounded-lg border bg-white px-3 py-2 text-sm ${error ? "border-real-red" : "border-border"}`}
-      />
-      {error && <div className="mt-1 text-xs text-real-red">{error}</div>}
-    </label>
   );
 }
 
@@ -579,7 +406,7 @@ function CityFAQSection({ cityLabel, content }: { cityLabel: string; content: Co
   const defaults: FaqItem[] = [
     { q: "Do I need good credit to qualify?", a: "No. We don't run a credit check. Approval is based on your driving record and gig-platform eligibility." },
     { q: "How fast can I be on the road?", a: "Most drivers are approved the same day and picking up a vehicle within 24 to 48 hours." },
-    { q: "Is insurance included?", a: "Insurance options are available with every rental. Our team will walk you through what's included before you sign." },
+    { q: "Is insurance included?", a: "Insurance is included with every rental. Our team will walk you through what's included before you sign." },
     { q: "Are miles unlimited?", a: "Yes. Drive as many miles as you need — there are no per-mile fees." },
     { q: "What if the car needs maintenance?", a: "Routine maintenance is included. If something comes up, we handle it so you can keep earning." },
     { q: "Who pays for tolls and tickets?", a: "You do. Any tolls, tickets, or citations during your rental are your responsibility. Unpaid items are transferred to the driver on record per your rental agreement, and an admin fee may apply per notice." },

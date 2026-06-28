@@ -15,6 +15,7 @@ const submitApplicationSchema = z.object({
   market_id: nullableUuid,
   city: nullableString,
   state: nullableString,
+  sms_consent: z.boolean().nullable().optional(),
   source: z.string().trim().max(40).nullable().optional(),
   utm_source: nullableString,
   utm_medium: nullableString,
