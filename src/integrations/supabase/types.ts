@@ -75,6 +75,7 @@ export type Database = {
           profile_screenshot_url: string | null
           rating: number | null
           rental_duration: string | null
+          rental_duration_days: number | null
           rental_length: string | null
           rental_term: string | null
           return_date: string | null
@@ -144,6 +145,7 @@ export type Database = {
           profile_screenshot_url?: string | null
           rating?: number | null
           rental_duration?: string | null
+          rental_duration_days?: number | null
           rental_length?: string | null
           rental_term?: string | null
           return_date?: string | null
@@ -213,6 +215,7 @@ export type Database = {
           profile_screenshot_url?: string | null
           rating?: number | null
           rental_duration?: string | null
+          rental_duration_days?: number | null
           rental_length?: string | null
           rental_term?: string | null
           return_date?: string | null
