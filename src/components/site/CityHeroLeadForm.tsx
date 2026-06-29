@@ -45,12 +45,16 @@ export function CityHeroLeadForm({
     full_name: "",
     phone: "",
     email: "",
+    pickup_date: "",
+    return_date: "",
     platform_status: "",
     sms_consent: false,
     terms_accepted: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+
+  const today = useMemo(() => new Date().toISOString().split("T")[0], []);
 
   const utms = useMemo(() => {
     if (typeof window === "undefined") return {};
@@ -75,6 +79,11 @@ export function CityHeroLeadForm({
     if (!z.string().email().safeParse(form.email).success) next.email = "Invalid Email";
     if (!/^\d{7,}$/.test(form.phone.replace(/\D/g, ""))) next.phone = "Invalid Phone";
     if (!form.platform_status) next.platform_status = "Required";
+    if (!form.pickup_date) next.pickup_date = "Required";
+    if (!form.return_date) next.return_date = "Required";
+    if (form.pickup_date && form.return_date && form.return_date <= form.pickup_date) {
+      next.return_date = "Must be after pick up date";
+    }
     if (!form.sms_consent) next.sms_consent = "Required";
     if (!form.terms_accepted) next.terms_accepted = "Required";
     setErrors(next);
@@ -92,6 +101,8 @@ export function CityHeroLeadForm({
       phone: form.phone,
       email: form.email,
       platform_status: form.platform_status as "Yes" | "Pending" | "Not Yet",
+      pickup_date: form.pickup_date || null,
+      return_date: form.return_date || null,
       market_id: site.market_id,
       city: market?.name ?? site.title,
       state: market?.state ?? null,
@@ -163,6 +174,25 @@ export function CityHeroLeadForm({
                 </div>
                 {errors.platform_status && <div className="mt-2 text-sm text-real-red">{errors.platform_status}</div>}
               </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Field
+                  label="Pick Up Date"
+                  type="date"
+                  min={today}
+                  value={form.pickup_date}
+                  error={errors.pickup_date}
+                  onChange={(value) => update("pickup_date", value)}
+                />
+                <Field
+                  label="Return Date"
+                  type="date"
+                  min={form.pickup_date || today}
+                  value={form.return_date}
+                  error={errors.return_date}
+                  onChange={(value) => update("return_date", value)}
+                />
+              </div>
             </div>
 
             <label className="mt-5 flex items-start gap-2.5 cursor-pointer">
@@ -216,18 +246,24 @@ function Field({
   error,
   onChange,
   type = "text",
+  min,
+  max,
 }: {
   label: string;
   value: string;
   error?: string;
   onChange: (value: string) => void;
   type?: string;
+  min?: string;
+  max?: string;
 }) {
   return (
     <label className="block">
       <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</span>
       <input
         type={type}
+        min={min}
+        max={max}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         className={`mt-1 w-full rounded-lg border bg-white px-3 py-2 text-sm ${error ? "border-real-red" : "border-border"}`}
