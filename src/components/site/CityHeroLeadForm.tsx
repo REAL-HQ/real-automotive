@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef } from "react";
 import { useNavigate, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { z } from "zod";
