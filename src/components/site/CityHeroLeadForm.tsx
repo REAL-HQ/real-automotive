@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import { useNavigate, Link } from "@tanstack/react-router";
+import { ArrowRight } from "lucide-react";
 import { useServerFn } from "@tanstack/react-start";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -25,6 +26,7 @@ export function CityHeroLeadForm({
   headline,
   subhead,
   id,
+  ctaLabel = "Get My Quote",
 }: {
   site: Site;
   market: Market | null;
@@ -32,7 +34,11 @@ export function CityHeroLeadForm({
   headline: string;
   subhead: React.ReactNode;
   id?: string;
+  ctaLabel?: string;
 }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const scrollToCard = () => cardRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+
   const navigate = useNavigate();
   const saveApplication = useServerFn(submitApplication);
   const [form, setForm] = useState({
@@ -107,92 +113,99 @@ export function CityHeroLeadForm({
   }
 
   return (
-    <section id={id} className="relative isolate overflow-hidden flex flex-col min-h-[620px] md:min-h-[88vh] px-6 md:px-12 pt-24 md:pt-32 pb-10 md:pb-16 text-center text-white">
+    <section id={id} className="relative isolate overflow-hidden flex min-h-[620px] md:min-h-[88vh] items-center px-6 md:px-12 pt-24 md:pt-32 pb-10 md:pb-16 text-white">
       <div aria-hidden className="absolute inset-0 -z-20 bg-cover bg-center" style={{ backgroundImage: `url(${heroBg})` }} />
       <div aria-hidden className="absolute inset-0 -z-10 bg-gradient-to-b from-black/80 via-black/15 to-black/90" />
-      <FadeUp>
-        <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">{eyebrow}</div>
-        <h1 className="mt-4 text-[40px] md:text-[72px] leading-[1.02] font-semibold text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.6)]">
-          {headline}
-        </h1>
-        <p className="mt-5 text-base md:text-xl text-white/85 max-w-3xl mx-auto leading-relaxed whitespace-pre-wrap">
-          {subhead}
-        </p>
-      </FadeUp>
 
-      <FadeUp delay={80} className="mt-auto w-full">
-        <div className="mt-10 md:mt-16 max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl shadow-black/40 p-5 md:p-6 text-left text-foreground">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-2 md:gap-6">
-            <div>
-              <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-real-red">Step 1 Of 2</div>
-              <h2 className="mt-1 text-2xl font-semibold">Get My Quote</h2>
-            </div>
-          </div>
-          <div className="mt-5 grid grid-cols-1 md:grid-cols-4 gap-4">
-            <Field label="Full Name" value={form.full_name} error={errors.full_name} onChange={(value) => update("full_name", value)} />
-            <Field label="Phone" value={form.phone} error={errors.phone} onChange={(value) => update("phone", value)} />
-            <Field label="Email" type="email" value={form.email} error={errors.email} onChange={(value) => update("email", value)} />
-            <div>
-              <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Active On A Gig App?</label>
-              <div className="mt-1 flex flex-wrap gap-2">
-                {PLATFORM_STATUSES.map((status) => {
-                  const active = form.platform_status === status;
-                  return (
-                    <button
-                      key={status}
-                      type="button"
-                      onClick={() => update("platform_status", status)}
-                      className={`rounded-lg border px-3 py-2 text-sm transition ${active ? "border-real-red bg-real-red text-white" : "border-border bg-white text-foreground hover:border-foreground/40"}`}
-                    >
-                      {status}
-                    </button>
-                  );
-                })}
-              </div>
-              {errors.platform_status && <div className="mt-2 text-sm text-real-red">{errors.platform_status}</div>}
-            </div>
-          </div>
-
-          <label className="mt-5 flex items-start gap-2.5 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={form.sms_consent}
-              onChange={(e) => update("sms_consent", e.target.checked)}
-              className="mt-0.5 h-4 w-4 accent-real-red shrink-0"
-            />
-            <span className="text-[11px] leading-snug text-muted-foreground">
-              By checking this box, I agree to receive SMS text messages from REAL RENTALS about my application, rental updates, and scheduling at the number provided. Message and data rates may apply. Reply STOP to opt out. See our{" "}
-              <Link to="/sms-consent" className="underline hover:text-foreground">SMS Consent</Link> and{" "}
-              <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>.
-            </span>
-          </label>
-          {errors.sms_consent && <div className="mt-2 text-sm text-real-red">{errors.sms_consent}</div>}
-
-          <label className="mt-4 flex items-start gap-2.5 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={form.terms_accepted}
-              onChange={(e) => update("terms_accepted", e.target.checked)}
-              className="mt-0.5 h-4 w-4 accent-real-red shrink-0"
-            />
-            <span className="text-[11px] leading-snug text-muted-foreground">
-              I agree to the{" "}
-              <Link to="/terms" className="underline hover:text-foreground">Terms</Link> and{" "}
-              <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>.
-            </span>
-          </label>
-          {errors.terms_accepted && <div className="mt-2 text-sm text-real-red">{errors.terms_accepted}</div>}
-
+      <div className="relative z-10 mx-auto w-full max-w-7xl grid grid-cols-1 lg:grid-cols-[1fr_minmax(380px,420px)] gap-10 lg:gap-16 items-center">
+        <FadeUp className="text-center lg:text-left">
+          <div className="text-[11px] tracking-[0.25em] font-semibold text-real-red uppercase">{eyebrow}</div>
+          <h1 className="mt-4 text-[40px] md:text-[56px] lg:text-[64px] leading-[1.02] font-semibold text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.6)]">
+            {headline}
+          </h1>
+          <p className="mt-5 text-base md:text-xl text-white/85 max-w-3xl mx-auto lg:mx-0 leading-relaxed whitespace-pre-wrap">
+            {subhead}
+          </p>
           <button
             type="button"
-            onClick={submit}
-            disabled={submitting}
-            className="mt-6 inline-flex w-full md:w-auto md:min-w-[220px] items-center justify-center rounded-lg bg-real-red px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90 active:scale-[0.98] disabled:opacity-50"
+            onClick={scrollToCard}
+            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-real-red px-8 py-4 text-sm font-semibold text-white transition hover:opacity-90 active:scale-95"
           >
-            {submitting ? "Saving…" : "Continue"}
+            {ctaLabel} <ArrowRight className="h-4 w-4" />
           </button>
-        </div>
-      </FadeUp>
+        </FadeUp>
+
+        <FadeUp delay={80} className="w-full">
+          <div ref={cardRef} className="bg-white rounded-2xl shadow-2xl shadow-black/40 p-5 md:p-6 text-left text-foreground">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.24em] text-real-red">Step 1 Of 2</div>
+            <h2 className="mt-2 text-2xl font-semibold">Get My Quote</h2>
+            <div className="mt-6 grid grid-cols-1 gap-4">
+              <Field label="Full Name" value={form.full_name} error={errors.full_name} onChange={(value) => update("full_name", value)} />
+              <Field label="Phone" value={form.phone} error={errors.phone} onChange={(value) => update("phone", value)} />
+              <Field label="Email" type="email" value={form.email} error={errors.email} onChange={(value) => update("email", value)} />
+
+              <div>
+                <label className="text-[10px] uppercase tracking-wider text-muted-foreground">Are You Already Active On A Gig App?</label>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {PLATFORM_STATUSES.map((status) => {
+                    const active = form.platform_status === status;
+                    return (
+                      <button
+                        key={status}
+                        type="button"
+                        onClick={() => update("platform_status", status)}
+                        className={`rounded-lg border px-5 py-2 text-sm transition ${active ? "border-real-red bg-real-red text-white" : "border-border bg-white text-foreground hover:border-foreground/40"}`}
+                      >
+                        {status}
+                      </button>
+                    );
+                  })}
+                </div>
+                {errors.platform_status && <div className="mt-2 text-sm text-real-red">{errors.platform_status}</div>}
+              </div>
+            </div>
+
+            <label className="mt-5 flex items-start gap-2.5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={form.sms_consent}
+                onChange={(e) => update("sms_consent", e.target.checked)}
+                className="mt-0.5 h-4 w-4 accent-real-red shrink-0"
+              />
+              <span className="text-[11px] leading-snug text-muted-foreground">
+                By checking this box, I agree to receive SMS text messages from REAL RENTALS about my application, rental updates, and scheduling at the number provided. Message and data rates may apply. Reply STOP to opt out. See our{" "}
+                <Link to="/sms-consent" className="underline hover:text-foreground">SMS Consent</Link> and{" "}
+                <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>.
+              </span>
+            </label>
+            {errors.sms_consent && <div className="mt-2 text-sm text-real-red">{errors.sms_consent}</div>}
+
+            <label className="mt-4 flex items-start gap-2.5 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={form.terms_accepted}
+                onChange={(e) => update("terms_accepted", e.target.checked)}
+                className="mt-0.5 h-4 w-4 accent-real-red shrink-0"
+              />
+              <span className="text-[11px] leading-snug text-muted-foreground">
+                I agree to the{" "}
+                <Link to="/terms" className="underline hover:text-foreground">Terms</Link> and{" "}
+                <Link to="/privacy" className="underline hover:text-foreground">Privacy Policy</Link>.
+              </span>
+            </label>
+            {errors.terms_accepted && <div className="mt-2 text-sm text-real-red">{errors.terms_accepted}</div>}
+
+            <button
+              type="button"
+              onClick={submit}
+              disabled={submitting}
+              className="mt-7 inline-flex w-full items-center justify-center rounded-lg bg-real-red px-6 py-3 text-sm font-semibold text-white transition hover:opacity-90 active:scale-[0.98] disabled:opacity-50"
+            >
+              {submitting ? "Saving…" : "Continue"}
+            </button>
+          </div>
+        </FadeUp>
+      </div>
     </section>
   );
 }
