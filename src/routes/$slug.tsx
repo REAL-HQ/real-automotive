@@ -30,7 +30,7 @@ import { FadeUp } from "@/components/site/FadeUp";
 import { ComparisonSection } from "@/components/site/ComparisonSection";
 import { TrustedByDrivers } from "@/components/site/TrustedByDrivers";
 import { StickyCallBar } from "@/components/site/StickyCallBar";
-import { CityHeroLeadForm } from "@/components/site/CityHeroLeadForm";
+import { HeroQuoteBar } from "@/components/site/HeroQuoteBar";
 import sedanImg from "@/assets/cars/accord.jpg.asset.json";
 import suvImg from "@/assets/cars/crv.jpg.asset.json";
 import xlImg from "@/assets/cars/odyssey.jpg.asset.json";
@@ -163,13 +163,12 @@ function CityPage() {
 
   return (
     <SiteLayout>
-      <CityHeroLeadForm
-        id="quote-form"
+      <HeroQuoteBar
         eyebrow={eyebrow}
         headline={headline}
         subhead={subhead}
-        site={site}
-        market={market}
+        presetCitySlug={site.slug}
+        presetCityLabel={market ? (market.state ? `${market.name}, ${market.state}` : market.name) : site.title}
       />
 
       <section className="bg-white py-8 md:py-10">
