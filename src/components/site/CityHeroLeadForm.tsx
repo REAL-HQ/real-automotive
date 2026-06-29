@@ -101,6 +101,8 @@ export function CityHeroLeadForm({
       phone: form.phone,
       email: form.email,
       platform_status: form.platform_status as "Yes" | "Pending" | "Not Yet",
+      pickup_date: form.pickup_date || null,
+      return_date: form.return_date || null,
       market_id: site.market_id,
       city: market?.name ?? site.title,
       state: market?.state ?? null,
