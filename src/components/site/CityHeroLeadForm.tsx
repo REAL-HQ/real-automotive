@@ -45,12 +45,16 @@ export function CityHeroLeadForm({
     full_name: "",
     phone: "",
     email: "",
+    pickup_date: "",
+    return_date: "",
     platform_status: "",
     sms_consent: false,
     terms_accepted: false,
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
+
+  const today = useMemo(() => new Date().toISOString().split("T")[0], []);
 
   const utms = useMemo(() => {
     if (typeof window === "undefined") return {};
