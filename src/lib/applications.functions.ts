@@ -176,7 +176,7 @@ export const updateApplicationStep = createServerFn({ method: "POST" })
 
     const { data: row, error } = await supabaseAdmin
       .from("applications")
-      .update(patch)
+      .update(patch as any)
       .eq("id", id)
       .select("*")
       .single();
