@@ -419,7 +419,7 @@ function ConfirmationStep({ id, state }: { id: string; state: WizardState }) {
           <Check className="h-8 w-8" strokeWidth={2.5} />
         </div>
         <h2 className="mt-6 text-2xl md:text-3xl font-semibold tracking-tight">Request Received — We'll Be In Touch</h2>
-        <p className="mt-3 text-sm md:text-base text-muted-foreground max-w-md">
+        <p className="mt-3 text-sm md:text-base text-muted-foreground max-w-xl leading-snug">
           Thanks, {firstName}. A member of our team will review your request and call you shortly to confirm availability and your vehicle.
         </p>
         <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-border bg-white px-4 py-1.5 text-xs">
