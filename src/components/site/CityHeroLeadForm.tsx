@@ -174,6 +174,25 @@ export function CityHeroLeadForm({
                 </div>
                 {errors.platform_status && <div className="mt-2 text-sm text-real-red">{errors.platform_status}</div>}
               </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <Field
+                  label="Pick Up Date"
+                  type="date"
+                  min={today}
+                  value={form.pickup_date}
+                  error={errors.pickup_date}
+                  onChange={(value) => update("pickup_date", value)}
+                />
+                <Field
+                  label="Return Date"
+                  type="date"
+                  min={form.pickup_date || today}
+                  value={form.return_date}
+                  error={errors.return_date}
+                  onChange={(value) => update("return_date", value)}
+                />
+              </div>
             </div>
 
             <label className="mt-5 flex items-start gap-2.5 cursor-pointer">
