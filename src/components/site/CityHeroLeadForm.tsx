@@ -246,18 +246,24 @@ function Field({
   error,
   onChange,
   type = "text",
+  min,
+  max,
 }: {
   label: string;
   value: string;
   error?: string;
   onChange: (value: string) => void;
   type?: string;
+  min?: string;
+  max?: string;
 }) {
   return (
     <label className="block">
       <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</span>
       <input
         type={type}
+        min={min}
+        max={max}
         value={value}
         onChange={(event) => onChange(event.target.value)}
         className={`mt-1 w-full rounded-lg border bg-white px-3 py-2 text-sm ${error ? "border-real-red" : "border-border"}`}
