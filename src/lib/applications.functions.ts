@@ -174,6 +174,24 @@ export const updateApplicationStep = createServerFn({ method: "POST" })
     patch.current_step = step;
     if (isComplete) patch.status = "complete";
 
+    // Derive rental duration from dates whenever both are known on this update.
+    // Fetch current row to fill in any missing date.
+    const { data: existing } = await supabaseAdmin
+      .from("applications")
+      .select("pickup_date, return_date")
+      .eq("id", id)
+      .maybeSingle();
+    const pickup = (patch.pickup_date as string | undefined) ?? existing?.pickup_date ?? null;
+    const ret = (patch.return_date as string | undefined) ?? existing?.return_date ?? null;
+    if (pickup && ret && ret > pickup) {
+      const days = Math.round(
+        (new Date(ret).getTime() - new Date(pickup).getTime()) / 86400000,
+      );
+      patch.rental_duration_days = days;
+      patch.rental_duration =
+        days <= 14 ? "1-2 weeks" : days <= 28 ? "2-4 weeks" : days <= 60 ? "1-2 months" : "3+ months";
+    }
+
     const { data: row, error } = await supabaseAdmin
       .from("applications")
       .update(patch as any)
