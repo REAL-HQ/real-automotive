@@ -8,7 +8,6 @@ type Vehicle = Tables<"vehicles">;
 export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
   const img = resolvePhotoUrl(vehicle.photos?.[0]);
   const uber = vehicle.uber_eligibility ?? [];
-  const status = vehicle.status ?? "available";
   const fuel = vehicle.fuel_type ?? "gas";
   const fuelMeta =
     fuel === "ev"
@@ -16,12 +15,6 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
       : fuel === "hybrid"
         ? { label: "Hybrid", Icon: Leaf, cls: "bg-emerald-50 text-emerald-700 border-emerald-200" }
         : { label: "Gas", Icon: Fuel, cls: "bg-gray-100 text-gray-600 border-gray-200" };
-  const statusMeta =
-    status === "available"
-      ? { label: "Available Now", color: "text-emerald-600", dot: "bg-emerald-500" }
-      : status === "reserved"
-        ? { label: "Reserved", color: "text-real-red", dot: "bg-real-red" }
-        : { label: "Limited Availability", color: "text-amber-600", dot: "bg-amber-500" };
   return (
     <Link
       to="/fleet/$id"
