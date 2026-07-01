@@ -29,7 +29,7 @@ function HowItWorks() {
           </p>
           <div className="mt-9 flex flex-wrap justify-center gap-3">
             <Link to="/apply" className="inline-flex items-center gap-2 rounded-lg bg-real-red px-7 py-3 text-sm font-medium text-white hover:opacity-90 transition active:scale-95">
-              Book Now <ArrowRight className="w-4 h-4" />
+              Get My Quote <ArrowRight className="w-4 h-4" />
             </Link>
             <Link to="/fleet" className="inline-flex items-center rounded-lg border border-white/40 px-7 py-3 text-sm font-medium text-white hover:bg-white hover:text-black transition active:scale-95">
               Browse Vehicles
@@ -200,7 +200,7 @@ function HowItWorks() {
             </p>
             <div className="mt-9 flex flex-wrap justify-center gap-3">
               <Link to="/apply" className="inline-flex items-center gap-2 rounded-lg bg-real-red px-8 py-4 text-sm font-semibold text-white hover:opacity-90 transition active:scale-95">
-                Book Now <ArrowRight className="w-4 h-4" />
+                Get My Quote <ArrowRight className="w-4 h-4" />
               </Link>
               <Link to="/contact" className="inline-flex items-center rounded-lg border border-white/30 px-8 py-4 text-sm font-medium text-white hover:bg-white/10 transition active:scale-95">
                 Talk To A Human

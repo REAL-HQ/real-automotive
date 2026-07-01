@@ -128,7 +128,7 @@ function Index() {
         </div>
         <FadeUp className="mt-12 text-center">
           <Link to="/apply" className="inline-flex items-center gap-2 rounded-lg bg-real-red text-white px-8 py-4 text-sm font-semibold hover:opacity-90 transition active:scale-95">
-            Book Now <ArrowRight className="w-4 h-4" />
+            Get My Quote <ArrowRight className="w-4 h-4" />
           </Link>
         </FadeUp>
       </section>

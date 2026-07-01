@@ -104,7 +104,7 @@ export function VehicleCard({ vehicle }: { vehicle: Vehicle }) {
         }}
         className="mt-4 w-full inline-flex items-center justify-center gap-2 rounded-lg bg-real-red text-white px-4 py-2.5 text-sm font-semibold hover:bg-real-red/90 transition active:scale-[0.98]"
       >
-        Book This Vehicle <ArrowRight className="w-4 h-4" />
+        Check Availability <ArrowRight className="w-4 h-4" />
       </button>
       <div className="mt-4 pt-4 border-t border-border/60 grid grid-cols-2 gap-x-3 gap-y-2 text-[11px] text-foreground/80">
         <span className="inline-flex items-center gap-1.5">
