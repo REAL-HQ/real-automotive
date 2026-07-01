@@ -291,13 +291,14 @@ type StepProps = {
   state: WizardState;
   update: <K extends keyof WizardState>(k: K, v: WizardState[K]) => void;
   saving: boolean;
+  source: string | null | undefined;
 };
 
-function EligibilityStep({ state, update, onNext, saving }: StepProps & { onNext: () => void }) {
+function EligibilityStep({ state, update, onNext, saving, source }: StepProps & { onNext: () => void }) {
   const canNext = state.license_valid !== null && !!state.gig_status && !!state.start_timing;
   return (
     <div>
-      <StepHeader eyebrow="Step 1 of 4" title="Quick Eligibility" sub="A few quick questions so we can match you with the right vehicle." />
+      <StepHeader eyebrow={stepEyebrow(source, "eligibility")} title="Quick Eligibility" sub="A few quick questions so we can match you with the right vehicle." />
       <div className="space-y-6">
         <div>
           <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Do You Currently Hold A Valid Driver's License?</div>
@@ -320,7 +321,7 @@ function EligibilityStep({ state, update, onNext, saving }: StepProps & { onNext
   );
 }
 
-function RentalStep({ state, update, onBack, onNext, saving }: StepProps & { onBack: () => void; onNext: () => void }) {
+function RentalStep({ state, update, onBack, onNext, saving, source }: StepProps & { onBack: () => void; onNext: () => void }) {
   const canNext = !!state.vehicle_size && !!state.pickup_date && !!state.return_date && state.return_date > state.pickup_date;
   const today = new Date().toISOString().slice(0, 10);
   const days =
@@ -329,7 +330,7 @@ function RentalStep({ state, update, onBack, onNext, saving }: StepProps & { onB
       : null;
   return (
     <div>
-      <StepHeader eyebrow="Step 2 of 4" title="Rental Details" sub="Confirm what you need and when." />
+      <StepHeader eyebrow={stepEyebrow(source, "rental")} title="Rental Details" sub="Confirm what you need and when." />
       <div className="space-y-6">
         <RadioGroup label="Which Vehicle Size Are You Interested In?" value={state.vehicle_size as any} options={VEHICLE_OPTS} onChange={(v) => update("vehicle_size", v)} />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -347,7 +348,7 @@ function RentalStep({ state, update, onBack, onNext, saving }: StepProps & { onB
   );
 }
 
-function GigStep({ id, state, update, onBack, onNext, saving }: StepProps & { id: string; onBack: () => void; onNext: () => void }) {
+function GigStep({ id, state, update, onBack, onNext, saving, source }: StepProps & { id: string; onBack: () => void; onNext: () => void }) {
   const canNext = state.platforms.length > 0;
   const toggle = (p: string) => {
     const next = state.platforms.includes(p) ? state.platforms.filter((x) => x !== p) : [...state.platforms, p];
@@ -355,7 +356,7 @@ function GigStep({ id, state, update, onBack, onNext, saving }: StepProps & { id
   };
   return (
     <div>
-      <StepHeader eyebrow="Step 3 of 4" title="Your Gig Profile" sub="Help us verify you're an active driver — this gets you to a hot lead status faster." />
+      <StepHeader eyebrow={stepEyebrow(source, "gig")} title="Your Gig Profile" sub="Help us verify you're an active driver — this gets you to a hot lead status faster." />
       <div className="space-y-6">
         <div>
           <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">What Platforms Are You Currently Using?</div>
@@ -384,11 +385,11 @@ function GigStep({ id, state, update, onBack, onNext, saving }: StepProps & { id
   );
 }
 
-function DriverStep({ id, state, update, onBack, onSubmit, saving }: StepProps & { id: string; onBack: () => void; onSubmit: () => void }) {
+function DriverStep({ id, state, update, onBack, onSubmit, saving, source }: StepProps & { id: string; onBack: () => void; onSubmit: () => void }) {
   const canSubmit = !!state.address && !!state.state && !!state.zip && state.full_coverage_insurance !== null && !!state.how_heard;
   return (
     <div>
-      <StepHeader eyebrow="Step 4 of 4" title="Driver & Insurance" sub="Last step. We need this for delivery + your rental records." />
+      <StepHeader eyebrow={stepEyebrow(source, "driver")} title="Driver & Insurance" sub="Last step. We need this for delivery + your rental records." />
       <div className="space-y-6">
         <FileUploadField
           label="Upload A Picture Of Your Driver's License — Optional, Helps Speed Approval"
