@@ -9,7 +9,7 @@ import { FadeUp } from "./FadeUp";
 
 type WizardStep = "eligibility" | "rental" | "gig" | "driver" | "complete";
 
-const STEP_ORDER: WizardStep[] = ["eligibility", "rental", "gig", "driver", "complete"];
+const WIZARD_STEPS: WizardStep[] = ["eligibility", "rental", "gig", "driver"];
 const STEP_LABELS: Record<WizardStep, string> = {
   eligibility: "Eligibility",
   rental: "Rental",
@@ -18,6 +18,22 @@ const STEP_LABELS: Record<WizardStep, string> = {
   complete: "Done",
 };
 
+// Progress bar segments, driven by entry path. Homepage users completed the
+// contact ("Your Info") step in /apply's ContactStep before the wizard mounted,
+// so it's the first bar segment. City-page users submitted contact info in the
+// hero form (outside the wizard), so their bar starts at Eligibility.
+export function getBarSegments(source: string | null | undefined): {
+  key: string;
+  label: string;
+}[] {
+  const wizard = WIZARD_STEPS.map((s) => ({ key: s, label: STEP_LABELS[s] }));
+  const done = { key: "complete", label: "Done" };
+  if (source === "homepage") {
+    return [{ key: "your_info", label: "Your Info" }, ...wizard, done];
+  }
+  return [...wizard, done];
+}
+
 type WizardState = {
   full_name: string;
   email: string;
@@ -25,6 +41,7 @@ type WizardState = {
   pickup_date: string | null;
   return_date: string | null;
   city: string | null;
+  source: string | null;
   // eligibility
   license_valid: boolean | null;
   gig_status: string | null;
@@ -69,6 +86,7 @@ export function ApplicationWizard({ id }: { id: string }) {
           pickup_date: row.pickup_date,
           return_date: row.return_date,
           city: row.city,
+          source: (row as any).source ?? null,
           license_valid: row.license_valid,
           gig_status: row.gig_status,
           start_timing: row.start_timing,
@@ -121,37 +139,37 @@ export function ApplicationWizard({ id }: { id: string }) {
   };
 
   const goBack = () => {
-    const idx = STEP_ORDER.indexOf(step);
-    if (idx > 0) setStep(STEP_ORDER[idx - 1]);
+    const idx = WIZARD_STEPS.indexOf(step as any);
+    if (idx > 0) setStep(WIZARD_STEPS[idx - 1]);
   };
 
   return (
     <div className="max-w-2xl mx-auto w-full">
-      <ProgressBar current={step} />
+      <ProgressBar current={step} source={state.source} />
       <FadeUp delay={50}>
         <div className="mt-8 rounded-2xl bg-soft p-6 md:p-8">
           {step === "eligibility" && (
-            <EligibilityStep state={state} update={update} onNext={() => goNext("rental", {
+            <EligibilityStep source={state.source} state={state} update={update} onNext={() => goNext("rental", {
               license_valid: state.license_valid,
               gig_status: state.gig_status,
               start_timing: state.start_timing,
             })} saving={saving} />
           )}
           {step === "rental" && (
-            <RentalStep state={state} update={update} onBack={goBack} onNext={() => goNext("gig", {
+            <RentalStep source={state.source} state={state} update={update} onBack={goBack} onNext={() => goNext("gig", {
               vehicle_size: state.vehicle_size,
               pickup_date: state.pickup_date,
               return_date: state.return_date,
             })} saving={saving} />
           )}
           {step === "gig" && (
-            <GigStep id={id} state={state} update={update} onBack={goBack} onNext={() => goNext("driver", {
+            <GigStep source={state.source} id={id} state={state} update={update} onBack={goBack} onNext={() => goNext("driver", {
               platforms: state.platforms,
               profile_screenshot_url: state.profile_screenshot_url,
             })} saving={saving} />
           )}
           {step === "driver" && (
-            <DriverStep id={id} state={state} update={update} onBack={goBack} onSubmit={() => goNext("complete", {
+            <DriverStep source={state.source} id={id} state={state} update={update} onBack={goBack} onSubmit={() => goNext("complete", {
               license_photo_url: state.license_photo_url,
               full_coverage_insurance: state.full_coverage_insurance,
               address: state.address,
@@ -174,24 +192,40 @@ export function ApplicationWizard({ id }: { id: string }) {
   );
 }
 
-function ProgressBar({ current }: { current: WizardStep }) {
-  const currentIdx = STEP_ORDER.indexOf(current);
+export function ProgressBar({
+  current,
+  source,
+}: {
+  current: WizardStep | "your_info";
+  source: string | null | undefined;
+}) {
+  const segments = getBarSegments(source);
+  const currentIdx = segments.findIndex((s) => s.key === current);
   return (
     <div className="flex items-center gap-1.5 md:gap-2">
-      {STEP_ORDER.map((s, i) => {
+      {segments.map((s, i) => {
         const done = i < currentIdx;
         const active = i === currentIdx;
         return (
-          <div key={s} className="flex-1">
+          <div key={s.key} className="flex-1">
             <div className={`h-1.5 rounded-full transition-colors ${done || active ? "bg-real-red" : "bg-border"}`} />
             <div className={`mt-1.5 text-[10px] uppercase tracking-wider text-center ${active ? "text-real-red font-semibold" : "text-muted-foreground"}`}>
-              {STEP_LABELS[s]}
+              {s.label}
             </div>
           </div>
         );
       })}
     </div>
   );
+}
+
+function stepEyebrow(source: string | null | undefined, step: WizardStep) {
+  // Wizard steps only (excludes "Your Info" and "Done").
+  const segs = getBarSegments(source).filter((s) => s.key !== "complete" && s.key !== "your_info");
+  const total = source === "homepage" ? segs.length + 1 : segs.length;
+  const idx = segs.findIndex((s) => s.key === step);
+  const num = source === "homepage" ? idx + 2 : idx + 1;
+  return `Step ${num} Of ${total}`;
 }
 
 function StepHeader({ eyebrow, title, sub }: { eyebrow: string; title: string; sub?: string }) {
