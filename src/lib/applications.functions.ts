@@ -215,6 +215,7 @@ export const getApplicationForWizard = createServerFn({ method: "POST" })
     const { data: row, error } = await supabaseAdmin
       .from("applications")
       .select("id, full_name, email, phone, city, state, market_id, pickup_date, return_date, current_step, status, license_valid, gig_status, start_timing, vehicle_size, rental_duration, platforms, profile_screenshot_url, trips_completed, rating, license_photo_url, full_coverage_insurance, address, zip, how_heard")
+      // include source so the wizard can drive its step count by entry path
       .eq("id", data.id)
       .maybeSingle();
     if (error) throw new Error(error.message);
